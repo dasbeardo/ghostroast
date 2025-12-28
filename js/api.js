@@ -52,7 +52,7 @@ Return ONLY this JSON (no markdown, no code blocks):
       'Authorization': `Bearer ${state.apiKey}`
     },
     body: JSON.stringify({
-      model: 'gpt-4o',
+      model: 'gpt-5.2-chat-latest',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
