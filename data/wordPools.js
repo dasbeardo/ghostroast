@@ -1005,6 +1005,791 @@ export const WORD_POOLS = {
       "know its place", "try harder than you"
     ],
     themed: {}
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // QUESTION FORMAT POOLS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  awkward_observations: {
+    base: [
+      "give off a weird vibe", "make people uncomfortable",
+      "talk too loud in public", "have no inside voice",
+      "stand too close", "overshare constantly",
+      "laugh at your own jokes", "never read the room",
+      "always have an opinion", "interrupt constantly",
+      "make everything about you", "can't take a hint",
+      "have a punchable energy", "try too hard",
+      "make small talk unbearable", "drain the room"
+    ],
+    themed: {}
+  },
+
+  observation_punchlines: {
+    base: [
+      "they weren't kidding", "it's gotten worse",
+      "we've all noticed", "the group chat agrees",
+      "there's documentation", "HR knows",
+      "it's on your permanent record", "the vibes are off",
+      "everyone was being polite about it",
+      "we were hoping you'd grow out of it",
+      "it's affecting property values",
+      "there's a betting pool", "we've discussed interventions",
+      "it comes up at parties you're not invited to"
+    ],
+    themed: {}
+  },
+
+  things_that_exist: {
+    base: [
+      "everyone has that one friend who's a mess",
+      "there's always one person who ruins the group photo",
+      "some people just peaked too early",
+      "certain people never outgrow being annoying",
+      "there's a reason 'cringe' is a word",
+      "some folks just can't help themselves",
+      "every group has a cautionary tale",
+      "someone has to be the example of what not to do",
+      "not everyone can be interesting",
+      "mediocrity needs representation too"
+    ],
+    themed: {}
+  },
+
+  reason_why: {
+    base: [
+      "the personification of it", "exhibit A",
+      "the reason we can't have nice things",
+      "patient zero", "the origin story",
+      "the documentary subject", "the case study",
+      "the before photo that never improved",
+      "the inspiration behind the warning label",
+      "the reason for the policy change",
+      "why we have HR", "the learning experience",
+      "the teachable moment nobody wanted"
+    ],
+    themed: {}
+  },
+
+  things_you_did: {
+    base: [
+      "you tried to tell that joke", "you danced at that wedding",
+      "you gave that toast", "you sent that email",
+      "you posted that photo", "you tried to network",
+      "you went viral for the wrong reason",
+      "you replied all by accident", "you tried karaoke",
+      "you attempted flirting", "you gave advice",
+      "you volunteered to speak first",
+      "you wore that outfit", "you tried to be spontaneous"
+    ],
+    themed: {}
+  },
+
+  brutal_verdicts: {
+    base: [
+      "a moment we'd all like to forget",
+      "the reason we stopped inviting you",
+      "documented and discussed", "legendary (not in a good way)",
+      "a core memory for the wrong reasons",
+      "still being talked about", "worse than anyone admits",
+      "the incident", "what we reference to describe rock bottom",
+      "a warning to others", "a mistake we can't unsee",
+      "peak cringe", "the content nobody asked for",
+      "a fever dream we all witnessed"
+    ],
+    themed: {}
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SIMILE BURN POOLS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  useless_things: {
+    base: [
+      "a screen door on a submarine", "a chocolate teapot",
+      "sunglasses on a mole", "a solar-powered flashlight",
+      "an ejection seat on a helicopter", "a fireproof match",
+      "a waterproof towel", "a silent alarm",
+      "training wheels on a unicycle", "a glass hammer",
+      "a paper umbrella", "a concrete parachute",
+      "an inflatable anchor", "a mesh water bottle",
+      "a lead balloon", "brakes on a canoe"
+    ],
+    themed: {}
+  },
+
+  bad_situations: {
+    base: [
+      "a funeral", "a job interview", "a first date",
+      "a hostage negotiation", "a fire drill",
+      "an intervention", "a custody hearing",
+      "a performance review", "a wedding toast",
+      "an elevator pitch", "a crisis meeting",
+      "an escape room", "a group project deadline",
+      "a traffic stop", "an IRS audit"
+    ],
+    themed: {}
+  },
+
+  flat_things: {
+    base: [
+      "a dial tone", "a parking garage wall",
+      "a loading screen", "dial-up internet sounds",
+      "a voicemail greeting", "elevator music",
+      "a screensaver", "the Windows XP shutdown sound",
+      "a terms of service page", "hold music",
+      "a CAPTCHA", "a cookie consent popup",
+      "a software license agreement", "a privacy policy"
+    ],
+    themed: {}
+  },
+
+  oblivious_things: {
+    base: [
+      "a roomba heading for the stairs",
+      "a GPS in a tunnel", "a smoke detector with dead batteries",
+      "a tourist reading a map upside down",
+      "someone on speakerphone in public",
+      "a reply-all accident waiting to happen",
+      "autocorrect", "a pop-up ad blocker getting blocked",
+      "someone walking into a glass door",
+      "a person who thinks they're on mute",
+      "a fitness tracker on a couch potato",
+      "a self-checkout that needs assistance"
+    ],
+    themed: {}
+  },
+
+  dull_things: {
+    base: [
+      "a DMV waiting room", "airport carpet",
+      "a conference call about scheduling more calls",
+      "beige wallpaper", "a pension plan brochure",
+      "mandatory compliance training", "a TED talk about productivity",
+      "someone explaining cryptocurrency",
+      "a quarterly earnings report", "a vegan's dinner party stories",
+      "a homeowner's association meeting",
+      "a description of someone's dream"
+    ],
+    themed: {}
+  },
+
+  off_putting_things: {
+    base: [
+      "wet handshake energy", "a reply guy",
+      "someone who stands too close",
+      "an unsolicited LinkedIn connection",
+      "a person who claps when planes land",
+      "someone who says 'actually' too much",
+      "a close talker at a networking event",
+      "the person who brings a guitar to parties",
+      "someone who describes themselves as 'brutally honest'",
+      "a LinkedIn motivational post",
+      "someone who starts sentences with 'I'm not racist, but'",
+      "a cold call during dinner"
+    ],
+    themed: {}
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CONDITIONAL BURN POOLS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  your_attributes: {
+    base: [
+      "personality", "presence", "energy", "opinions",
+      "eye contact", "small talk", "humor", "confidence",
+      "handshake", "laugh", "advice", "cooking",
+      "dance moves", "fashion sense", "taste in music"
+    ],
+    themed: {}
+  },
+
+  pathetic_outcomes: {
+    base: [
+      "politely wound", "mildly inconvenience",
+      "cause a slight headache", "give someone the ick",
+      "make people zone out", "inspire a sigh",
+      "trigger an eye roll", "prompt a polite excuse to leave",
+      "make someone check their phone",
+      "inspire a 'that's crazy' with no follow-up",
+      "cause someone to suddenly remember an appointment",
+      "result in a 'we should do this again sometime' (lie)"
+    ],
+    themed: {}
+  },
+
+  unwanted_experiences: {
+    base: [
+      "to feel vaguely uncomfortable", "to question my life choices",
+      "to experience secondhand embarrassment", "to feel drained",
+      "a headache", "to lose the will to live",
+      "to feel my time being wasted", "to cringe",
+      "to be disappointed", "to witness failure",
+      "to experience regret", "to feel nothing"
+    ],
+    themed: {}
+  },
+
+  how_to_suffer: {
+    base: [
+      "stare at a loading screen", "attend a timeshare presentation",
+      "sit through a slideshow of someone's vacation photos",
+      "read the terms and conditions",
+      "watch paint dry in real time",
+      "listen to hold music for an hour",
+      "be trapped in a conversation about crypto",
+      "explain the joke after no one laughs",
+      "attend a multi-level marketing party",
+      "sit through a webinar", "wait at the DMV"
+    ],
+    themed: {}
+  },
+
+  misused_phrases: {
+    base: [
+      "be yourself", "follow your dreams",
+      "everyone's special in their own way",
+      "it's what's on the inside that counts",
+      "never give up", "fake it till you make it",
+      "believe in yourself", "you can do anything",
+      "shoot for the moon", "embrace your uniqueness",
+      "dance like nobody's watching",
+      "live your truth", "you're perfect just as you are"
+    ],
+    themed: {}
+  },
+
+  what_you_did: {
+    base: [
+      "whatever this is", "your career path",
+      "your dating history", "your search history",
+      "your personality", "your life choices",
+      "your attempts at humor", "your fashion sense",
+      "your cooking", "your advice-giving",
+      "your dancing", "your networking style",
+      "your social media presence", "your vibe"
+    ],
+    themed: {}
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // POSSESSION BURN POOLS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  existence_descriptions: {
+    base: [
+      "a participation trophy for being born",
+      "proof that showing up isn't everything",
+      "a rough draft that got published",
+      "a series of unfortunate events",
+      "a cautionary tale in real time",
+      "an acquired taste nobody's acquiring",
+      "a soft launch that never went live",
+      "a pilot episode that didn't get picked up",
+      "a test run that went too long",
+      "a placeholder that became permanent",
+      "a B-plot in everyone else's story",
+      "a loading screen that never finishes"
+    ],
+    themed: {}
+  },
+
+  existence_twists: {
+    base: [
+      "and you've made peace with it",
+      "and somehow you're proud",
+      "and the reviews are in",
+      "and we're all witnesses",
+      "and there's documentation",
+      "and it's somehow intentional",
+      "and you've monetized it",
+      "and there's no sign of improvement",
+      "and everyone's too polite to say it",
+      "and we've stopped expecting more"
+    ],
+    themed: {}
+  },
+
+  sad_book_titles: {
+    base: [
+      "Almost: A Memoir", "It Seemed Like a Good Idea",
+      "The Longest Shortcut", "Everyone Was Polite About It",
+      "I Peaked in the Preface", "Draft Seventeen",
+      "The Footnote", "Just Here", "An Acquired Taste",
+      "Room Temperature", "The Participation Years",
+      "They Said Be Yourself", "How Not To",
+      "A Series of Missed Points", "The Scenic Route to Nowhere"
+    ],
+    themed: {}
+  },
+
+  book_fates: {
+    base: [
+      "finish it", "buy it", "read past the introduction",
+      "notice it", "recommend it", "review it",
+      "remember the title", "care", "be surprised by the ending",
+      "dispute the accuracy", "fact-check it",
+      "ask for a sequel", "leave a positive review",
+      "feel attacked by it", "relate to it"
+    ],
+    themed: {}
+  },
+
+  sad_nouns: {
+    base: [
+      "a deflated balloon", "a forgotten birthday cake",
+      "an abandoned shopping cart", "a participation trophy",
+      "last week's leftovers", "a dying house plant",
+      "a clearance rack item", "an airport Cinnabon at closing",
+      "a motivational poster in a bankruptcy office",
+      "a fortune cookie with no fortune",
+      "a vending machine sandwich",
+      "a gas station rose on Valentine's Day"
+    ],
+    themed: {}
+  },
+
+  bad_experiences: {
+    base: [
+      "a midlife crisis", "a rejected application",
+      "a foreclosure", "an existential crisis",
+      "a bad Yelp review", "a software update",
+      "Mercury retrograde", "a reorg",
+      "a performance improvement plan",
+      "an intervention", "a tax audit",
+      "a custody battle", "a terms of service update"
+    ],
+    themed: {}
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ACTION BURN POOLS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  room_reactions: {
+    base: [
+      "the WiFi gets worse", "phones start dying",
+      "people suddenly remember other places they need to be",
+      "the vibe shifts", "small talk dies",
+      "the energy leaves", "eye contact decreases",
+      "group chats get active", "exits get evaluated",
+      "people check the time more", "conversations end naturally",
+      "the thermostat feels wrong", "things get quiet",
+      "enthusiasm becomes optional"
+    ],
+    themed: {}
+  },
+
+  telling_details: {
+    base: [
+      "and it's been documented", "and you haven't noticed",
+      "and we've discussed it", "and it's consistent",
+      "and there are witnesses", "and it's measurable",
+      "and it's your brand now", "and we've adapted",
+      "and there's a pattern", "and it's in the minutes",
+      "and someone's tracking it", "and it's become a verb"
+    ],
+    themed: {}
+  },
+
+  good_vibes: {
+    base: [
+      "a birthday party", "a celebration",
+      "good news", "a promotion announcement",
+      "a wedding", "a vacation", "a reunion",
+      "a success story", "an award ceremony",
+      "a good mood", "a winning streak",
+      "an optimistic outlook", "team morale"
+    ],
+    themed: {}
+  },
+
+  your_presence: {
+    base: [
+      "being in the photo", "joining the call",
+      "walking into the room", "speaking first",
+      "making eye contact", "offering your opinion",
+      "showing up unexpectedly", "being mentioned",
+      "appearing in the chat", "existing nearby",
+      "thinking about attending", "being tagged",
+      "asking 'what did I miss'"
+    ],
+    themed: {}
+  },
+
+  things_to_watch: {
+    base: [
+      "try to be confident", "attempt small talk",
+      "network", "dance", "give a presentation",
+      "tell a joke", "make a first impression",
+      "try to fit in", "work a room",
+      "attempt sincerity", "pretend to be interested",
+      "handle criticism", "accept a compliment",
+      "explain yourself", "apologize"
+    ],
+    themed: {}
+  },
+
+  painful_comparisons: {
+    base: [
+      "watching a software update at 99% for an hour",
+      "listening to someone explain their dream in detail",
+      "sitting through a slideshow with no end in sight",
+      "watching a buffering video you've already seen",
+      "witnessing a magic trick that doesn't work",
+      "being trapped in an elevator with a close talker",
+      "watching someone wave at someone who wasn't waving at them",
+      "seeing a proposal get rejected in public",
+      "watching someone search for a parking spot forever",
+      "being on hold and hearing 'your call is important to us'"
+    ],
+    themed: {}
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // OPINION BURN POOLS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  worse_than_dislike: {
+    base: [
+      "forget you exist", "feel nothing",
+      "actively avoid you", "pretend they don't see you",
+      "pity you", "get exhausted by you",
+      "feel secondhand embarrassment", "tolerate you at best",
+      "have stopped trying", "remember you wrong on purpose",
+      "mute you in every app", "quietly hope you cancel",
+      "feel their energy drain", "schedule around you"
+    ],
+    themed: {}
+  },
+
+  important_distinctions: {
+    base: [
+      "and that's worse", "which takes more effort",
+      "and there's a difference", "and you earned it",
+      "which says something", "and it's intentional",
+      "which is a choice", "and it's specific to you",
+      "and they've thought about it",
+      "and it's not personal, it's logical",
+      "and it's a consensus", "and there were meetings"
+    ],
+    themed: {}
+  },
+
+  wrong_behaviors: {
+    base: [
+      "replies all", "shows up unannounced",
+      "gives unsolicited advice", "one-ups every story",
+      "corrects people publicly", "talks during movies",
+      "leaves voicemails", "sends LinkedIn connection requests after one meeting",
+      "says 'no offense' before being offensive",
+      "claps when planes land", "overshares on first dates",
+      "posts inspirational quotes unironically",
+      "uses speaker phone in public", "reclines on short flights"
+    ],
+    themed: {}
+  },
+
+  delusional_thoughts: {
+    base: [
+      "it's charming", "people appreciate it",
+      "it's being authentic", "everyone does it",
+      "it's relatable", "it's helping",
+      "you're the exception", "it's endearing",
+      "they're secretly impressed", "it's a power move",
+      "it's what confident people do", "it's your thing",
+      "they'll thank you later", "it's bold",
+      "silence means agreement"
+    ],
+    themed: {}
+  },
+
+  common_reactions: {
+    base: [
+      "has the same realization", "needs a moment after",
+      "suddenly has somewhere else to be",
+      "updates their expectations downward",
+      "reconsiders their life choices",
+      "feels briefly concerned", "loses a little hope",
+      "remembers a previous engagement",
+      "checks the time", "gets quieter",
+      "exchanges a look with someone",
+      "makes a mental note"
+    ],
+    themed: {}
+  },
+
+  you_dont_notice: {
+    base: [
+      "because you never do", "but the group chat does",
+      "which is part of the problem", "and that's on brand",
+      "and it's documented", "and honestly, expected",
+      "but there are screenshots", "and we've discussed it",
+      "because reading the room isn't your strength",
+      "and there's a pattern", "and self-awareness isn't your thing"
+    ],
+    themed: {}
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // METAPHOR BURN POOLS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  disappointment_categories: {
+    base: [
+      "a genre of music", "a season", "a weather event",
+      "a font", "a notification sound", "an emoji",
+      "a form of transportation", "a household appliance",
+      "a room in a house", "an item of clothing",
+      "a streaming service", "a social media platform",
+      "a type of meeting", "a time of day"
+    ],
+    themed: {}
+  },
+
+  disappointment_examples: {
+    base: [
+      "the one nobody chooses", "the one people skip",
+      "the broken one in the drawer",
+      "the one that's technically available but never used",
+      "the free trial that expires immediately",
+      "the default option nobody meant to keep",
+      "the one people apologize for having to use",
+      "the one with consistently bad reviews",
+      "the off-brand version", "the recalled one",
+      "the discontinued one nobody missed",
+      "the 'well, I guess this works' option"
+    ],
+    themed: {}
+  },
+
+  movie_subjects: {
+    base: [
+      "the audience", "the narrator", "the soundtrack",
+      "the editor", "the critics", "the credits",
+      "the runtime", "the trailer", "the reviews",
+      "streaming services", "the subtitle team",
+      "the rating", "future viewers"
+    ],
+    themed: {}
+  },
+
+  movie_actions: {
+    base: [
+      "walk out early", "demand a refund",
+      "skip to the end", "apologize for participating",
+      "add a 'skip intro' button for your life",
+      "file for damages", "use the 1.5x speed",
+      "add a content warning about you",
+      "categorize you under 'horror'",
+      "rate it one star", "bury it in the algorithm",
+      "pretend it doesn't exist",
+      "list 'inspired by a true disappointment'"
+    ],
+    themed: {}
+  },
+
+  supposed_advantages: {
+    base: [
+      "trying hard", "showing up", "being confident",
+      "having a plan", "staying positive", "being yourself",
+      "experience", "education", "persistence",
+      "good intentions", "enthusiasm", "preparation",
+      "having a platform", "being early", "networking"
+    ],
+    themed: {}
+  },
+
+  success_types: {
+    base: [
+      "being likeable", "actual results", "basic competence",
+      "respect", "friends", "good outcomes",
+      "positive reviews", "second invitations",
+      "repeat customers", "followers who stay",
+      "people who remember your name correctly",
+      "recommendations", "references",
+      "a Wikipedia page", "a legacy"
+    ],
+    themed: {}
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TIME-BASED BURN POOLS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  future_sadness: {
+    base: [
+      "telling that same story", "making the same mistakes",
+      "blaming everyone else", "calling it 'your process'",
+      "posting about your journey", "pivoting to something else",
+      "explaining why it didn't work out",
+      "starting over 'for real this time'",
+      "waiting to be discovered", "almost there",
+      "workshopping the same idea",
+      "networking at events", "updating your bio"
+    ],
+    themed: {}
+  },
+
+  unsurprising_futures: {
+    base: [
+      "and we've already placed bets", "and the pattern is clear",
+      "and honestly, expected", "and nobody will check in",
+      "and there's historical data", "and the trajectory is set",
+      "and at this point it's tradition",
+      "and we've stopped asking",
+      "and it's priced in", "and we've made peace with it",
+      "and your autobiography will confirm it"
+    ],
+    themed: {}
+  },
+
+  born_to_do: {
+    base: [
+      "be someone's backup option", "fill space",
+      "be an example", "be average", "try",
+      "make others feel better about themselves",
+      "keep expectations low", "be a footnote",
+      "serve as a warning", "prove statistics right",
+      "represent the bell curve", "be relatable to failures"
+    ],
+    themed: {}
+  },
+
+  how_you_failed: {
+    base: [
+      "found a way to underperform", "managed to disappoint",
+      "still made it weird", "fumbled even that",
+      "peaked early and kept going", "made it your whole personality",
+      "turned it into a problem", "found the floor and dug",
+      "proved there's always lower", "set a new baseline",
+      "demonstrated that less is possible",
+      "showed us what 'barely' looks like"
+    ],
+    themed: {}
+  },
+
+  historical_footnotes: {
+    base: [
+      "a cautionary footnote", "an asterisk on humanity",
+      "a Wikipedia disambiguation page",
+      "the 'see also' of someone more interesting",
+      "a deleted paragraph", "a [citation needed]",
+      "something auto-archived", "a redirect that 404s",
+      "a page nobody visits", "a broken link",
+      "something that got lost in editing",
+      "a typo that didn't get corrected"
+    ],
+    themed: {}
+  },
+
+  historical_caveats: {
+    base: [
+      "and that's generous", "if the internet is still up",
+      "assuming anyone's checking", "which seems optimistic",
+      "if they bother", "and that's a big if",
+      "in a very specific, unread database",
+      "among people with too much time",
+      "in the way we remember participation trophy recipients",
+      "briefly and incorrectly", "and only by accident"
+    ],
+    themed: {}
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WORDPLAY BURN POOLS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  positive_adjectives: {
+    base: [
+      "interesting", "memorable", "consistent", "unique",
+      "confident", "bold", "unforgettable", "reliable",
+      "striking", "notable", "impressive", "authentic",
+      "original", "predictable", "persistent"
+    ],
+    themed: {}
+  },
+
+  backhanded_truths: {
+    base: [
+      "how loudly you miss the point",
+      "the consistency of your disappointment",
+      "how memorable your failures are",
+      "your commitment to mediocrity",
+      "the boldness of your delusions",
+      "how reliably you make things awkward",
+      "the unique way you drain a room",
+      "your authentic lack of self-awareness",
+      "the originality of your excuses",
+      "how predictably you fumble",
+      "your persistence in making it worse"
+    ],
+    themed: {}
+  },
+
+  rating_scales: {
+    base: [
+      "one to 'should have stayed home'",
+      "fine to 'we need to talk'",
+      "acceptable to 'HR is involved'",
+      "'sure' to 'absolutely not'",
+      "'it's fine' to 'I need therapy now'",
+      "meh to 'restraining order'",
+      "'they tried' to 'they shouldn't have'",
+      "passable to 'documentary subject'",
+      "'at least they showed up' to 'they should leave'",
+      "tolerable to 'international incident'"
+    ],
+    themed: {}
+  },
+
+  scale_results: {
+    base: [
+      "off the chart in the wrong direction",
+      "not even on this scale",
+      "a new category entirely",
+      "being used to recalibrate the whole system",
+      "the reason we added more options",
+      "making us question the methodology",
+      "the outlier we exclude from data",
+      "evidence that the scale needs revision",
+      "the example we use to explain 'below baseline'",
+      "currently breaking the algorithm"
+    ],
+    themed: {}
+  },
+
+  phenomena: {
+    base: [
+      "a black hole of charisma", "a vacuum of self-awareness",
+      "a singularity of disappointment",
+      "an anti-pattern for success",
+      "a control group for failure",
+      "a paradox of confidence and incompetence",
+      "an anomaly in the data set of humanity",
+      "a case study in what not to do",
+      "a statistical impossibility of bad choices",
+      "an exception to every positive rule",
+      "a glitch in the matrix of likability"
+    ],
+    themed: {}
+  },
+
+  defies_expectations: {
+    base: [
+      "somehow keeps getting worse",
+      "doesn't improve with practice",
+      "actively resists learning",
+      "makes scientists give up",
+      "proves nothing is guaranteed",
+      "has researchers questioning their field",
+      "makes peer review cry",
+      "exists despite all probability",
+      "survives against all metrics",
+      "persists when theory said you wouldn't"
+    ],
+    themed: {}
   }
 };
 

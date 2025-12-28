@@ -225,5 +225,257 @@ export const TEMPLATES = [
       { label: "a flaw", pool: "personality_flaws" },
       { label: "a trench coat", pool: "disguises" }
     ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // QUESTION FORMATS - interrogative burns
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "did_anyone_tell_you",
+    template: "Did anyone ever tell you that you [slot0]? Because [slot1]",
+    slots: [
+      { label: "an observation", pool: "awkward_observations" },
+      { label: "the punchline", pool: "observation_punchlines" }
+    ]
+  },
+  {
+    id: "you_know_how",
+    template: "You know how [slot0]? You're [slot1]",
+    slots: [
+      { label: "a bad thing exists", pool: "things_that_exist" },
+      { label: "the reason why", pool: "reason_why" }
+    ]
+  },
+  {
+    id: "remember_when",
+    template: "Remember when [slot0]? That was [slot1]",
+    slots: [
+      { label: "you did something", pool: "things_you_did" },
+      { label: "the verdict", pool: "brutal_verdicts" }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SIMILE BURNS - "like a..." patterns
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "about_as_useful",
+    template: "You're about as useful as [slot0] at [slot1]",
+    slots: [
+      { label: "something useless", pool: "useless_things" },
+      { label: "a bad situation", pool: "bad_situations" }
+    ]
+  },
+  {
+    id: "the_emotional_range",
+    template: "You have the emotional range of [slot0] and the self-awareness of [slot1]",
+    slots: [
+      { label: "something flat", pool: "flat_things" },
+      { label: "something oblivious", pool: "oblivious_things" }
+    ]
+  },
+  {
+    id: "charisma_of",
+    template: "You have the charisma of [slot0] and the charm of [slot1]",
+    slots: [
+      { label: "something dull", pool: "dull_things" },
+      { label: "something off-putting", pool: "off_putting_things" }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CONDITIONAL BURNS - if/then structures
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "if_looks_could",
+    template: "If [slot0] could kill, yours would [slot1]",
+    slots: [
+      { label: "something of yours", pool: "your_attributes" },
+      { label: "a pathetic outcome", pool: "pathetic_outcomes" }
+    ]
+  },
+  {
+    id: "if_i_wanted",
+    template: "If I wanted [slot0], I'd [slot1] — not talk to you",
+    slots: [
+      { label: "something bad", pool: "unwanted_experiences" },
+      { label: "how to get it", pool: "how_to_suffer" }
+    ]
+  },
+  {
+    id: "when_they_said",
+    template: "When they said [slot0], they weren't talking about [slot1]",
+    slots: [
+      { label: "an inspirational phrase", pool: "misused_phrases" },
+      { label: "what you did", pool: "what_you_did" }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // POSSESSION BURNS - "your X is Y" patterns
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "your_existence_is",
+    template: "Your existence is [slot0] — [slot1]",
+    slots: [
+      { label: "a harsh description", pool: "existence_descriptions" },
+      { label: "with a twist", pool: "existence_twists" }
+    ]
+  },
+  {
+    id: "your_autobiography",
+    template: "Your autobiography would be called '[slot0]' and nobody would [slot1]",
+    slots: [
+      { label: "a sad title", pool: "sad_book_titles" },
+      { label: "read/buy it", pool: "book_fates" }
+    ]
+  },
+  {
+    id: "your_face_looks",
+    template: "Your face looks like [slot0] going through [slot1]",
+    slots: [
+      { label: "something sad", pool: "sad_nouns" },
+      { label: "a bad experience", pool: "bad_experiences" }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ACTION BURNS - what you do/cause
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "you_walk_into",
+    template: "When you walk into a room, [slot0] — [slot1]",
+    slots: [
+      { label: "what happens", pool: "room_reactions" },
+      { label: "and it's telling", pool: "telling_details" }
+    ]
+  },
+  {
+    id: "you_bring_down",
+    template: "You could bring down [slot0] just by [slot1]",
+    slots: [
+      { label: "something good", pool: "good_vibes" },
+      { label: "existing near it", pool: "your_presence" }
+    ]
+  },
+  {
+    id: "watching_you",
+    template: "Watching you [slot0] is like [slot1]",
+    slots: [
+      { label: "do something", pool: "things_to_watch" },
+      { label: "a painful comparison", pool: "painful_comparisons" }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // OPINION BURNS - what others think
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "people_dont_dislike",
+    template: "People don't dislike you, they [slot0] — [slot1]",
+    slots: [
+      { label: "something worse", pool: "worse_than_dislike" },
+      { label: "the distinction", pool: "important_distinctions" }
+    ]
+  },
+  {
+    id: "youre_the_type",
+    template: "You're the type of person who [slot0] and thinks [slot1]",
+    slots: [
+      { label: "does something wrong", pool: "wrong_behaviors" },
+      { label: "it's fine", pool: "delusional_thoughts" }
+    ]
+  },
+  {
+    id: "everyone_who_meets",
+    template: "Everyone who meets you [slot0] — [slot1]",
+    slots: [
+      { label: "has the same reaction", pool: "common_reactions" },
+      { label: "and you don't notice", pool: "you_dont_notice" }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // METAPHOR BURNS - extended comparisons
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "if_disappointment",
+    template: "If disappointment was [slot0], you'd be [slot1]",
+    slots: [
+      { label: "a category", pool: "disappointment_categories" },
+      { label: "the worst example", pool: "disappointment_examples" }
+    ]
+  },
+  {
+    id: "in_the_movie",
+    template: "In the movie of your life, [slot0] would [slot1]",
+    slots: [
+      { label: "who/what", pool: "movie_subjects" },
+      { label: "what they'd do", pool: "movie_actions" }
+    ]
+  },
+  {
+    id: "youre_proof",
+    template: "You're living proof that [slot0] doesn't guarantee [slot1]",
+    slots: [
+      { label: "something good", pool: "supposed_advantages" },
+      { label: "success", pool: "success_types" }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TIME-BASED BURNS - past/present/future
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "in_ten_years",
+    template: "In ten years, you'll still be [slot0] — [slot1]",
+    slots: [
+      { label: "doing something sad", pool: "future_sadness" },
+      { label: "and nobody will be surprised", pool: "unsurprising_futures" }
+    ]
+  },
+  {
+    id: "you_were_born",
+    template: "You were born to [slot0], but somehow you [slot1]",
+    slots: [
+      { label: "do something", pool: "born_to_do" },
+      { label: "failed at even that", pool: "how_you_failed" }
+    ]
+  },
+  {
+    id: "history_will",
+    template: "History will remember you as [slot0] — [slot1]",
+    slots: [
+      { label: "a footnote", pool: "historical_footnotes" },
+      { label: "if at all", pool: "historical_caveats" }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WORDPLAY BURNS - setups for clever combinations
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "the_only_thing",
+    template: "The only thing [slot0] about you is [slot1]",
+    slots: [
+      { label: "a positive trait", pool: "positive_adjectives" },
+      { label: "the backhanded truth", pool: "backhanded_truths" }
+    ]
+  },
+  {
+    id: "on_a_scale",
+    template: "On a scale of [slot0], you're [slot1]",
+    slots: [
+      { label: "one to ten", pool: "rating_scales" },
+      { label: "the roast", pool: "scale_results" }
+    ]
+  },
+  {
+    id: "scientists_study",
+    template: "Scientists should study you — you're [slot0] that [slot1]",
+    slots: [
+      { label: "a phenomenon", pool: "phenomena" },
+      { label: "defies expectations", pool: "defies_expectations" }
+    ]
   }
 ];
