@@ -1,6 +1,6 @@
 // All rendering functions
 import { $ } from './utils.js';
-import { state } from './state.js';
+import { state, VERSION } from './state.js';
 import { bindEvents } from './game.js';
 import { HOST } from '../data/index.js';
 
@@ -90,6 +90,7 @@ function renderApiKey() {
       <p class="api-key-help">
         <a href="https://platform.openai.com/api-keys" target="_blank">Get an API key from OpenAI →</a>
       </p>
+      <div class="version">v${VERSION}</div>
     </div>
   `;
 }
@@ -102,6 +103,7 @@ function renderMenu() {
       <p class="menu-subtitle">with your host, Mort Holloway</p>
       <p class="menu-desc">Dead people take the stage. You craft roasts. Three random judges decide who burns brightest. Best of 3.</p>
       <button class="btn" id="start-btn">Enter the Séance</button>
+      <div class="version">v${VERSION}</div>
     </div>
   `;
 }

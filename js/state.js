@@ -1,5 +1,7 @@
 // Game state - single source of truth
 
+export const VERSION = '0.1.0';
+
 export const state = {
   screen: 'apiKey',  // Start with API key screen
   apiKey: localStorage.getItem('roastaghost_apikey') || '',  // Persist key
