@@ -316,12 +316,8 @@ function renderJudging() {
                 <div class="judge-result-reaction" id="judge-reaction-${i}">${result.reaction ? `"${result.reaction}"` : ''}</div>
               </div>
               <div class="judge-result-scores">
-                <div class="judge-score-player">
-                  You: ${result.playerScore}${result.playerBonus > 0 ? `<span class="bonus"> +${result.playerBonus}</span>` : ''}
-                </div>
-                <div class="judge-score-ai">
-                  ${opponent.emoji}: ${result.aiScore}${result.aiBonus > 0 ? `<span class="bonus"> +${result.aiBonus}</span>` : ''}
-                </div>
+                <div class="judge-score-player">You: ${result.playerScore}</div>
+                <div class="judge-score-ai">${opponent.emoji}: ${result.aiScore}</div>
               </div>
             </div>
           `).join('')}
@@ -395,12 +391,8 @@ function renderResults() {
               <div class="judge-result-reaction">"${j.reaction}"</div>
             </div>
             <div class="judge-result-scores">
-              <div class="judge-score-player">
-                ${j.playerScore}${j.playerBonus > 0 ? `<span class="bonus"> +${j.playerBonus}</span>` : ''}
-              </div>
-              <div class="judge-score-ai">
-                ${j.aiScore}${j.aiBonus > 0 ? `<span class="bonus"> +${j.aiBonus}</span>` : ''}
-              </div>
+              <div class="judge-score-player">${j.playerScore}</div>
+              <div class="judge-score-ai">${j.aiScore}</div>
             </div>
           </div>
         `).join('')}

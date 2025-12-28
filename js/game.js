@@ -322,8 +322,8 @@ ${state.opponent.emoji} ${state.opponent.name}: "${state.aiInsult}"`;
     }
 
     // Calculate final scores
-    const playerTotal = state.judgeResults.reduce((sum, j) => sum + j.playerScore + (j.playerBonus || 0), 0);
-    const aiTotal = state.judgeResults.reduce((sum, j) => sum + j.aiScore + (j.aiBonus || 0), 0);
+    const playerTotal = state.judgeResults.reduce((sum, j) => sum + j.playerScore, 0);
+    const aiTotal = state.judgeResults.reduce((sum, j) => sum + j.aiScore, 0);
     const winner = playerTotal > aiTotal ? 'player' : playerTotal < aiTotal ? 'ai' : 'tie';
 
     state.results = {
