@@ -18,6 +18,32 @@ export function setRenderFunction(fn) {
   render = fn;
 }
 
+// Build weighted word pool based on ghost themes
+// Themed words appear 3x for higher selection chance
+function buildWeightedPool(poolName, ghostThemes = []) {
+  const pool = WORD_POOLS[poolName];
+  if (!pool) return [];
+
+  // Handle old format (simple array) for backwards compatibility
+  if (Array.isArray(pool)) {
+    return [...pool];
+  }
+
+  // New format: { base: [...], themed: { theme1: [...], ... } }
+  let words = [...(pool.base || [])];
+
+  // Add themed words with higher weight (3x)
+  if (pool.themed && ghostThemes.length > 0) {
+    for (const theme of ghostThemes) {
+      const themedWords = pool.themed[theme] || [];
+      // Add themed words 3 times for higher selection probability
+      words.push(...themedWords, ...themedWords, ...themedWords);
+    }
+  }
+
+  return words;
+}
+
 // Type host dialogue with effect
 async function hostSpeak(text, elementId = 'host-text') {
   state.isTyping = true;
@@ -173,18 +199,23 @@ async function startRound(excluded) {
   state.playerTemplate = shuffledTemplates[0];
   state.aiTemplate = shuffledTemplates[1] || shuffledTemplates[0]; // Fallback if only 1 template
 
-  // Generate player's word pools
+  // Get ghost themes for weighted word selection
+  const ghostThemes = ghost.themes || [];
+
+  // Generate player's word pools with ghost-themed weighting
   state.playerWordPools = state.playerTemplate.slots.map(slot => {
-    const sourceWords = slot.pool ? WORD_POOLS[slot.pool] : slot.words;
-    return shuffle(sourceWords).slice(0, 6);
+    const sourceWords = slot.pool ? buildWeightedPool(slot.pool, ghostThemes) : slot.words;
+    // Shuffle and take 6, removing duplicates
+    const uniqueWords = [...new Set(shuffle(sourceWords))];
+    return uniqueWords.slice(0, 6);
   });
   state.playerSlots = new Array(state.playerTemplate.slots.length).fill(null);
 
-  // AI picks all its words immediately (random from pools)
+  // AI picks all its words immediately (from weighted pools)
   state.aiSlots = state.aiTemplate.slots.map(slot => {
-    const sourceWords = slot.pool ? WORD_POOLS[slot.pool] : slot.words;
+    const sourceWords = slot.pool ? buildWeightedPool(slot.pool, ghostThemes) : slot.words;
     const shuffled = shuffle(sourceWords);
-    return shuffled[0]; // AI just picks randomly
+    return shuffled[0];
   });
 
   state.activeSlot = null;
