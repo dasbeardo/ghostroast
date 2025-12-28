@@ -52,12 +52,12 @@ Return ONLY this JSON (no markdown, no code blocks):
       'Authorization': `Bearer ${state.apiKey}`
     },
     body: JSON.stringify({
-      model: 'gpt-5.2-chat-latest',
+      model: 'gpt-5.2',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
       ],
-      max_tokens: 300
+      max_completion_tokens: 300
     })
   });
 
