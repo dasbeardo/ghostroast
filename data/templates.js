@@ -1,98 +1,121 @@
 export const TEMPLATES = [
+  // SIMPLE PUNCHY (2 slots)
   {
-    template: "Your [slot0] looks like a [slot1] [slot2] that [slot3]",
+    template: "You're the human equivalent of [slot0] — [slot1]",
     slots: [
-      { label: "feature", pool: "features" },
-      { label: "adjective", pool: "adjectives_broken" },
-      { label: "sad thing", pool: "sad_objects" },
-      { label: "ending", pool: "failure_outcomes" }
+      { label: "thing", pool: "pathetic_things" },
+      { label: "and it shows", pool: "it_shows" }
     ]
   },
   {
-    template: "You [slot0] like a [slot1] [slot2]",
+    template: "I'd call you [slot0], but even that has [slot1]",
     slots: [
-      { label: "verb", pool: "verbs_behavior" },
-      { label: "adjective", pool: "adjectives_personality" },
-      { label: "comparison", pool: "tech_failures" }
+      { label: "insult", pool: "mild_insults" },
+      { label: "at least...", pool: "at_least" }
     ]
   },
   {
-    template: "You're the human equivalent of [slot0] — [slot1] and [slot2]",
+    template: "You [slot0] like someone who [slot1]",
     slots: [
-      { label: "sad thing", pool: "sad_objects" },
-      { label: "trait", pool: "trait_contradictions" },
-      { label: "and also", pool: "trait_intensifiers" }
+      { label: "verb", pool: "verbs" },
+      { label: "tragic backstory", pool: "tragic_backstories" }
     ]
   },
   {
-    template: "If [slot0] was a person, it would [slot1] — and that's just you",
+    template: "Your whole vibe is [slot0] — [slot1]",
+    slots: [
+      { label: "energy", pool: "energy_types" },
+      { label: "specifically", pool: "specifically" }
+    ]
+  },
+  {
+    template: "You're not [slot0], you're [slot1] — there's a difference",
+    slots: [
+      { label: "what you think", pool: "what_you_think" },
+      { label: "what you are", pool: "what_you_are" }
+    ]
+  },
+
+  // COMPARISON BURNS (2 slots)
+  {
+    template: "You make [slot0] look [slot1]",
+    slots: [
+      { label: "something bad", pool: "bad_things" },
+      { label: "good by comparison", pool: "good_by_comparison" }
+    ]
+  },
+  {
+    template: "At least [slot0] — you're just [slot1]",
+    slots: [
+      { label: "has a point", pool: "has_a_point" },
+      { label: "what you are", pool: "just_what" }
+    ]
+  },
+  {
+    template: "[slot0] called — they want [slot1] back",
+    slots: [
+      { label: "who called", pool: "who_called" },
+      { label: "what they want", pool: "what_they_want" }
+    ]
+  },
+
+  // SETUP/PAYOFF (2 slots)
+  {
+    template: "The best thing about you? [slot0]. The worst? [slot1]",
+    slots: [
+      { label: "best (sarcastic)", pool: "best_sarcastic" },
+      { label: "worst (real)", pool: "worst_real" }
+    ]
+  },
+  {
+    template: "You peaked [slot0] — and honestly, [slot1]",
+    slots: [
+      { label: "when", pool: "peaked_when" },
+      { label: "commentary", pool: "peaked_commentary" }
+    ]
+  },
+  {
+    template: "You give off [slot0] energy — the kind that [slot1]",
+    slots: [
+      { label: "energy", pool: "specific_energies" },
+      { label: "consequence", pool: "energy_consequences" }
+    ]
+  },
+  {
+    template: "If [slot0] had a face, it would [slot1]",
     slots: [
       { label: "concept", pool: "abstract_concepts" },
-      { label: "action", pool: "concept_actions" }
+      { label: "be you how", pool: "be_you_how" }
+    ]
+  },
+
+  // DEVASTATING CLOSERS (2 slots)
+  {
+    template: "You're what happens when [slot0] gets [slot1]",
+    slots: [
+      { label: "thing", pool: "things_that_fail" },
+      { label: "outcome", pool: "bad_outcomes" }
     ]
   },
   {
-    template: "I've seen [slot0] [slot1] with more [slot2] than you",
+    template: "Somewhere, [slot0] is [slot1] — and it's your fault",
     slots: [
-      { label: "adjective", pool: "adjectives_broken" },
-      { label: "things", pool: "sad_places" },
-      { label: "quality", pool: "positive_traits" }
+      { label: "someone", pool: "disappointed_people" },
+      { label: "doing what", pool: "disappointed_actions" }
     ]
   },
   {
-    template: "Your [slot0] is what happens when [slot1] gets [slot2]",
+    template: "You're not a failure, you're [slot0] — [slot1]",
     slots: [
-      { label: "trait", pool: "features" },
-      { label: "thing", pool: "sad_objects" },
-      { label: "outcome", pool: "failure_outcomes" }
+      { label: "what kind", pool: "types_of_failure" },
+      { label: "elaboration", pool: "failure_elaboration" }
     ]
   },
   {
-    template: "You give off [slot0] energy — specifically, [slot1] [slot2]",
+    template: "They say [slot0], but you're proof that [slot1]",
     slots: [
-      { label: "energy type", pool: "energy_types" },
-      { label: "descriptor", pool: "adjectives_personality" },
-      { label: "context", pool: "contexts" }
-    ]
-  },
-  {
-    template: "Somehow you managed to be [slot0] and [slot1] at the same time — [slot2]",
-    slots: [
-      { label: "trait 1", pool: "trait_contradictions" },
-      { label: "trait 2", pool: "trait_intensifiers" },
-      { label: "conclusion", pool: "conclusions" }
-    ]
-  },
-  {
-    template: "Looking at you is like looking at [slot0] — [slot1] yet [slot2]",
-    slots: [
-      { label: "place", pool: "sad_places" },
-      { label: "observation", pool: "persistence_descriptions" },
-      { label: "but also", pool: "conclusions" }
-    ]
-  },
-  {
-    template: "Your [slot0] has the same energy as [slot1] — [slot2]",
-    slots: [
-      { label: "trait", pool: "features" },
-      { label: "comparison", pool: "long_comparisons" },
-      { label: "description", pool: "persistence_descriptions" }
-    ]
-  },
-  {
-    template: "You peaked [slot0], and honestly, [slot1] — that's [slot2]",
-    slots: [
-      { label: "when", pool: "peak_timing" },
-      { label: "commentary", pool: "peak_commentary" },
-      { label: "conclusion", pool: "conclusions" }
-    ]
-  },
-  {
-    template: "The only [slot0] you've ever had is [slot1] — and even that [slot2]",
-    slots: [
-      { label: "positive trait", pool: "positive_traits" },
-      { label: "source", pool: "fluke_sources" },
-      { label: "outcome", pool: "fluke_outcomes" }
+      { label: "they say", pool: "they_say" },
+      { label: "you're proof", pool: "youre_proof" }
     ]
   }
 ];

@@ -1,203 +1,524 @@
 export const WORD_POOLS = {
-  // THINGS ABOUT A PERSON
-  features: [
-    "face", "energy", "vibe", "aesthetic", "personality", "attitude", "whole situation",
-    "smile", "posture", "haircut", "life", "resume", "dating profile", "handshake",
-    "walk", "laugh", "decision-making", "fashion sense", "presence", "aura",
-    "reputation", "legacy", "trajectory", "existence", "career", "social skills"
+  // PATHETIC THINGS - specific, visual, funny
+  pathetic_things: [
+    "a gas station birthday cake",
+    "airport sushi",
+    "a participation trophy at a funeral",
+    "a 'hang in there' poster in a foreclosure",
+    "a LinkedIn motivational post",
+    "a cover letter that starts with 'To Whom It May Concern'",
+    "a standing desk nobody uses",
+    "an office birthday card signed 'from everyone'",
+    "a New Year's resolution on January 3rd",
+    "a gym membership in February",
+    "a WebMD diagnosis at 3am",
+    "a Yelp review written by someone's mom",
+    "a company pizza party during layoffs",
+    "a 'We Need to Talk' text",
+    "a group project carried by one person",
+    "hotel & conference center breakfast",
+    "a mandatory fun event",
+    "a 'sorry for your loss' Hallmark card",
+    "a watermark on a resume",
+    "a GoFundMe with $0 raised"
   ],
 
-  // VERBS - Things people do
-  verbs_behavior: [
-    "dress", "talk", "walk", "think", "exist", "function", "communicate",
-    "perform", "make decisions", "handle pressure", "age", "network", "apologize",
-    "celebrate", "dance", "argue", "flirt", "negotiate", "parent", "drive",
-    "tip", "vacation", "interview", "present", "email", "text back"
+  it_shows: [
+    "and everyone can tell",
+    "and we've all noticed",
+    "but somehow worse",
+    "with less self-awareness",
+    "but at least those have an expiration date",
+    "but you're not even discounted",
+    "and honestly it tracks",
+    "but with more delusion",
+    "and the vibes are immaculate... immaculately bad",
+    "but even sadder somehow",
+    "and your LinkedIn confirms it",
+    "and that's being generous",
+    "but somehow you made it your personality",
+    "with extra steps"
   ],
 
-  // ADJECTIVES - Describing states of failure/mediocrity
-  adjectives_broken: [
-    "expired", "refurbished", "clearance-rack", "bootleg", "discontinued",
-    "malfunctioning", "off-brand", "recalled", "water-damaged", "factory-rejected",
-    "returned twice", "open-box", "as-is", "sun-damaged", "slightly haunted",
-    "criminally mid", "suspiciously discounted", "fire-damaged", "flood-salvaged",
-    "scratch-and-dent", "last-season", "going-out-of-business"
+  // MILD INSULTS (for the "I'd call you X" template)
+  mild_insults: [
+    "mid",
+    "basic",
+    "forgettable",
+    "a disappointment",
+    "background noise",
+    "a waste of potential",
+    "beige",
+    "a filler episode",
+    "elevator music",
+    "clipart",
+    "hold music",
+    "a loading screen",
+    "a terms and conditions page",
+    "a system update nobody asked for",
+    "a reply-all accident"
   ],
 
-  adjectives_personality: [
-    "aggressively mediocre", "suspiciously confident", "blissfully unaware",
-    "confidently wrong", "terminally online", "chronically mid", "tragically earnest",
-    "visibly struggling", "deeply confused", "performatively busy", "loudly incompetent",
-    "quietly desperate", "delusionally optimistic", "weaponized beige", "militantly basic",
-    "oppressively normal", "relentlessly fine", "stubbornly average", "proudly unremarkable"
+  at_least: [
+    "a purpose",
+    "fans",
+    "a Wikipedia page",
+    "an arc",
+    "character development",
+    "a redemption chance",
+    "brand consistency",
+    "plausible deniability",
+    "an excuse",
+    "a Rotten Tomatoes score",
+    "a tragic backstory",
+    "closure",
+    "a beginning, middle, and end",
+    "seasonal relevance"
   ],
 
-  // SAD PLACES/THINGS - Depressing locations and objects
-  sad_places: [
-    "gas station bathroom", "airport Chili's", "DMV waiting room", "mall kiosk",
-    "bus station vending machine", "motel continental breakfast", "hospital cafeteria",
-    "rest stop bathroom", "abandoned Blockbuster", "Kmart in its final days",
-    "community college parking lot", "office on a Sunday", "closed Sears",
-    "funeral home lobby", "timeshare presentation room", "DMV during a system outage",
-    "gas station at 3am", "empty mall food court", "dentist's waiting room"
+  // VERBS - how you do things badly
+  verbs: [
+    "exist",
+    "make eye contact",
+    "enter a room",
+    "tell stories",
+    "give compliments",
+    "make decisions",
+    "apologize",
+    "celebrate",
+    "network",
+    "dress",
+    "age",
+    "dance",
+    "email",
+    "vacation",
+    "handle success",
+    "take criticism",
+    "accept praise",
+    "walk into parties"
   ],
 
-  sad_objects: [
-    "participation trophy", "expired coupon", "read receipt with no reply",
-    "check engine light", "out-of-office reply", "terms and conditions",
-    "group project", "LinkedIn connection request", "mandatory fun event",
-    "HR training video", "gas station roses", "airport novel", "parking ticket",
-    "jury duty summons", "calendar reminder you keep snoozing", "unskippable ad",
-    "meeting that could've been an email", "password you forgot"
+  tragic_backstories: [
+    "peaked in a dream once",
+    "was homeschooled by YouTube",
+    "gets their personality from Netflix",
+    "learned charisma from TED talks",
+    "was raised by an algorithm",
+    "thinks LinkedIn is a personality",
+    "has never been anyone's first choice",
+    "was told 'you tried' one too many times",
+    "was the 'before' in a makeover show",
+    "peaked during attendance",
+    "has never finished a book",
+    "still uses their college email",
+    "has never been the favorite",
+    "learned boundaries from reality TV",
+    "was the practice friend",
+    "got participation trophies until adulthood",
+    "treats therapy like a podcast"
   ],
 
-  // TECH FAILURES - Malfunctioning technology comparisons
-  tech_failures: [
-    "GPS with no signal", "printer during a deadline", "shopping cart with one bad wheel",
-    "microwave that stops at 0:01", "WiFi at a conference", "phone at 2% battery",
-    "voicemail in 2024", "fax machine at a tech startup", "reply-all accident",
-    "autocorrect gone wrong", "password you can't remember", "tab you're afraid to close",
-    "Bluetooth that won't connect", "software update at the worst time",
-    "loading screen that never ends", "buffering wheel", "error 404 page"
-  ],
-
-  // FAILURE PHRASES - What happened to things that gave up
-  failure_outcomes: [
-    "gave up halfway", "got returned twice", "lost the will to try",
-    "failed inspection", "got rejected by quality control", "peaked in the warehouse",
-    "never left the loading dock", "got marked down three times", "sat on the shelf too long",
-    "expired before anyone noticed", "got discontinued quietly", "was recalled but nobody cared",
-    "got lost in shipping", "arrived damaged", "got ghosted by the universe",
-    "left on read", "marked as spam", "sent to voicemail", "archived and forgotten"
-  ],
-
-  // TRAITS THAT COEXIST BADLY
-  trait_contradictions: [
-    "boring", "forgettable", "exhausting", "confusing", "basic", "try-hard",
-    "outdated", "generic", "predictable", "disappointing", "overwhelming",
-    "underwhelming", "annoying", "insufferable", "cringe", "tragic", "desperate", "oblivious"
-  ],
-
-  trait_intensifiers: [
-    "too much", "not enough", "deeply mid", "aggressively there", "loudly mediocre",
-    "confidently wrong", "persistently present", "unnecessarily complicated",
-    "surprisingly bland", "impressively forgettable", "relentlessly beige",
-    "oppressively normal", "painfully average", "stubbornly basic", "weirdly proud of it"
-  ],
-
-  // DEVASTATING CONCLUSIONS
-  conclusions: [
-    "a masterclass in failure", "an achievement in nothing", "a waste of everyone's time",
-    "a monument to mediocrity", "the human equivalent of elevator music",
-    "proof that participation trophies were a mistake", "a living 'meh'",
-    "the answer to a question nobody asked", "a cautionary tale with no lesson",
-    "the human personification of 'fine I guess'", "the reason we have HR",
-    "a walking terms and conditions nobody read", "somehow your brand now"
-  ],
-
-  // ENERGY TYPES - Vibes people give off
+  // ENERGY TYPES - specific vibes
   energy_types: [
-    "assistant manager", "divorced dad", "lunch thief", "reply-all",
-    "mandatory fun", "HR complaint", "talks at meetings", "peaked in high school",
-    "fun at parties (not)", "well actually", "unpaid intern", "temp employee",
-    "middle child", "participation trophy", "second choice", "backup option",
-    "cc'd for no reason", "let me explain"
+    "assistant manager at a dying mall",
+    "reply-all apology",
+    "third divorce",
+    "unread LinkedIn message",
+    "company icebreaker",
+    "HR complaint waiting to happen",
+    "mandatory sensitivity training",
+    "potluck dish nobody touches",
+    "group chat everyone muted",
+    "middle seat on a long flight",
+    "parking lot proposal",
+    "gas station flowers on Valentine's Day",
+    "a 2-star Uber rating",
+    "open-plan office cougher",
+    "expired Groupon",
+    "last-minute plus-one"
   ],
 
-  // CONTEXTS - Where the energy shows up
-  contexts: [
-    "at a team-building retreat", "in a group chat", "at Thanksgiving dinner",
-    "during a performance review", "in an elevator pitch", "on a first date",
-    "in a cover letter", "at the company picnic", "in a LinkedIn post",
-    "during a crisis", "at your own birthday party", "in a job interview you're bombing",
-    "at a funeral", "during karaoke", "in a meeting that should be an email",
-    "at a networking event", "during an exit interview", "in a hostage negotiation"
+  specifically: [
+    "specifically the kind that makes everyone uncomfortable",
+    "and not in a fun way",
+    "and we've all talked about it",
+    "and HR has a file",
+    "and somehow you're proud of it",
+    "and it's gotten worse",
+    "and there's no fixing it",
+    "and you don't even notice",
+    "and the group chat has receipts",
+    "and people take the stairs to avoid you",
+    "and nobody knows how to tell you",
+    "and you're the only one who doesn't see it",
+    "and honestly we're worried"
   ],
 
-  // TIMING - When someone peaked
-  peak_timing: [
-    "in the womb", "at birth (briefly)", "in kindergarten",
-    "during a group project someone else carried", "in a participation award ceremony",
-    "at your own birthday party", "during your employee onboarding", "in a dream once",
-    "when someone confused you for someone else", "during a fire drill when you knew the exit",
-    "in an online quiz", "when you guessed right once", "during attendance",
-    "in a vaccination line", "at the DMV", "during a layover"
+  // WHAT YOU THINK VS WHAT YOU ARE
+  what_you_think: [
+    "mysterious",
+    "intimidating",
+    "an old soul",
+    "ahead of your time",
+    "misunderstood",
+    "a thought leader",
+    "an acquired taste",
+    "charmingly eccentric",
+    "too real for people",
+    "a visionary",
+    "brutally honest",
+    "an alpha",
+    "a sigma",
+    "the main character"
   ],
 
-  // OBSERVATIONS ABOUT PEAKING
-  peak_commentary: [
-    "everyone saw it happen", "it's been documented", "there are witnesses",
-    "we have the receipts", "it wasn't even impressive then", "even then it was just okay",
-    "people were being polite about it", "nobody wanted to say anything",
-    "we thought it was temporary", "we assumed you'd improve", "we expected more",
-    "we were wrong to hope", "the bar was underground", "somehow you found lower"
+  what_you_are: [
+    "just confusing",
+    "just annoying",
+    "just old",
+    "just late",
+    "just loud",
+    "just wrong",
+    "just too much",
+    "just unemployable",
+    "just allergic to self-awareness",
+    "just the human equivalent of a buffering wheel",
+    "just someone's cautionary tale",
+    "just proof that confidence isn't everything",
+    "just a lot",
+    "just peak Dunning-Kruger"
   ],
 
-  // CONCEPTS THAT COULD BE A PERSON
+  // COMPARISON BURNS
+  bad_things: [
+    "a participation trophy",
+    "airport food",
+    "a group project",
+    "a terms of service agreement",
+    "a check engine light",
+    "a password you forgot",
+    "a Monday",
+    "a 3am WebMD spiral",
+    "a Zoom call that could've been an email",
+    "a delayed flight",
+    "a read receipt with no reply",
+    "student loan interest",
+    "a timeshare presentation",
+    "an MLM pitch",
+    "gas station sushi"
+  ],
+
+  good_by_comparison: [
+    "reliable",
+    "consistent",
+    "charming",
+    "self-aware",
+    "intentional",
+    "endearing",
+    "worthwhile",
+    "memorable for the right reasons",
+    "like a deliberate choice",
+    "almost impressive",
+    "respectable",
+    "worth the effort",
+    "like it has potential"
+  ],
+
+  // "AT LEAST X" POOL
+  has_a_point: [
+    "a participation trophy tried",
+    "a check engine light is useful",
+    "elevator music sets a mood",
+    "spam emails have a goal",
+    "a broken clock is right twice a day",
+    "a PowerPoint has structure",
+    "a screensaver does something",
+    "background music knows its place",
+    "autopilot has a destination",
+    "a placeholder has potential",
+    "a draft gets revised"
+  ],
+
+  just_what: [
+    "there",
+    "happening",
+    "somehow still going",
+    "a lot of effort for nothing",
+    "proof that showing up isn't enough",
+    "taking up space with confidence",
+    "mid with better marketing",
+    "a whole situation",
+    "the 'before' photo that never got an 'after'",
+    "content that should've stayed in drafts",
+    "vibes without substance"
+  ],
+
+  // WHO CALLED / WHAT THEY WANT
+  who_called: [
+    "The early 2000s",
+    "Your potential",
+    "Rock bottom",
+    "The bare minimum",
+    "Everyone you went to high school with",
+    "Your parents' expectations",
+    "The algorithm",
+    "Mediocrity",
+    "The void",
+    "Your therapist's therapist",
+    "The concept of trying",
+    "Your New Year's resolutions",
+    "Your childhood dreams"
+  ],
+
+  what_they_want: [
+    "their disappointment acknowledged",
+    "an apology",
+    "those years back",
+    "to be left out of this",
+    "credit for doing more than you",
+    "a refund on the energy spent",
+    "you to stop claiming you know them",
+    "their reputation back",
+    "to file a complaint",
+    "distance",
+    "to be removed from your references",
+    "less of whatever this is"
+  ],
+
+  // SETUP/PAYOFF POOLS
+  best_sarcastic: [
+    "You're consistent",
+    "People remember you",
+    "You're confident",
+    "You have a brand",
+    "You're memorable",
+    "You're honest",
+    "You show up",
+    "You're yourself",
+    "You commit to bits",
+    "You're not afraid to be yourself"
+  ],
+
+  worst_real: [
+    "also that",
+    "it's the same thing",
+    "see above",
+    "literally everything else",
+    "everything that comes after",
+    "what follows",
+    "the execution",
+    "the self-awareness about it",
+    "you think it's a compliment",
+    "you've made it a personality"
+  ],
+
+  peaked_when: [
+    "in the womb",
+    "during attendance",
+    "in a dream once",
+    "at your own birthday party (age 7)",
+    "when someone mistook you for someone else",
+    "during a participation trophy ceremony",
+    "in a group project someone else carried",
+    "at a talent show you didn't win",
+    "when you had an excuse",
+    "before the expectations kicked in",
+    "the moment before anyone got to know you",
+    "when you were hypothetical"
+  ],
+
+  peaked_commentary: [
+    "we all saw it happen",
+    "there are witnesses",
+    "it wasn't even impressive then",
+    "we were being polite about it",
+    "even that was a group effort",
+    "the bar was already underground",
+    "nobody wanted to say anything",
+    "we thought it was a phase",
+    "it's been documented",
+    "it was still mid",
+    "you've been dining out on it ever since"
+  ],
+
+  // SPECIFIC ENERGIES
+  specific_energies: [
+    "wet handshake",
+    "reply-all accident",
+    "conference room B",
+    "team-building exercise",
+    "mandatory overtime",
+    "potluck nobody RSVP'd to",
+    "LinkedIn recruiter message",
+    "airport Chili's",
+    "hotel & conference center",
+    "all-hands meeting",
+    "performance review",
+    "exit interview",
+    "silent auction at a work event",
+    "networking event name tag"
+  ],
+
+  energy_consequences: [
+    "clears a room",
+    "makes people take the stairs",
+    "gets muted in the group chat",
+    "makes HR nervous",
+    "gets left on read",
+    "inspires secondhand embarrassment",
+    "makes people suddenly busy",
+    "lowers property values",
+    "ends conversations",
+    "makes small talk feel like a hostage situation",
+    "gets you seated near the bathroom"
+  ],
+
+  // ABSTRACT CONCEPTS (for "if X had a face")
   abstract_concepts: [
-    "disappointment", "a declined transaction", "an error 404 page", "a dropped call",
-    "beige", "a Monday morning", "an unskippable ad", "a buffering wheel",
-    "an expired coupon", "a parking ticket", "a missed connection", "the hold music",
-    "a cancelled subscription", "a forgotten password", "a low battery warning",
-    "a system update", "a delayed flight", "a busy signal", "fine print", "a maintenance fee"
+    "disappointment",
+    "a declined transaction",
+    "an awkward pause",
+    "a loading screen",
+    "the hold music",
+    "buyer's remorse",
+    "a mandatory meeting",
+    "unread terms and conditions",
+    "a rejected application",
+    "a lag spike",
+    "buffering",
+    "an away message",
+    "a 2-star review",
+    "elevator silence",
+    "a 'seen' notification with no reply"
   ],
 
-  // WHAT THAT CONCEPT WOULD DO
-  concept_actions: [
-    "look exactly like this", "have the same energy", "make the same choices",
-    "bring this exact vibe", "achieve this level of nothing", "dress like this",
-    "network like you", "peak at the same time", "have your exact LinkedIn",
-    "send the same emails", "make this face", "give this handshake",
-    "tell these stories", "laugh at its own jokes", "wonder why nobody calls"
+  be_you_how: [
+    "apologize less",
+    "be making your exact face right now",
+    "file a complaint about itself",
+    "ask to speak to a manager",
+    "still have more charisma",
+    "wonder where it went wrong",
+    "have better excuses",
+    "at least have a reason",
+    "write a memoir nobody reads",
+    "somehow be less awkward",
+    "start a podcast about it"
   ],
 
-  // POSITIVE TRAITS (for ironic use)
-  positive_traits: [
-    "charisma", "presence", "impact", "appeal", "originality", "potential",
-    "momentum", "relevance", "charm", "wit", "grace", "style", "substance",
-    "moment", "win", "success", "achievement", "glow-up", "era", "main character moment"
+  // DEVASTATING CLOSER POOLS
+  things_that_fail: [
+    "a New Year's resolution",
+    "a gym membership",
+    "a situationship",
+    "a rebrand",
+    "potential",
+    "a comeback",
+    "a group project",
+    "a participation trophy",
+    "a self-help book",
+    "a midlife crisis",
+    "an overcorrection",
+    "a second chance",
+    "a fresh start"
   ],
 
-  // HOW THEY BARELY GOT THAT POSITIVE TRAIT
-  fluke_sources: [
-    "from a clerical error", "when someone mistook you for someone else",
-    "during a technical difficulty", "from a participation certificate",
-    "when the bar was literally on the ground", "from people being polite",
-    "when nobody else showed up", "from a typo in your favor", "during opposite day",
-    "from a pity follow", "when the algorithm glitched", "during a wellness check",
-    "from an autofill mistake", "when expectations were negative"
+  bad_outcomes: [
+    "left on read by the universe",
+    "sent to voicemail by life",
+    "archived and forgotten",
+    "ghosted by success",
+    "waitlisted by karma",
+    "unsubscribed from potential",
+    "flagged as spam by opportunity",
+    "lost in transit",
+    "returned to sender",
+    "marked as 'no longer interested'",
+    "soft-blocked by fate"
   ],
 
-  // WHAT HAPPENED TO THAT FLEETING SUCCESS
-  fluke_outcomes: [
-    "was investigated", "got recalled", "expired immediately", "was under review",
-    "got revoked", "is still pending", "was a group effort", "had an asterisk",
-    "needed context", "was accidental", "got fact-checked", "required a correction",
-    "was later disputed", "aged poorly", "didn't count officially", "was off the record"
+  disappointed_people: [
+    "your potential",
+    "your childhood self",
+    "everyone who believed in you",
+    "your parents' expectations",
+    "the algorithm",
+    "your future self",
+    "whoever designed you",
+    "your therapist",
+    "the universe",
+    "probability itself",
+    "the concept of growth"
   ],
 
-  // LONG COMPARISONS - Full descriptive comparisons
-  long_comparisons: [
-    "a store closing sale that's been going on for 3 years",
-    "a 'going out of business' sign on a business that never had business",
-    "a car alarm that's been going off for 20 minutes",
-    "a printer that jams on the first page",
-    "an umbrella that flips inside out immediately",
-    "a shopping cart with four bad wheels",
-    "a gas station rose on February 15th",
-    "a balloon slowly deflating in the corner",
-    "a participation ribbon at a funeral",
-    "an 'out of order' sign that's been there for months",
-    "a motivational poster in a failing business",
-    "a 'hang in there' cat poster that fell down"
+  disappointed_actions: [
+    "writing a strongly worded letter",
+    "requesting a refund",
+    "filing a complaint",
+    "updating their LinkedIn",
+    "considering other options",
+    "pretending not to know you",
+    "going to therapy about it",
+    "writing a memoir",
+    "starting over with someone else",
+    "quietly giving up",
+    "entering witness protection"
   ],
 
-  // DESCRIPTIONS OF PERSISTENT FAILURE
-  persistence_descriptions: [
-    "persistent but pointless", "still trying, somehow", "refusing to accept reality",
-    "nobody has the heart to say anything", "we've all just accepted it",
-    "it's almost impressive", "deeply tragic but also funny", "a monument to denial",
-    "peak 'didn't get the memo' energy", "technically not giving up",
-    "failing upward somehow", "sad but committed to the bit"
+  types_of_failure: [
+    "a case study in failure",
+    "a masterclass in missing the point",
+    "a monument to almost",
+    "a tribute to 'good enough'",
+    "a celebration of bare minimum",
+    "an exhibition in 'could be worse'",
+    "a living definition of mid",
+    "a warning label in human form",
+    "a controlled experiment in not trying",
+    "a live demonstration of potential wasted",
+    "a museum of missed opportunities"
+  ],
+
+  failure_elaboration: [
+    "with a gift shop",
+    "and the reviews are in",
+    "and it's somehow intentional",
+    "and you're charging admission",
+    "and you've made it a brand",
+    "and there's a waitlist",
+    "and it has a Wikipedia page",
+    "and you're proud of it",
+    "and somehow it's getting worse",
+    "and nobody asked for a sequel",
+    "and you've franchised it"
+  ],
+
+  // THEY SAY / YOU'RE PROOF
+  they_say: [
+    "everyone has potential",
+    "it's never too late",
+    "there's someone for everyone",
+    "hard work pays off",
+    "you miss 100% of the shots you don't take",
+    "every expert was once a beginner",
+    "the journey matters more than the destination",
+    "confidence is key",
+    "you can be anything you want",
+    "authenticity is attractive",
+    "there are no stupid questions"
+  ],
+
+  youre_proof: [
+    "exceptions exist",
+    "sometimes it is too late",
+    "that's statistically optimistic",
+    "trying isn't everything",
+    "some shots should be missed",
+    "some people peak at beginner",
+    "sometimes the destination is 'nowhere'",
+    "you can have too much of a good thing",
+    "limits exist for a reason",
+    "being yourself isn't always the answer",
+    "some questions should stay unasked"
   ]
 };
