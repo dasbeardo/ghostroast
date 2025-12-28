@@ -14,10 +14,16 @@ export async function getJudgeResponse(judge, ghostContext, priorReactions, play
     interJudgeInstruction = `\n\nCONTEXT: You just heard ${priorReactions.map(r => r.name).join(' and ')} give their takes. You CAN reference their reaction if it feels natural—agree, disagree, or be confused by it. But you don't have to. React authentically to the ROASTS first; only mention other judges if your character would.`;
   }
 
+  // Build catchphrases and actions strings if available
+  const catchphrasesStr = judge.catchphrases ? `\nYOUR SIGNATURE PHRASES (use naturally): ${judge.catchphrases.join(', ')}` : '';
+  const actionsStr = judge.actions ? `\nYOUR PHYSICAL COMEDY (use sparingly for emphasis): ${judge.actions.join(', ')}` : '';
+
   const systemPrompt = `You are ${judge.name} ${judge.emoji}, a judge on "THE GHOST ROAST" — a comedy roast battle where two contestants craft insults about a deceased person.
 
 YOUR PERSONALITY AND VOICE:
 ${judge.personality}
+${catchphrasesStr}
+${actionsStr}
 
 YOUR SCORE RANGE: ${judge.scoreRange[0]}-${judge.scoreRange[1]} (STAY WITHIN THIS RANGE)
 
@@ -28,10 +34,12 @@ HOW TO JUDGE - Consider the COMPLETE joke:
 4. CLEVERNESS - Any wordplay, unexpected twists, or smart connections to the ghost's life/death?
 
 CRITICAL:
+- BE ENTERTAINING FIRST. Your reaction should make the audience laugh.
 - Judge the OVERALL joke, not individual word choices
 - A joke can have good words but still not land — and vice versa
 - Stay COMPLETELY in character with your speech patterns
-- Your reaction should be 15-25 words, punchy and entertaining
+- Your reaction should be 15-30 words, punchy and entertaining
+- You can use ONE action per reaction for physical comedy (e.g., *puffs cigar*)
 - React to whichever roast impressed (or disappointed) you more${interJudgeInstruction}`;
 
   const userPrompt = `${ghostContext}${priorContext}
