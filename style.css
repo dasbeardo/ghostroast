@@ -1,0 +1,912 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: linear-gradient(180deg, #1a1020 0%, #0a0510 100%);
+  color: #fff;
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Menu Screen */
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.menu-emoji {
+  font-size: 64px;
+  margin-bottom: 8px;
+}
+
+.menu-title {
+  font-size: 36px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 30px #a855f7, 0 0 60px #7c3aed;
+  margin-bottom: 8px;
+}
+
+.menu-desc {
+  color: #888;
+  margin-bottom: 32px;
+  max-width: 380px;
+}
+
+/* API Key Screen */
+.api-key-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 20px;
+}
+
+.api-key-desc {
+  color: #888;
+  margin-bottom: 24px;
+  max-width: 380px;
+}
+
+.api-key-input-wrapper {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.api-key-input {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: #1a1020;
+  color: #fff;
+  font-size: 14px;
+  width: 280px;
+  font-family: monospace;
+}
+
+.api-key-input:focus {
+  outline: none;
+  border-color: #a855f7;
+}
+
+.api-key-note {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 24px;
+  max-width: 320px;
+}
+
+.api-key-help {
+  margin-top: 16px;
+}
+
+.api-key-help a {
+  color: #a855f7;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.api-key-help a:hover {
+  text-decoration: underline;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Buttons */
+.btn {
+  padding: 16px 48px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-full {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+}
+
+/* Ghost Intro Screen */
+.ghost-intro {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 30px;
+}
+
+.round-label {
+  font-size: 12px;
+  color: #a855f7;
+  margin-bottom: 8px;
+}
+
+.ghost-emoji {
+  font-size: 80px;
+  margin-bottom: 12px;
+  text-shadow: 0 0 30px #a855f7;
+}
+
+.ghost-name {
+  font-size: 26px;
+  margin-bottom: 4px;
+}
+
+.ghost-died {
+  color: #f87171;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.ghost-bio {
+  background: #2a2035;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.ghost-bio p {
+  color: #ccc;
+  font-size: 14px;
+  margin-bottom: 10px;
+  padding-left: 12px;
+  border-left: 2px solid #7c3aed;
+}
+
+.ghost-bio p:last-child {
+  margin-bottom: 0;
+}
+
+.judges-panel {
+  background: #1a1520;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.judges-label {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.judges-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.judge-preview {
+  text-align: center;
+}
+
+.judge-preview-emoji {
+  font-size: 28px;
+}
+
+.judge-preview-name {
+  font-size: 10px;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* Scoreboard */
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 500px;
+  margin: 0 auto 12px;
+}
+
+.score-box {
+  text-align: center;
+}
+
+.score-label {
+  font-size: 11px;
+  color: #888;
+}
+
+.score-value {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.score-center {
+  text-align: center;
+}
+
+.score-vs {
+  font-size: 11px;
+  color: #a855f7;
+}
+
+.score-round {
+  font-size: 11px;
+  color: #666;
+}
+
+/* Drafting Screen */
+.drafting {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.roast-card {
+  background: #2a2035;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.roast-label {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.roast-template {
+  font-size: 15px;
+  line-height: 2.4;
+}
+
+.slot-btn {
+  padding: 4px 12px;
+  margin: 2px 4px;
+  border-radius: 6px;
+  border: 2px dashed #555;
+  background: #1a1020;
+  color: #888;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.slot-btn:hover:not(.filled) {
+  border-color: #a855f7;
+  color: #a855f7;
+}
+
+.slot-btn.active {
+  border: 2px solid #a855f7;
+  color: #a855f7;
+}
+
+.slot-btn.filled {
+  border: 2px solid #22c55e;
+  background: #22c55e;
+  color: #000;
+  cursor: default;
+}
+
+.word-picker {
+  background: #1a1020;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #333;
+}
+
+.word-picker-label {
+  font-size: 11px;
+  color: #a855f7;
+  margin-bottom: 10px;
+}
+
+.word-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.word-btn {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: transform 0.1s;
+}
+
+.word-btn:hover {
+  transform: scale(1.05);
+}
+
+.opponent-status {
+  background: #151015;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.opponent-status-text {
+  font-size: 11px;
+  color: #666;
+}
+
+.submit-section {
+  text-align: center;
+}
+
+/* Judging Screen */
+.judging {
+  max-width: 500px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.judges-progress {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.judge-progress-item {
+  text-align: center;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+
+.judge-progress-item.done {
+  opacity: 1;
+}
+
+.judge-progress-item.active {
+  opacity: 1;
+}
+
+.judge-progress-emoji {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+
+.judge-progress-status {
+  font-size: 12px;
+  color: #a855f7;
+  height: 16px;
+}
+
+.judge-results-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.judge-result-card.revealed {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.current-judge-thinking {
+  text-align: center;
+  padding: 20px;
+  background: #1a1520;
+  border-radius: 12px;
+  border: 1px solid #333;
+}
+
+.thinking-emoji {
+  font-size: 48px;
+  margin-bottom: 8px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.thinking-text {
+  color: #888;
+  font-size: 14px;
+}
+
+/* Results Screen */
+.results {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.result-card {
+  background: #2a2035;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.result-card.winner-player {
+  background: #1a2e1a;
+  border: 2px solid #22c55e;
+}
+
+.result-card.winner-ai {
+  background: #2e1a1a;
+  border: 2px solid #ef4444;
+}
+
+.result-card-label {
+  font-size: 10px;
+  color: #888;
+}
+
+.result-card-insult {
+  font-size: 13px;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.result-card-score {
+  font-size: 26px;
+  font-weight: 800;
+  margin-top: 8px;
+}
+
+.result-card-score.player {
+  color: #22c55e;
+}
+
+.result-card-score.ai {
+  color: #ef4444;
+}
+
+.judge-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.judge-result-card {
+  background: #2a2035;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.judge-result-emoji {
+  font-size: 24px;
+}
+
+.judge-result-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.judge-result-name {
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.judge-result-reaction {
+  color: #ccc;
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.judge-result-scores {
+  text-align: right;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.judge-score-player {
+  color: #22c55e;
+}
+
+.judge-score-ai {
+  color: #ef4444;
+}
+
+.bonus {
+  color: #a855f7;
+  font-size: 11px;
+}
+
+.round-winner-banner {
+  background: #1a1020;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 16px;
+  border: 1px solid #333;
+}
+
+.round-winner-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.round-winner-text {
+  font-size: 26px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+.round-winner-text.player {
+  color: #22c55e;
+}
+
+.round-winner-text.ai {
+  color: #ef4444;
+}
+
+.round-winner-text.tie {
+  color: #888;
+}
+
+/* Match End Screen */
+.match-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.match-end-emoji {
+  font-size: 72px;
+  margin-bottom: 16px;
+}
+
+.match-end-title {
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.match-end-title.won {
+  text-shadow: 0 0 30px gold;
+}
+
+.match-end-title.lost {
+  text-shadow: 0 0 20px #f00;
+}
+
+.match-end-score {
+  color: #888;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.match-end-judges {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+/* Error Screen */
+.error {
+  text-align: center;
+  padding-top: 40px;
+}
+
+.error-text {
+  color: #f66;
+  margin-bottom: 16px;
+}
+
+/* Host Elements */
+.host-box {
+  background: linear-gradient(135deg, #2a2035 0%, #1a1520 100%);
+  border: 2px solid #d4a574;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+  position: relative;
+  box-shadow: 0 0 30px rgba(212, 165, 116, 0.15);
+}
+
+.host-avatar {
+  position: absolute;
+  left: -12px;
+  top: -12px;
+  text-align: center;
+}
+
+.host-emoji {
+  font-size: 48px;
+  filter: drop-shadow(0 0 8px rgba(212, 165, 116, 0.5));
+}
+
+.host-name {
+  font-size: 10px;
+  color: #d4a574;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.host-dialogue {
+  margin-left: 50px;
+  min-height: 60px;
+}
+
+.host-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #e8dcc8;
+  font-style: italic;
+}
+
+.typing-indicator {
+  color: #d4a574;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.btn-small {
+  padding: 8px 24px;
+  font-size: 12px;
+  margin-top: 16px;
+}
+
+/* Host aside - small comments during gameplay */
+.host-aside {
+  background: rgba(212, 165, 116, 0.1);
+  border-left: 3px solid #d4a574;
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.host-aside.centered {
+  justify-content: center;
+  border-left: none;
+  border-radius: 8px;
+  border: 1px solid rgba(212, 165, 116, 0.3);
+}
+
+.host-aside-emoji {
+  font-size: 20px;
+}
+
+.host-aside-text {
+  font-size: 13px;
+  color: #d4a574;
+  font-style: italic;
+}
+
+/* Match Opening Screen */
+.match-opening {
+  max-width: 500px;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.match-info {
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.match-info.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.match-info.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.matchup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.matchup-player, .matchup-opponent {
+  text-align: center;
+}
+
+.matchup-emoji {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.matchup-name {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.matchup-vs {
+  font-size: 20px;
+  color: #a855f7;
+  font-weight: 800;
+}
+
+/* Ghost reveal animations */
+.ghost-reveal {
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.ghost-reveal.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.ghost-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ghost-bio.hidden {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.ghost-bio.revealed {
+  opacity: 1;
+  max-height: 500px;
+  transition: opacity 0.5s, max-height 0.5s;
+}
+
+/* Menu subtitle for host */
+.menu-subtitle {
+  font-size: 14px;
+  color: #d4a574;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+/* Match end with host */
+.match-end-content {
+  margin-top: 20px;
+}
+
+/* Opponent template preview during drafting */
+.opponent-template {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.opponent-template-label {
+  font-size: 11px;
+  color: #ef4444;
+  margin-bottom: 6px;
+}
+
+.opponent-template-text {
+  font-size: 13px;
+  color: #f87171;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Presentation Screen */
+.presentation {
+  max-width: 500px;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.presentation-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.presentation-ghost {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.presentation-title {
+  font-size: 14px;
+  color: #a855f7;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.presentation-jokes {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.presentation-joke {
+  background: #2a2035;
+  border-radius: 12px;
+  padding: 20px;
+  opacity: 0.3;
+  transition: opacity 0.5s, transform 0.5s;
+  transform: translateY(10px);
+}
+
+.presentation-joke.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.joke-label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.joke-text {
+  font-size: 18px;
+  line-height: 1.6;
+  min-height: 60px;
+  color: #fff;
+}
+
+.presentation-status {
+  text-align: center;
+  margin-top: 24px;
+  color: #888;
+  font-size: 14px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
