@@ -1,6 +1,6 @@
-# The Ghost Roast - Project Doc
+# Roast Mortem - Project Doc
 
-**Version**: 0.3.0
+**Version**: 0.4.0
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three randomly selected AI judges score the final jokes.
@@ -66,7 +66,7 @@ roastaghost/
 
 ### API Key Handling
 - User inputs their own OpenAI API key on first launch
-- Key stored in localStorage (`roastaghost_apikey`)
+- Key stored in localStorage (`roastmortem_apikey`)
 - Never hardcoded, never sent anywhere except OpenAI
 
 ### Judge System (v0.2.0 - One-at-a-Time Flow)
@@ -88,7 +88,7 @@ roastaghost/
 
 ### Player Profile & Stats System (v0.3.0)
 - Player enters their stage name on first play
-- Stats persisted in localStorage (`roastaghost_stats`)
+- Stats persisted in localStorage (`roastmortem_stats`)
 - Tracks:
   - Total wins/losses and round wins/losses
   - Win/loss record vs each opponent
@@ -224,7 +224,7 @@ Structure: `{ base: [...], themed: { crypto: [...], boomer: [...], ... } }`
 AI opponent names/emojis (cosmetic only, same random word selection for all).
 
 ### Host: Mortimer "Mort" Holloway 🎩
-The eternal host of The Ghost Roast. Key traits:
+The eternal host of Roast Mortem. Key traits:
 - Former 1970s Vegas MC who died in 1987 ("a gentleman's exit")
 - Smooth baritone, draws out words: "Goooood evening"
 - Death puns constantly, winks at no one, holds martini that's never empty/full
@@ -241,6 +241,7 @@ The eternal host of The Ghost Roast. Key traits:
 - [ ] Could add more ghost themes (nerd, spiritual, etc.)
 
 ### Completed Recently
+- [x] **Rebrand to Roast Mortem (v0.4.0)** - New name, updated localStorage keys, all branding
 - [x] **Player profile system** - Name input screen, stats displayed on menu/end screens
 - [x] **Comprehensive stats tracking** - Wins, losses, streaks, judge averages, opponent records
 - [x] **Stats display screen** - Accessible from menu, shows all player stats

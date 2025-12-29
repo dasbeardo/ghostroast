@@ -93,7 +93,7 @@ export function bindEvents() {
   const saveKeyBtn = $('#save-key-btn');
   if (saveKeyBtn && !saveKeyBtn.disabled) {
     saveKeyBtn.onclick = () => {
-      localStorage.setItem('roastaghost_apikey', state.apiKey);
+      localStorage.setItem('roastmortem_apikey', state.apiKey);
       // Go to player name screen if no name yet, otherwise menu
       state.screen = state.playerName ? 'menu' : 'playerName';
       render();

@@ -71,7 +71,7 @@ function renderApiKey() {
   return `
     <div class="api-key-screen">
       <div class="menu-emoji">👻🔥</div>
-      <h1 class="menu-title">The Ghost Roast</h1>
+      <h1 class="menu-title">Roast Mortem</h1>
       <p class="api-key-desc">This game uses OpenAI's API for AI-powered judges. Enter your API key to play.</p>
 
       <div class="api-key-input-wrapper">
@@ -150,7 +150,7 @@ function renderMenu() {
   return `
     <div class="menu">
       <div class="menu-emoji">👻🔥</div>
-      <h1 class="menu-title">The Ghost Roast</h1>
+      <h1 class="menu-title">Roast Mortem</h1>
       <p class="menu-subtitle">with your host, Mort Holloway</p>
 
       ${state.playerName ? `

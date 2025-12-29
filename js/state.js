@@ -1,10 +1,10 @@
 // Game state - single source of truth
 
-export const VERSION = '0.3.0';
+export const VERSION = '0.4.0';
 
 // Load player stats from localStorage
 function loadPlayerStats() {
-  const saved = localStorage.getItem('roastaghost_stats');
+  const saved = localStorage.getItem('roastmortem_stats');
   if (saved) {
     try {
       return JSON.parse(saved);
@@ -19,7 +19,7 @@ const savedStats = loadPlayerStats();
 
 export const state = {
   screen: 'apiKey',  // Start with API key screen
-  apiKey: localStorage.getItem('roastaghost_apikey') || '',  // Persist key
+  apiKey: localStorage.getItem('roastmortem_apikey') || '',  // Persist key
 
   // Player profile
   playerName: savedStats?.playerName || '',
@@ -85,5 +85,5 @@ export const state = {
 
 // Save player stats to localStorage
 export function savePlayerStats() {
-  localStorage.setItem('roastaghost_stats', JSON.stringify(state.stats));
+  localStorage.setItem('roastmortem_stats', JSON.stringify(state.stats));
 }

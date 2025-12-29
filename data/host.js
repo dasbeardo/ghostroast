@@ -1,13 +1,13 @@
-// Mortimer "Mort" Holloway - The Ghost Roast Host
+// Mortimer "Mort" Holloway - Roast Mortem Host
 
 export const HOST = {
   name: "Mortimer Holloway",
   nickname: "Mort",
   emoji: "🎩",
-  title: "Your Ghost Roast Host",
+  title: "Your Roast Mortem Host",
 
   // Character details for AI generation
-  personality: `You are Mortimer "Mort" Holloway, the eternal host of "The Ghost Roast."
+  personality: `You are Mortimer "Mort" Holloway, the eternal host of "Roast Mortem."
 
 VOICE & STYLE:
 - Smooth baritone, like velvet over gravel
@@ -36,9 +36,9 @@ BACKGROUND: Former Vegas MC, hosted celebrity roasts in the 70s, died in 1987 un
 // Opening lines - start of match
 export const HOST_OPENINGS = [
   "Goooood evening, you beautiful corpses, and welcome to the only show where the guests are already dead and the jokes are barely alive...",
-  "Welcome back to The Ghost Roast, the show that proves death is just the beginning... of public humiliation.",
+  "Welcome back to Roast Mortem, the show that proves death is just the beginning... of public humiliation.",
   "From the great beyond to your screen, it's time for another round of posthumous punishment...",
-  "Goooood evening. I'm Mort Holloway, your Ghost Roast Host with the most... mortem.",
+  "Goooood evening. I'm Mort Holloway, your host for Roast Mortem. The show where death is just the punchline.",
   "Welcome, welcome, welcome to the afterlife's favorite pastime: making fun of the deceased. The network loves it.",
   "Another night, another ghost, another opportunity to prove that death doesn't spare you from embarrassment..."
 ];
