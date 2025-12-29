@@ -1,6 +1,6 @@
 // Game logic
 import { shuffle, $, typeText, delay } from './utils.js';
-import { state } from './state.js';
+import { state, savePlayerStats } from './state.js';
 import { getJudgeSingleRoastResponse } from './api.js';
 import {
   GHOSTS, JUDGES, TEMPLATES, WORD_POOLS, OPPONENTS,
@@ -11,7 +11,7 @@ import {
   HOST_AFTER_SECOND_ROAST,
   HOST_ROUND_WINNER_PLAYER, HOST_ROUND_WINNER_AI, HOST_ROUND_TIE,
   HOST_MATCH_WIN, HOST_MATCH_LOSS, HOST_CLOSINGS,
-  getHostLine
+  getHostLine, getPlayerAwareOpening
 } from '../data/index.js';
 
 // Forward declaration - render will be injected to avoid circular dependency
@@ -94,6 +94,53 @@ export function bindEvents() {
   if (saveKeyBtn && !saveKeyBtn.disabled) {
     saveKeyBtn.onclick = () => {
       localStorage.setItem('roastaghost_apikey', state.apiKey);
+      // Go to player name screen if no name yet, otherwise menu
+      state.screen = state.playerName ? 'menu' : 'playerName';
+      render();
+    };
+  }
+
+  // Player name screen
+  const playerNameInput = $('#player-name-input');
+  if (playerNameInput) {
+    playerNameInput.oninput = (e) => {
+      state.playerName = e.target.value;
+      render();
+    };
+    // Auto-focus the input
+    playerNameInput.focus();
+  }
+
+  const saveNameBtn = $('#save-name-btn');
+  if (saveNameBtn && !saveNameBtn.disabled) {
+    saveNameBtn.onclick = () => {
+      state.stats.playerName = state.playerName.trim();
+      savePlayerStats();
+      state.screen = 'menu';
+      render();
+    };
+  }
+
+  // Menu buttons
+  const statsBtn = $('#stats-btn');
+  if (statsBtn) {
+    statsBtn.onclick = () => {
+      state.screen = 'stats';
+      render();
+    };
+  }
+
+  const changeNameBtn = $('#change-name-btn');
+  if (changeNameBtn) {
+    changeNameBtn.onclick = () => {
+      state.screen = 'playerName';
+      render();
+    };
+  }
+
+  const backToMenuBtn = $('#back-to-menu-btn');
+  if (backToMenuBtn) {
+    backToMenuBtn.onclick = () => {
       state.screen = 'menu';
       render();
     };
@@ -190,7 +237,15 @@ async function startGame() {
   render();
 
   await delay(500);
-  await hostSpeak(getHostLine(HOST_OPENINGS));
+
+  // Use player-aware opening if we have a player name, otherwise generic
+  let openingLine;
+  if (state.playerName) {
+    openingLine = getPlayerAwareOpening(state.playerName, state.stats, state.opponent);
+  } else {
+    openingLine = getHostLine(HOST_OPENINGS);
+  }
+  await hostSpeak(openingLine);
 }
 
 async function startRound(excluded) {
@@ -504,8 +559,34 @@ Died: ${state.ghost.died}
       winner
     };
 
-    if (winner === 'player') state.scores.player++;
-    else if (winner === 'ai') state.scores.ai++;
+    if (winner === 'player') {
+      state.scores.player++;
+      state.stats.totalRoundsWon++;
+    } else if (winner === 'ai') {
+      state.scores.ai++;
+      state.stats.totalRoundsLost++;
+    } else {
+      state.stats.totalRoundsTied++;
+    }
+
+    // Track highest single round score
+    if (playerTotal > state.stats.highestSingleScore) {
+      state.stats.highestSingleScore = playerTotal;
+    }
+
+    // Track judge scores for this player
+    combinedJudges.forEach(judge => {
+      if (!state.stats.judgeScores[judge.name]) {
+        state.stats.judgeScores[judge.name] = { totalScore: 0, timesJudged: 0 };
+      }
+      state.stats.judgeScores[judge.name].totalScore += judge.playerScore;
+      state.stats.judgeScores[judge.name].timesJudged++;
+    });
+
+    // Track ghosts roasted
+    if (!state.stats.ghostsRoasted.includes(state.ghost.name)) {
+      state.stats.ghostsRoasted.push(state.ghost.name);
+    }
 
     // Set host line for results
     if (winner === 'player') {
@@ -533,12 +614,51 @@ Died: ${state.ghost.died}
 
 async function nextRound() {
   if (state.scores.player >= 2 || state.scores.ai >= 2) {
-    // Match is over
+    // Match is over - record stats
+    const won = state.scores.player > state.scores.ai;
+
+    // Update win/loss totals
+    if (won) {
+      state.stats.totalWins++;
+      state.stats.currentWinStreak++;
+      if (state.stats.currentWinStreak > state.stats.longestWinStreak) {
+        state.stats.longestWinStreak = state.stats.currentWinStreak;
+      }
+    } else {
+      state.stats.totalLosses++;
+      state.stats.currentWinStreak = 0;
+    }
+
+    // Update opponent record
+    const oppName = state.opponent.name;
+    if (!state.stats.opponentRecords[oppName]) {
+      state.stats.opponentRecords[oppName] = { wins: 0, losses: 0 };
+    }
+    if (won) {
+      state.stats.opponentRecords[oppName].wins++;
+    } else {
+      state.stats.opponentRecords[oppName].losses++;
+    }
+
+    // Add to match history (keep last 10)
+    state.stats.matchHistory.unshift({
+      opponent: oppName,
+      won,
+      playerScore: state.scores.player,
+      aiScore: state.scores.ai,
+      date: new Date().toISOString()
+    });
+    if (state.stats.matchHistory.length > 10) {
+      state.stats.matchHistory = state.stats.matchHistory.slice(0, 10);
+    }
+
+    // Save stats to localStorage
+    savePlayerStats();
+
     state.screen = 'matchEnd';
     state.showContinue = false;
     render();
 
-    const won = state.scores.player > state.scores.ai;
     const matchLine = won ? getHostLine(HOST_MATCH_WIN) : getHostLine(HOST_MATCH_LOSS);
     const closingLine = getHostLine(HOST_CLOSINGS);
 

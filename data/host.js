@@ -205,3 +205,126 @@ export const HOST_CLOSINGS = [
 export function getHostLine(pool) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
+
+// Player-specific opening lines (use with getPlayerAwareOpening)
+export const HOST_PLAYER_OPENINGS = {
+  // For new players (0 games)
+  newPlayer: [
+    "A fresh face in the afterlife! Welcome, {name}. Let's see if you can handle the heat.",
+    "Well, well... {name} has decided to join us. Bold. Possibly foolish. Definitely entertaining.",
+    "The spirits whisper of a new challenger... {name}. Let's see what you've got."
+  ],
+  // For returning players with wins
+  returning: [
+    "Back for more, {name}? Your {wins} victories have not gone unnoticed by the spirits.",
+    "{name} returns! The one with {wins} wins under their belt. The ghosts are... concerned.",
+    "Ah, {name}. Win number {wins} awaits. Or perhaps defeat. The spirits don't spoil endings."
+  ],
+  // For players on a hot streak (3+ wins)
+  hotStreak: [
+    "{name} is on FIRE! {streak} wins in a row! Even the ghosts are impressed. And they're dead.",
+    "The legendary {name} returns! {streak} straight victories! The algorithm is starting to sweat.",
+    "{streak} wins! {name} cannot be stopped! Well... statistically, they CAN. But not yet!"
+  ],
+  // For players with losing records
+  underdog: [
+    "{name}! Back to redeem yourself after those {losses} losses. The spirits admire persistence.",
+    "The eternal optimist, {name}, returns! {losses} losses and still trying. Beautiful. Tragic. But beautiful.",
+    "{name} is here! Listen, {losses} losses means {losses} lessons learned. Probably."
+  ],
+  // For rematch against same opponent
+  rematch: [
+    "{name} faces {opponent} again! Your record against them: {oppWins}-{oppLosses}. History is watching.",
+    "A rematch! {name} vs {opponent}! Last time was memorable. Let's see if lightning strikes twice.",
+    "{opponent} again? {name}, you're {oppWins}-{oppLosses} against them. Time to even the score. Or not."
+  ]
+};
+
+// Build a player-aware opening line based on stats
+export function getPlayerAwareOpening(playerName, stats, opponent) {
+  let pool;
+  let replacements = {
+    name: playerName || 'Challenger',
+    wins: stats?.totalWins || 0,
+    losses: stats?.totalLosses || 0,
+    streak: stats?.currentWinStreak || 0,
+    opponent: opponent?.name || 'Unknown'
+  };
+
+  // Check for rematch
+  const oppRecord = stats?.opponentRecords?.[opponent?.name];
+  if (oppRecord && (oppRecord.wins > 0 || oppRecord.losses > 0)) {
+    replacements.oppWins = oppRecord.wins;
+    replacements.oppLosses = oppRecord.losses;
+    pool = HOST_PLAYER_OPENINGS.rematch;
+  }
+  // Check for hot streak (3+ consecutive wins)
+  else if (stats?.currentWinStreak >= 3) {
+    pool = HOST_PLAYER_OPENINGS.hotStreak;
+  }
+  // New player
+  else if (!stats || (stats.totalWins === 0 && stats.totalLosses === 0)) {
+    pool = HOST_PLAYER_OPENINGS.newPlayer;
+  }
+  // More losses than wins
+  else if (stats.totalLosses > stats.totalWins) {
+    pool = HOST_PLAYER_OPENINGS.underdog;
+  }
+  // Has some wins
+  else {
+    pool = HOST_PLAYER_OPENINGS.returning;
+  }
+
+  let line = pool[Math.floor(Math.random() * pool.length)];
+
+  // Replace all placeholders
+  for (const [key, value] of Object.entries(replacements)) {
+    line = line.replace(new RegExp(`\\{${key}\\}`, 'g'), value);
+  }
+
+  return line;
+}
+
+// Judge-specific lines when player has history with a judge
+export const HOST_JUDGE_HISTORY = {
+  favorable: [
+    "{judge} tends to like you. Average score: {avg}. Don't get cocky.",
+    "Ah, {judge}. They've given you an average of {avg}. Not bad. Not amazing. Not bad.",
+    "{judge} has been... generous. {avg} average. Let's keep that going."
+  ],
+  harsh: [
+    "{judge} has NOT been kind to you. {avg} average. Time to change their mind.",
+    "Oof, {judge}. They've averaged {avg} on you. Rough crowd, that one.",
+    "{judge} giving you {avg} on average? Prove them wrong tonight."
+  ],
+  neutral: [
+    "{judge} is on the panel. They've seen your work before.",
+    "{judge} returns. They know what you're capable of. Allegedly.",
+    "And we have {judge}. Your history together is... mixed."
+  ]
+};
+
+// Get a judge-history-aware comment
+export function getJudgeHistoryLine(judgeName, stats) {
+  const judgeData = stats?.judgeScores?.[judgeName];
+  if (!judgeData || judgeData.timesJudged === 0) {
+    return null; // No history, skip the comment
+  }
+
+  const avg = (judgeData.totalScore / judgeData.timesJudged).toFixed(1);
+  let pool;
+
+  if (parseFloat(avg) >= 7) {
+    pool = HOST_JUDGE_HISTORY.favorable;
+  } else if (parseFloat(avg) <= 4) {
+    pool = HOST_JUDGE_HISTORY.harsh;
+  } else {
+    pool = HOST_JUDGE_HISTORY.neutral;
+  }
+
+  let line = pool[Math.floor(Math.random() * pool.length)];
+  line = line.replace(/\{judge\}/g, judgeName);
+  line = line.replace(/\{avg\}/g, avg);
+
+  return line;
+}

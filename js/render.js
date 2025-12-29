@@ -11,8 +11,14 @@ export function render() {
     case 'apiKey':
       app.innerHTML = renderApiKey();
       break;
+    case 'playerName':
+      app.innerHTML = renderPlayerName();
+      break;
     case 'menu':
       app.innerHTML = renderMenu();
+      break;
+    case 'stats':
+      app.innerHTML = renderStats();
       break;
     case 'matchOpening':
       app.innerHTML = renderMatchOpening();
@@ -95,21 +101,199 @@ function renderApiKey() {
   `;
 }
 
+function renderPlayerName() {
+  const hasName = state.playerName && state.playerName.trim().length > 0;
+  const isReturning = state.stats.totalWins > 0 || state.stats.totalLosses > 0;
+
+  return `
+    <div class="player-name-screen">
+      <div class="menu-emoji">🎭</div>
+      <h1 class="menu-title">${isReturning ? 'Welcome Back' : 'Who Goes There?'}</h1>
+      <p class="player-name-desc">${isReturning
+        ? `Good to see you again. Still going by the same name?`
+        : `Every roaster needs a name. What shall the spirits call you?`}</p>
+
+      <div class="player-name-input-wrapper">
+        <input
+          type="text"
+          id="player-name-input"
+          class="player-name-input"
+          placeholder="Enter your stage name..."
+          value="${state.playerName}"
+          maxlength="20"
+        />
+      </div>
+
+      ${isReturning ? `
+        <div class="returning-stats">
+          <p>Record: ${state.stats.totalWins}W - ${state.stats.totalLosses}L</p>
+          ${state.stats.currentWinStreak > 1 ? `<p class="streak">Current streak: ${state.stats.currentWinStreak} wins</p>` : ''}
+        </div>
+      ` : ''}
+
+      ${hasName ? `
+        <button class="btn" id="save-name-btn">${isReturning ? 'Continue' : 'Enter the Séance'}</button>
+      ` : `
+        <button class="btn" id="save-name-btn" disabled>Enter Your Name</button>
+      `}
+      <div class="version">v${VERSION}</div>
+    </div>
+  `;
+}
+
 function renderMenu() {
+  const hasStats = state.stats.totalWins > 0 || state.stats.totalLosses > 0;
+  const winRate = hasStats
+    ? Math.round((state.stats.totalWins / (state.stats.totalWins + state.stats.totalLosses)) * 100)
+    : 0;
+
   return `
     <div class="menu">
       <div class="menu-emoji">👻🔥</div>
       <h1 class="menu-title">The Ghost Roast</h1>
       <p class="menu-subtitle">with your host, Mort Holloway</p>
+
+      ${state.playerName ? `
+        <div class="player-welcome">
+          <span class="player-welcome-name">🎭 ${state.playerName}</span>
+          ${hasStats ? `<span class="player-welcome-record">${state.stats.totalWins}W - ${state.stats.totalLosses}L (${winRate}%)</span>` : ''}
+        </div>
+      ` : ''}
+
       <p class="menu-desc">Dead people take the stage. You craft roasts. Three random judges decide who burns brightest. Best of 3.</p>
       <button class="btn" id="start-btn">Enter the Séance</button>
+
+      <div class="menu-links">
+        ${hasStats ? `<button class="btn-link" id="stats-btn">View Stats</button>` : ''}
+        <button class="btn-link" id="change-name-btn">Change Name</button>
+      </div>
+
+      <div class="version">v${VERSION}</div>
+    </div>
+  `;
+}
+
+function renderStats() {
+  const { stats } = state;
+  const hasStats = stats.totalWins > 0 || stats.totalLosses > 0;
+  const winRate = hasStats
+    ? Math.round((stats.totalWins / (stats.totalWins + stats.totalLosses)) * 100)
+    : 0;
+
+  // Get sorted opponent records
+  const opponentEntries = Object.entries(stats.opponentRecords || {})
+    .map(([name, record]) => ({ name, ...record }))
+    .sort((a, b) => (b.wins - b.losses) - (a.wins - a.losses));
+
+  // Get sorted judge averages
+  const judgeEntries = Object.entries(stats.judgeScores || {})
+    .map(([name, data]) => ({
+      name,
+      avg: data.timesJudged > 0 ? (data.totalScore / data.timesJudged).toFixed(1) : 0,
+      times: data.timesJudged
+    }))
+    .filter(j => j.times > 0)
+    .sort((a, b) => b.avg - a.avg);
+
+  return `
+    <div class="stats-screen">
+      <h1 class="stats-title">🎭 ${stats.playerName || 'Your'} Stats</h1>
+
+      <div class="stats-overview">
+        <div class="stat-box">
+          <div class="stat-value">${stats.totalWins}</div>
+          <div class="stat-label">Wins</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">${stats.totalLosses}</div>
+          <div class="stat-label">Losses</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">${winRate}%</div>
+          <div class="stat-label">Win Rate</div>
+        </div>
+      </div>
+
+      <div class="stats-details">
+        <div class="stat-row">
+          <span class="stat-row-label">Rounds Won:</span>
+          <span class="stat-row-value">${stats.totalRoundsWon}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Rounds Lost:</span>
+          <span class="stat-row-value">${stats.totalRoundsLost}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Best Single Round Score:</span>
+          <span class="stat-row-value">${stats.highestSingleScore || 0}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Longest Win Streak:</span>
+          <span class="stat-row-value">${stats.longestWinStreak || 0}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Current Win Streak:</span>
+          <span class="stat-row-value">${stats.currentWinStreak || 0}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Ghosts Roasted:</span>
+          <span class="stat-row-value">${(stats.ghostsRoasted || []).length}</span>
+        </div>
+      </div>
+
+      ${opponentEntries.length > 0 ? `
+        <div class="stats-section">
+          <h2 class="stats-section-title">Record vs Opponents</h2>
+          <div class="opponent-records">
+            ${opponentEntries.map(opp => `
+              <div class="opponent-record">
+                <span class="opponent-name">${opp.name}</span>
+                <span class="opponent-score ${opp.wins > opp.losses ? 'winning' : opp.wins < opp.losses ? 'losing' : ''}">${opp.wins}W - ${opp.losses}L</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${judgeEntries.length > 0 ? `
+        <div class="stats-section">
+          <h2 class="stats-section-title">Average Score per Judge</h2>
+          <div class="judge-averages">
+            ${judgeEntries.map(judge => `
+              <div class="judge-avg">
+                <span class="judge-avg-name">${judge.name}</span>
+                <span class="judge-avg-score">${judge.avg}</span>
+                <span class="judge-avg-times">(${judge.times}x)</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${(stats.matchHistory || []).length > 0 ? `
+        <div class="stats-section">
+          <h2 class="stats-section-title">Recent Matches</h2>
+          <div class="match-history">
+            ${stats.matchHistory.slice(0, 5).map(match => `
+              <div class="match-history-item ${match.won ? 'won' : 'lost'}">
+                <span class="match-result">${match.won ? 'W' : 'L'}</span>
+                <span class="match-opponent">vs ${match.opponent}</span>
+                <span class="match-score">${match.playerScore}-${match.aiScore}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      <button class="btn" id="back-to-menu-btn">Back to Menu</button>
       <div class="version">v${VERSION}</div>
     </div>
   `;
 }
 
 function renderMatchOpening() {
-  const { opponent, judges } = state;
+  const { opponent, judges, playerName } = state;
+  const displayName = playerName || 'YOU';
 
   return `
     <div class="match-opening">
@@ -119,7 +303,7 @@ function renderMatchOpening() {
         <div class="matchup">
           <div class="matchup-player">
             <div class="matchup-emoji">🎭</div>
-            <div class="matchup-name">YOU</div>
+            <div class="matchup-name">${displayName}</div>
           </div>
           <div class="matchup-vs">VS</div>
           <div class="matchup-opponent">
@@ -175,7 +359,8 @@ function renderGhostIntro() {
 }
 
 function renderDrafting() {
-  const { scores, opponent, ghost, round, playerTemplate, playerSlots, activeSlot, playerWordPools, aiTemplate, hostLine } = state;
+  const { scores, opponent, ghost, round, playerTemplate, playerSlots, activeSlot, playerWordPools, aiTemplate, hostLine, playerName } = state;
+  const displayName = playerName || 'YOU';
 
   // Build player's template with slots
   let templateHtml = playerTemplate.template;
@@ -204,7 +389,7 @@ function renderDrafting() {
     <div class="drafting">
       <div class="scoreboard">
         <div class="score-box">
-          <div class="score-label">YOU</div>
+          <div class="score-label">${displayName}</div>
           <div class="score-value">${scores.player}</div>
         </div>
         <div class="score-center">
@@ -255,11 +440,12 @@ function renderDrafting() {
 }
 
 function renderPresentation() {
-  const { ghost, opponent, presentationPhase, currentRoaster, hostLine } = state;
+  const { ghost, opponent, presentationPhase, currentRoaster, hostLine, playerName } = state;
+  const displayName = playerName || 'YOU';
 
   // Use currentRoaster directly - it's set by game.js when entering presentation
   const isPlayerTurn = currentRoaster === 'player';
-  const currentLabel = isPlayerTurn ? '🎭 YOU' : `${opponent.emoji} ${opponent.name}`;
+  const currentLabel = isPlayerTurn ? `🎭 ${displayName}` : `${opponent.emoji} ${opponent.name}`;
   const showingFirst = presentationPhase === 1;
 
   return `
@@ -284,18 +470,19 @@ function renderPresentation() {
       </div>
 
       <div class="presentation-status">
-        ${isPlayerTurn ? 'Delivering your roast...' : `${opponent.name} is roasting...`}
+        ${isPlayerTurn ? `${displayName} is delivering...` : `${opponent.name} is roasting...`}
       </div>
     </div>
   `;
 }
 
 function renderJudging() {
-  const { roundJudges, judgeResults, currentJudgeIndex, opponent, hostLine, currentRoaster, playerInsult, aiInsult } = state;
+  const { roundJudges, judgeResults, currentJudgeIndex, opponent, hostLine, currentRoaster, playerInsult, aiInsult, playerName } = state;
+  const displayName = playerName || 'YOU';
 
   // Use currentRoaster directly - it's set by game.js and persists through judging
   const judgingPlayer = currentRoaster === 'player';
-  const judgingLabel = judgingPlayer ? '🎭 YOU' : `${opponent.emoji} ${opponent.name}`;
+  const judgingLabel = judgingPlayer ? `🎭 ${displayName}` : `${opponent.emoji} ${opponent.name}`;
   const currentInsult = judgingPlayer ? playerInsult : aiInsult;
 
   // Reverse the results so newest appears on top
@@ -361,7 +548,8 @@ function renderJudging() {
 }
 
 function renderResults() {
-  const { results, opponent, roundJudges, scores, hostLine } = state;
+  const { results, opponent, roundJudges, scores, hostLine, playerName } = state;
+  const displayName = playerName || 'YOU';
 
   if (results.error) {
     return `
@@ -376,7 +564,7 @@ function renderResults() {
     <div class="results">
       <div class="scoreboard">
         <div class="score-box">
-          <div class="score-label">YOU</div>
+          <div class="score-label">${displayName}</div>
           <div class="score-value">${scores.player}</div>
         </div>
         <div class="score-center">
@@ -397,7 +585,7 @@ function renderResults() {
 
       <div class="results-grid">
         <div class="result-card ${results.winner === 'player' ? 'winner-player' : ''}">
-          <div class="result-card-label">🎭 YOU</div>
+          <div class="result-card-label">🎭 ${displayName}</div>
           <div class="result-card-insult">"${results.playerInsult}"</div>
           <div class="result-card-score player">${results.playerTotal}</div>
         </div>
@@ -434,7 +622,7 @@ function renderResults() {
       <div class="round-winner-banner">
         <div class="round-winner-label">ROUND WINNER</div>
         <div class="round-winner-text ${results.winner}">
-          ${results.winner === 'player' ? '🏆 YOU' : results.winner === 'ai' ? `${opponent.emoji} ${opponent.name}` : '🤝 TIE'}
+          ${results.winner === 'player' ? `🏆 ${displayName}` : results.winner === 'ai' ? `${opponent.emoji} ${opponent.name}` : '🤝 TIE'}
         </div>
       </div>
 
@@ -446,7 +634,8 @@ function renderResults() {
 }
 
 function renderMatchEnd() {
-  const { scores, opponent, judges } = state;
+  const { scores, opponent, judges, playerName, stats } = state;
+  const displayName = playerName || 'YOU';
   const won = scores.player > scores.ai;
 
   return `
@@ -458,8 +647,15 @@ function renderMatchEnd() {
         <h1 class="match-end-title ${won ? 'won' : 'lost'}">
           ${won ? 'GHOST ROASTER SUPREME' : `${opponent.emoji} ${opponent.name} WINS`}
         </h1>
-        <p class="match-end-score">You ${scores.player} - ${scores.ai} ${opponent.name}</p>
+        <p class="match-end-score">${displayName} ${scores.player} - ${scores.ai} ${opponent.name}</p>
         <p class="match-end-judges">Judged by: ${judges.map(j => j.emoji).join(' ')}</p>
+
+        ${playerName ? `
+          <div class="match-end-stats">
+            <p>Career: ${stats.totalWins}W - ${stats.totalLosses}L</p>
+            ${stats.currentWinStreak >= 2 ? `<p class="streak-note">${stats.currentWinStreak} win streak!</p>` : ''}
+          </div>
+        ` : ''}
       </div>
 
       ${state.showContinue ? `

@@ -1,6 +1,6 @@
 # The Ghost Roast - Project Doc
 
-**Version**: 0.2.0
+**Version**: 0.3.0
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three randomly selected AI judges score the final jokes.
@@ -84,6 +84,24 @@ roastaghost/
 - Mort Holloway hosts the show with typewriter dialogue
 - Dialogue templates for every moment (openings, intros, reactions, closings)
 - Adds personality and pacing between game phases
+- **Player-aware dialogue (v0.3.0)**: Host references player stats, win streaks, opponent history
+
+### Player Profile & Stats System (v0.3.0)
+- Player enters their stage name on first play
+- Stats persisted in localStorage (`roastaghost_stats`)
+- Tracks:
+  - Total wins/losses and round wins/losses
+  - Win/loss record vs each opponent
+  - Average score from each judge
+  - Ghosts roasted (unique)
+  - Highest single round score
+  - Win streaks (current and longest)
+  - Last 10 match history
+- Host references stats in opening dialogue:
+  - New player intros
+  - Hot streak callouts (3+ wins)
+  - Underdog encouragement
+  - Rematch rivalries
 
 ---
 
@@ -92,15 +110,18 @@ roastaghost/
 API KEY SCREEN
   User enters OpenAI API key (stored in localStorage)
   ↓
-MENU → START GAME
+PLAYER NAME SCREEN (v0.3.0)
+  Enter stage name (persisted with stats)
+  ↓
+MENU → START GAME (or VIEW STATS)
   ↓
 Pick random opponent (from 10)
 Pick 3 random judges (from 12)
 Set scores to 0-0, round to 1
   ↓
 MATCH OPENING (HOST)
-  Mort welcomes audience (typewriter effect)
-  Shows matchup: You vs Opponent
+  Mort welcomes player BY NAME with stat-aware intro
+  Shows matchup: [PlayerName] vs Opponent
   Shows judges panel
   ↓
 ROUND LOOP (best of 3):
@@ -220,6 +241,11 @@ The eternal host of The Ghost Roast. Key traits:
 - [ ] Could add more ghost themes (nerd, spiritual, etc.)
 
 ### Completed Recently
+- [x] **Player profile system** - Name input screen, stats displayed on menu/end screens
+- [x] **Comprehensive stats tracking** - Wins, losses, streaks, judge averages, opponent records
+- [x] **Stats display screen** - Accessible from menu, shows all player stats
+- [x] **Player-aware host dialogue** - Mort references stats, rematches, hot streaks
+- [x] **Player name throughout UI** - Shows player name instead of "YOU" everywhere
 - [x] Templates rewritten for better joke structure (2 slots, punchier)
 - [x] Word pools massively expanded (500+ words)
 - [x] Ghost-themed word weighting system
@@ -249,7 +275,7 @@ js/render.js        → imports state.js, utils.js, game.js (bindEvents), data/h
 js/game.js          → imports state.js, utils.js, api.js, data/*
                     → has buildWeightedPool() for themed word selection
 js/api.js           → imports state.js (for API key), uses GPT-5.2
-js/state.js         → standalone (game state object, VERSION, API key from localStorage)
+js/state.js         → game state, VERSION, API key + player stats (localStorage)
 js/utils.js         → standalone (shuffle, $, typeText, delay)
 data/index.js       → re-exports all data files
 ```
