@@ -1,6 +1,6 @@
 // Game logic
 import { shuffle, $, typeText, delay } from './utils.js';
-import { state, savePlayerStats, exportSaveData, importSaveData } from './state.js';
+import { state, savePlayerStats, exportSaveData, importSaveData, PROXY_URL } from './state.js';
 import { getJudgeSingleRoastResponse } from './api.js';
 import {
   GHOSTS, JUDGES, TEMPLATES, WORD_POOLS, OPPONENTS,
@@ -97,6 +97,78 @@ export function bindEvents() {
       // Go to player name screen if no name yet, otherwise menu
       state.screen = state.playerName ? 'menu' : 'playerName';
       render();
+    };
+  }
+
+  // Access Password screen (proxy mode)
+  const accessPasswordInput = $('#access-password-input');
+  if (accessPasswordInput) {
+    accessPasswordInput.oninput = (e) => {
+      state.accessPassword = e.target.value;
+      // Clear any previous error
+      const errorEl = $('#password-error');
+      if (errorEl) errorEl.textContent = '';
+      render();
+    };
+    accessPasswordInput.focus();
+  }
+
+  const togglePasswordBtn = $('#toggle-password-btn');
+  if (togglePasswordBtn) {
+    togglePasswordBtn.onclick = () => {
+      const input = $('#access-password-input');
+      if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    };
+  }
+
+  const savePasswordBtn = $('#save-password-btn');
+  if (savePasswordBtn && !savePasswordBtn.disabled) {
+    savePasswordBtn.onclick = async () => {
+      // Test the password by making a quick API call
+      savePasswordBtn.disabled = true;
+      savePasswordBtn.textContent = 'Checking...';
+
+      try {
+        const res = await fetch(PROXY_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Access-Password': state.accessPassword
+          },
+          body: JSON.stringify({
+            model: 'gpt-5.2',
+            messages: [{ role: 'user', content: 'test' }],
+            max_completion_tokens: 1
+          })
+        });
+
+        const data = await res.json();
+
+        if (res.status === 401 || data.error?.includes('password')) {
+          const errorEl = $('#password-error');
+          if (errorEl) {
+            errorEl.textContent = 'Invalid password. Try again.';
+            errorEl.style.color = '#f87171';
+          }
+          savePasswordBtn.disabled = false;
+          savePasswordBtn.textContent = 'Enter the Crypt';
+          return;
+        }
+
+        // Password works! Continue to game
+        state.screen = state.playerName ? 'menu' : 'playerName';
+        render();
+      } catch (e) {
+        const errorEl = $('#password-error');
+        if (errorEl) {
+          errorEl.textContent = 'Connection error. Check your internet.';
+          errorEl.style.color = '#f87171';
+        }
+        savePasswordBtn.disabled = false;
+        savePasswordBtn.textContent = 'Enter the Crypt';
+      }
     };
   }
 

@@ -1907,3 +1907,10 @@ body::after {
   color: #f87171;
   background: rgba(248, 113, 113, 0.1);
 }
+
+/* Password Error */
+.password-error {
+  margin-top: 16px;
+  font-size: 14px;
+  min-height: 20px;
+}

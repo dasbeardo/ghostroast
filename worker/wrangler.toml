@@ -1,0 +1,7 @@
+name = "roast-mortem-api"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# After deploying, set these secrets with:
+# npx wrangler secret put OPENAI_API_KEY
+# npx wrangler secret put ACCESS_PASSWORD

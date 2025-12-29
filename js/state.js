@@ -1,6 +1,10 @@
 // Game state - single source of truth
 
-export const VERSION = '0.4.1';
+export const VERSION = '0.4.2';
+
+// Proxy configuration - set this to your Cloudflare Worker URL after deploying
+// Leave empty to use direct API key mode
+export const PROXY_URL = '';  // e.g., 'https://roast-mortem-api.your-subdomain.workers.dev'
 
 // Migrate old localStorage keys (from pre-rebrand)
 function migrateOldData() {
@@ -38,8 +42,9 @@ function loadPlayerStats() {
 const savedStats = loadPlayerStats();
 
 export const state = {
-  screen: 'apiKey',  // Start with API key screen
-  apiKey: localStorage.getItem('roastmortem_apikey') || '',  // Persist key
+  screen: PROXY_URL ? 'accessPassword' : 'apiKey',  // Start with appropriate auth screen
+  apiKey: localStorage.getItem('roastmortem_apikey') || '',  // Persist key (direct mode)
+  accessPassword: '',  // For proxy mode (not persisted for security)
 
   // Player profile
   playerName: savedStats?.playerName || '',

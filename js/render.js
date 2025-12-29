@@ -11,6 +11,9 @@ export function render() {
     case 'apiKey':
       app.innerHTML = renderApiKey();
       break;
+    case 'accessPassword':
+      app.innerHTML = renderAccessPassword();
+      break;
     case 'playerName':
       app.innerHTML = renderPlayerName();
       break;
@@ -96,6 +99,40 @@ function renderApiKey() {
       <p class="api-key-help">
         <a href="https://platform.openai.com/api-keys" target="_blank">Get an API key from OpenAI →</a>
       </p>
+      <div class="version">v${VERSION}</div>
+    </div>
+  `;
+}
+
+function renderAccessPassword() {
+  const hasPassword = state.accessPassword && state.accessPassword.length > 0;
+
+  return `
+    <div class="api-key-screen">
+      <div class="menu-emoji">👻🔥</div>
+      <h1 class="menu-title">Roast Mortem</h1>
+      <p class="api-key-desc">Enter the access password to play.</p>
+
+      <div class="api-key-input-wrapper">
+        <input
+          type="password"
+          id="access-password-input"
+          class="api-key-input"
+          placeholder="Password..."
+          value="${state.accessPassword}"
+        />
+        <button class="btn btn-small" id="toggle-password-btn">👁</button>
+      </div>
+
+      <p class="api-key-note">Ask the game host for the password.</p>
+
+      ${hasPassword ? `
+        <button class="btn" id="save-password-btn">Enter the Crypt</button>
+      ` : `
+        <button class="btn" id="save-password-btn" disabled>Enter Password</button>
+      `}
+
+      <div id="password-error" class="password-error"></div>
       <div class="version">v${VERSION}</div>
     </div>
   `;

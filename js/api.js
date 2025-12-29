@@ -1,5 +1,32 @@
 // OpenAI API integration
-import { state } from './state.js';
+import { state, PROXY_URL } from './state.js';
+
+// Helper to make API calls (handles both direct and proxy modes)
+async function callOpenAI(body) {
+  if (PROXY_URL) {
+    // Proxy mode - use Cloudflare Worker
+    const res = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Password': state.accessPassword
+      },
+      body: JSON.stringify(body)
+    });
+    return res.json();
+  } else {
+    // Direct mode - use OpenAI API directly
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.apiKey}`
+      },
+      body: JSON.stringify(body)
+    });
+    return res.json();
+  }
+}
 
 // Judge a single roast (used in the new alternating flow)
 export async function getJudgeSingleRoastResponse(judge, ghostContext, roasterName, roasterEmoji, roast, isSecondRoast, priorJudgeReactions, firstRoastContext) {
@@ -81,23 +108,14 @@ RESPOND WITH EXACTLY THIS FORMAT:
 
 BEGIN JSON:`;
 
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${state.apiKey}`
-    },
-    body: JSON.stringify({
-      model: 'gpt-5.2',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt }
-      ],
-      max_completion_tokens: 180
-    })
+  const data = await callOpenAI({
+    model: 'gpt-5.2',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt }
+    ],
+    max_completion_tokens: 180
   });
-
-  const data = await res.json();
 
   if (data.error) {
     throw new Error(data.error.message);
@@ -162,23 +180,14 @@ Give your judgment in character. React to the jokes, not just the words.
 Return ONLY this JSON (no markdown, no code blocks):
 {"name":"${judge.name}","playerScore":N,"aiScore":N,"reaction":"your in-character reaction here"}`;
 
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${state.apiKey}`
-    },
-    body: JSON.stringify({
-      model: 'gpt-5.2',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt }
-      ],
-      max_completion_tokens: 300
-    })
+  const data = await callOpenAI({
+    model: 'gpt-5.2',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt }
+    ],
+    max_completion_tokens: 300
   });
-
-  const data = await res.json();
 
   if (data.error) {
     throw new Error(data.error.message);
