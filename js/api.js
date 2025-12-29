@@ -216,18 +216,12 @@ Your scores were: ${firstRoastContext.scores.map((s, i) => `${judges[i].name}: $
 Now here comes the second roast. You can compare if it feels natural.`;
   }
 
-  // System prompt with judge blocks (mostly static for caching)
-  const systemPrompt = `ROAST MORTEM — a roast battle for dead people. Three judges react.
+  // System prompt with judge blocks (static, cacheable)
+  const systemPrompt = `You are generating reactions from 3 judges at ROAST MORTEM, a roast battle for dead people.
 
-${judgeBlocks}
+Each judge exists in their own reality. Embody them fully — not parody, not impression. You ARE them.
 
----
-
-Each judge reacts as themselves. Not impressions — you ARE them. Did the joke land? Go off. The reaction IS the entertainment.
-
-After scoring, the judges can riff on each other briefly.
-
-Return valid JSON only.`;
+${judgeBlocks}`;
 
   // User prompt with dynamic content (changes per call)
   const userPrompt = `Tonight's target is some dead person. The details don't matter — what matters is they're dead and people are lining up to roast them.
@@ -240,7 +234,8 @@ ${roasterEmoji} ${roasterName} grabs the mic:
 
 ---
 
-Return this exact JSON structure:
+Return valid JSON only. Each judge reacts in character (1-3 sentences, under 50 words each). Then add 1-3 short banter lines where judges riff on each other's reactions.
+
 {
   "judges": [
     {"name": "${judges[0].name}", "emoji": "${judges[0].emoji}", "score": N, "reaction": "..."},
@@ -248,8 +243,8 @@ Return this exact JSON structure:
     {"name": "${judges[2].name}", "emoji": "${judges[2].emoji}", "score": N, "reaction": "..."}
   ],
   "banter": [
-    "JudgeName: line",
-    "JudgeName: line"
+    "Name: line",
+    "Name: line"
   ]
 }`;
 
