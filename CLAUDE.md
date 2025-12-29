@@ -1,6 +1,6 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.4.2
+**Version**: 0.5.0
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three randomly selected AI judges score the final jokes.
@@ -32,7 +32,7 @@ roastaghost/
 ├── data/
 │   ├── index.js        # Re-exports all data
 │   ├── ghosts.js       # 132 ghost characters (with theme tags)
-│   ├── judges.js       # 29 judges with personalities + forbidden behaviors
+│   ├── judges.js       # 12 V4 method-acting judges (celebrity personas)
 │   ├── templates.js    # 16 roast templates (2 slots each)
 │   ├── wordPools.js    # Themed word pools (500+ words)
 │   ├── opponents.js    # 10 AI opponents
@@ -188,8 +188,14 @@ Fictional deceased people with:
 - 3 bio lines (humorous facts about them)
 - **Theme tags** (e.g., `["crypto"]`, `["boomer", "corporate"]`)
 
-### Judges (29)
-Each judge has: personality, scoreRange, catchphrases, actions, and **forbidden behaviors** (to prevent character bleed). See `data/judges.js` for the full list.
+### Judges (12)
+V4 "Method Acting" format with celebrity personas. Each judge has:
+- id, name, emoji, scoreRange
+- personality (second-person immersive description)
+
+Current roster: Tommy Wiseau, Donald Trump, Kanye West, Macho Man Randy Savage, Borat, Christopher Walken, Samuel L. Jackson, Owen Wilson, Gordon Ramsay, Jeff Goldblum, Morgan Freeman, Gilbert Gottfried.
+
+**V3 Panel Judging**: Single API call returns all 3 judges' reactions + banter between them.
 
 ### Templates (16)
 2-slot templates with tighter punchline structure:

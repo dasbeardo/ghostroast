@@ -197,6 +197,84 @@ React as ${judge.name}. Did it land? Score it ${judge.scoreRange[0]}-${judge.sco
   return parsed;
 }
 
+// V3 Hybrid: Single call for all 3 judges + banter
+// Combines method acting character blocks with efficient single-call architecture
+export async function getJudgePanelResponse(judges, ghostContext, roasterName, roasterEmoji, roast, isSecondRoast, firstRoastContext) {
+
+  // Build judge personality blocks (static, cacheable)
+  const judgeBlocks = judges.map((judge, i) => {
+    return `=== JUDGE ${i + 1}: ${judge.name.toUpperCase()} ${judge.emoji} ===
+You ARE ${judge.name}. ${judge.personality}
+Score range: ${judge.scoreRange[0]}-${judge.scoreRange[1]}`;
+  }).join('\n\n');
+
+  // Build first roast context if this is the second roast
+  let contextNote = '';
+  if (isSecondRoast && firstRoastContext) {
+    contextNote = `\n\nYou already judged ${firstRoastContext.roasterName}'s roast: "${firstRoastContext.roast}"
+Your scores were: ${firstRoastContext.scores.map((s, i) => `${judges[i].name}: ${s}`).join(', ')}
+Now here comes the second roast. You can compare if it feels natural.`;
+  }
+
+  // System prompt with judge blocks (mostly static for caching)
+  const systemPrompt = `You are generating reactions from 3 judges at ROAST MORTEM, a roast battle for dead people.
+
+Each judge exists in their own reality. Embody them fully — not parody, not impression. You ARE them.
+
+${judgeBlocks}
+
+---
+
+RULES:
+- Each judge reacts in character (1-3 sentences, under 50 words each)
+- Reactions should be entertaining — the reaction IS the show
+- After all judges react, add 1-3 short banter lines where judges riff on each other
+- Return valid JSON only. No markdown, no code blocks.`;
+
+  // User prompt with dynamic content (changes per call)
+  const userPrompt = `Tonight's target is some dead person. The details don't matter — what matters is they're dead and people are lining up to roast them.
+
+Context: ${ghostContext}${contextNote}
+
+${roasterEmoji} ${roasterName} grabs the mic:
+
+"${roast}"
+
+---
+
+Return this exact JSON structure:
+{
+  "judges": [
+    {"name": "${judges[0].name}", "emoji": "${judges[0].emoji}", "score": N, "reaction": "..."},
+    {"name": "${judges[1].name}", "emoji": "${judges[1].emoji}", "score": N, "reaction": "..."},
+    {"name": "${judges[2].name}", "emoji": "${judges[2].emoji}", "score": N, "reaction": "..."}
+  ],
+  "banter": [
+    "JudgeName: line",
+    "JudgeName: line"
+  ]
+}`;
+
+  const data = await callOpenAI({
+    model: 'gpt-5.2',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt }
+    ],
+    max_completion_tokens: 600,
+    temperature: 0.9
+  });
+
+  if (data.error) {
+    throw new Error(data.error.message);
+  }
+
+  const text = data.choices?.[0]?.message?.content || '';
+  const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+
+  return parsed;
+}
+
 // Legacy function - judges both roasts at once (kept for reference)
 export async function getJudgeResponse(judge, ghostContext, priorReactions, playerInsult, aiInsult, opponent) {
   // Build context from prior judges

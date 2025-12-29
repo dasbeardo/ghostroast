@@ -1,14 +1,14 @@
 // Game state - single source of truth
 
-export const VERSION = '0.4.2';
+export const VERSION = '0.5.0';
 
 // Proxy configuration - set this to your Cloudflare Worker URL after deploying
 // Leave empty to use direct API key mode
 export const PROXY_URL = '';  // e.g., 'https://roast-mortem-api.your-subdomain.workers.dev'
 
-// EXPERIMENTAL: Use simplified judge prompts (V2)
-// Set to true to test the new less-constrained judge reactions
-export const USE_EXPERIMENTAL_JUDGES = true;
+// V3 Hybrid: Single API call for all 3 judges + banter
+// Uses method acting character blocks with efficient architecture
+export const USE_PANEL_JUDGING = true;
 
 // Migrate old localStorage keys (from pre-rebrand)
 function migrateOldData() {
@@ -109,7 +109,14 @@ export const state = {
   playerGoesFirst: true,  // Alternates each round
   currentRoaster: null,   // 'player' or 'ai' - who is being judged right now
   firstRoastScores: [],   // Scores from judging the first roast
-  secondRoastScores: []   // Scores from judging the second roast
+  secondRoastScores: [],  // Scores from judging the second roast
+
+  // Banter (V3 hybrid approach)
+  firstRoastBanter: [],   // Banter lines after first roast judging
+  secondRoastBanter: [],  // Banter lines after second roast judging
+  showBanter: false,      // Whether to show banter section
+  judgingComplete: false, // Whether current judging phase is done (show continue)
+  continueResolver: null  // Promise resolver for continue button
 };
 
 // Save player stats to localStorage

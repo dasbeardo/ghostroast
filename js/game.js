@@ -1,7 +1,7 @@
 // Game logic
 import { shuffle, $, typeText, delay } from './utils.js';
-import { state, savePlayerStats, exportSaveData, importSaveData, PROXY_URL, USE_EXPERIMENTAL_JUDGES } from './state.js';
-import { getJudgeSingleRoastResponse, getJudgeSingleRoastResponseV2 } from './api.js';
+import { state, savePlayerStats, exportSaveData, importSaveData, PROXY_URL, USE_PANEL_JUDGING } from './state.js';
+import { getJudgePanelResponse } from './api.js';
 import {
   GHOSTS, JUDGES, TEMPLATES, WORD_POOLS, OPPONENTS,
   HOST_OPENINGS, HOST_GHOST_INTROS, HOST_GHOST_REACTIONS,
@@ -13,11 +13,6 @@ import {
   HOST_MATCH_WIN, HOST_MATCH_LOSS, HOST_CLOSINGS,
   getHostLine, getPlayerAwareOpening
 } from '../data/index.js';
-
-// Helper to pick the right judge function based on experimental flag
-const getJudgeResponse = USE_EXPERIMENTAL_JUDGES
-  ? getJudgeSingleRoastResponseV2
-  : getJudgeSingleRoastResponse;
 
 // Forward declaration - render will be injected to avoid circular dependency
 let render = () => {};
@@ -268,6 +263,10 @@ export function bindEvents() {
     render();
   };
 
+  // Judging continue button (V3 panel approach)
+  const judgingContinueBtn = $('#judging-continue-btn');
+  if (judgingContinueBtn) judgingContinueBtn.onclick = handleJudgingContinue;
+
   // Export/Import save data
   const exportBtn = $('#export-btn');
   if (exportBtn) {
@@ -460,17 +459,13 @@ async function submitToJudges() {
   const secondRoaster = firstIsPlayer ? 'ai' : 'player';
   const firstInsult = firstIsPlayer ? state.playerInsult : state.aiInsult;
   const secondInsult = firstIsPlayer ? state.aiInsult : state.playerInsult;
-  const firstName = firstIsPlayer ? 'YOU' : state.opponent.name;
-  const secondName = firstIsPlayer ? state.opponent.name : 'YOU';
+  const firstName = firstIsPlayer ? (state.playerName || 'YOU') : state.opponent.name;
+  const secondName = firstIsPlayer ? state.opponent.name : (state.playerName || 'YOU');
   const firstEmoji = firstIsPlayer ? '🎭' : state.opponent.emoji;
   const secondEmoji = firstIsPlayer ? state.opponent.emoji : '🎭';
 
-  // Ghost context for judges
-  const ghostContext = `🎭 TONIGHT'S GHOST: ${state.ghost.emoji} ${state.ghost.name}
-Died: ${state.ghost.died}
-• ${state.ghost.bio[0]}
-• ${state.ghost.bio[1]}
-• ${state.ghost.bio[2]}`;
+  // Ghost context for judges (simplified for V3)
+  const ghostContext = `${state.ghost.emoji} ${state.ghost.name} - ${state.ghost.died}. ${state.ghost.bio[0]}`;
 
   // Shuffle judge order for this round
   state.roundJudges = shuffle([...state.judges]);
@@ -480,6 +475,8 @@ Died: ${state.ghost.died}
   state.currentRoaster = firstRoaster;
   state.presentationPhase = 1;
   state.showContinue = false;
+  state.judgingComplete = false;
+  state.showBanter = false;
   state.hostLine = getHostLine(firstIsPlayer ? HOST_FIRST_UP_PLAYER : HOST_FIRST_UP_AI);
   render();
 
@@ -502,60 +499,71 @@ Died: ${state.ghost.died}
     await delay(1000);
   }
 
-  // ===== FIRST ROAST JUDGING =====
+  // ===== FIRST ROAST JUDGING (V3 Panel) =====
   state.hostLine = getHostLine(HOST_AFTER_FIRST_ROAST);
-  state.currentHostText = ''; // Clear for typing
+  state.currentHostText = '';
   state.screen = 'judging';
   state.loading = true;
   state.judgeResults = [];
-  state.currentJudgeIndex = 0;
+  state.firstRoastBanter = [];
   render();
 
-  // Type host transition and persist it
+  // Type host transition
   await delay(300);
   hostAsideEl = document.getElementById('host-aside-text');
   if (hostAsideEl) {
     await typeText(hostAsideEl, state.hostLine, { baseSpeed: 20 });
-    state.currentHostText = state.hostLine; // Persist after typing
+    state.currentHostText = state.hostLine;
   }
 
   try {
-    // Each judge scores the first roast
-    for (let i = 0; i < state.roundJudges.length; i++) {
-      state.currentJudgeIndex = i;
-      render();
+    // Single API call for all 3 judges + banter
+    const panelResponse = await getJudgePanelResponse(
+      state.roundJudges,
+      ghostContext,
+      firstName,
+      firstEmoji,
+      firstInsult,
+      false,
+      null
+    );
 
-      const judge = state.roundJudges[i];
-      const priorReactions = state.judgeResults.map(r => ({
-        name: r.name,
-        reaction: r.reaction,
-        score: r.score
-      }));
+    // Store results and banter
+    state.judgeResults = panelResponse.judges.map((j, i) => ({
+      ...j,
+      roaster: firstRoaster
+    }));
+    state.firstRoastBanter = panelResponse.banter || [];
+    state.loading = false;
+    state.showBanter = true;
+    state.judgingComplete = true;
+    render();
 
-      const result = await getJudgeResponse(
-        judge, ghostContext, firstName, firstEmoji, firstInsult,
-        false, priorReactions, null
-      );
-
-      // Add result with empty reaction initially (for typewriter)
-      const reactionText = result.reaction;
-      result.reaction = '';
-      result.roaster = firstRoaster;
-      state.judgeResults.push(result);
-      render();
-
-      // Type out the judge's reaction
-      await delay(200);
+    // Type out each judge's reaction
+    for (let i = 0; i < state.judgeResults.length; i++) {
+      await delay(300);
       const reactionEl = document.getElementById(`judge-reaction-${i}`);
       if (reactionEl) {
+        const reactionText = state.judgeResults[i].reaction;
         reactionEl.innerHTML = `"<span id="typing-target-${i}"></span>"`;
         const typingTarget = document.getElementById(`typing-target-${i}`);
         if (typingTarget) {
-          await typeText(typingTarget, reactionText, { baseSpeed: 25 });
+          await typeText(typingTarget, reactionText, { baseSpeed: 20 });
         }
-        state.judgeResults[i].reaction = reactionText;
       }
-      await delay(1000);
+      await delay(500);
+    }
+
+    // Type banter
+    if (state.firstRoastBanter.length > 0) {
+      await delay(500);
+      for (let i = 0; i < state.firstRoastBanter.length; i++) {
+        const banterEl = document.getElementById(`banter-${i}`);
+        if (banterEl) {
+          await typeText(banterEl, state.firstRoastBanter[i], { baseSpeed: 15 });
+          await delay(400);
+        }
+      }
     }
 
     // Store first roast scores
@@ -566,10 +574,15 @@ Died: ${state.ghost.died}
       roaster: firstRoaster
     }));
 
+    // Wait for user to click continue
+    await waitForContinue();
+
     // ===== SECOND ROAST PRESENTATION =====
     state.screen = 'presentation';
     state.currentRoaster = secondRoaster;
     state.presentationPhase = 2;
+    state.judgingComplete = false;
+    state.showBanter = false;
     state.hostLine = getHostLine(firstIsPlayer ? HOST_SECOND_UP_AI : HOST_SECOND_UP_PLAYER);
     render();
 
@@ -592,63 +605,76 @@ Died: ${state.ghost.died}
       await delay(1000);
     }
 
-    // ===== SECOND ROAST JUDGING =====
+    // ===== SECOND ROAST JUDGING (V3 Panel) =====
     state.hostLine = getHostLine(HOST_AFTER_SECOND_ROAST);
-    state.currentHostText = ''; // Clear for typing
+    state.currentHostText = '';
     state.screen = 'judging';
-    state.judgeResults = []; // Reset for second roast judging display
-    state.currentJudgeIndex = 0;
+    state.loading = true;
+    state.judgeResults = [];
+    state.secondRoastBanter = [];
     render();
 
     await delay(300);
     hostAsideEl = document.getElementById('host-aside-text');
     if (hostAsideEl) {
       await typeText(hostAsideEl, state.hostLine, { baseSpeed: 20 });
-      state.currentHostText = state.hostLine; // Persist after typing
+      state.currentHostText = state.hostLine;
     }
 
-    // Each judge scores the second roast (with memory of their first reaction)
-    for (let i = 0; i < state.roundJudges.length; i++) {
-      state.currentJudgeIndex = i;
-      render();
+    // Build first roast context for second roast judging
+    const firstRoastContext = {
+      roasterName: firstName,
+      roast: firstInsult,
+      scores: state.firstRoastScores.map(s => s.score)
+    };
 
-      const judge = state.roundJudges[i];
-      const priorReactions = state.judgeResults.map(r => ({
-        name: r.name,
-        reaction: r.reaction,
-        score: r.score
-      }));
+    // Single API call for second roast
+    const panelResponse2 = await getJudgePanelResponse(
+      state.roundJudges,
+      ghostContext,
+      secondName,
+      secondEmoji,
+      secondInsult,
+      true,
+      firstRoastContext
+    );
 
-      // Give judge context of their first roast reaction
-      const firstRoastContext = {
-        roasterName: firstName,
-        roast: firstInsult,
-        yourReaction: state.firstRoastScores[i].reaction,
-        yourScore: state.firstRoastScores[i].score
-      };
+    // Store results and banter
+    state.judgeResults = panelResponse2.judges.map((j, i) => ({
+      ...j,
+      roaster: secondRoaster
+    }));
+    state.secondRoastBanter = panelResponse2.banter || [];
+    state.loading = false;
+    state.showBanter = true;
+    state.judgingComplete = true;
+    render();
 
-      const result = await getJudgeResponse(
-        judge, ghostContext, secondName, secondEmoji, secondInsult,
-        true, priorReactions, firstRoastContext
-      );
-
-      const reactionText = result.reaction;
-      result.reaction = '';
-      result.roaster = secondRoaster;
-      state.judgeResults.push(result);
-      render();
-
-      await delay(200);
+    // Type out each judge's reaction
+    for (let i = 0; i < state.judgeResults.length; i++) {
+      await delay(300);
       const reactionEl = document.getElementById(`judge-reaction-${i}`);
       if (reactionEl) {
+        const reactionText = state.judgeResults[i].reaction;
         reactionEl.innerHTML = `"<span id="typing-target-${i}"></span>"`;
         const typingTarget = document.getElementById(`typing-target-${i}`);
         if (typingTarget) {
-          await typeText(typingTarget, reactionText, { baseSpeed: 25 });
+          await typeText(typingTarget, reactionText, { baseSpeed: 20 });
         }
-        state.judgeResults[i].reaction = reactionText;
       }
-      await delay(1000);
+      await delay(500);
+    }
+
+    // Type banter
+    if (state.secondRoastBanter.length > 0) {
+      await delay(500);
+      for (let i = 0; i < state.secondRoastBanter.length; i++) {
+        const banterEl = document.getElementById(`banter-${i}`);
+        if (banterEl) {
+          await typeText(banterEl, state.secondRoastBanter[i], { baseSpeed: 15 });
+          await delay(400);
+        }
+      }
     }
 
     // Store second roast scores
@@ -659,8 +685,10 @@ Died: ${state.ghost.died}
       roaster: secondRoaster
     }));
 
+    // Wait for user to click continue before showing results
+    await waitForContinue();
+
     // ===== CALCULATE FINAL RESULTS =====
-    // Sum up player scores and AI scores from both passes
     let playerTotal = 0;
     let aiTotal = 0;
 
@@ -681,6 +709,7 @@ Died: ${state.ghost.died}
       const secondScore = state.secondRoastScores[i];
       return {
         name: judge.name,
+        emoji: judge.emoji,
         playerScore: firstIsPlayer ? firstScore.score : secondScore.score,
         aiScore: firstIsPlayer ? secondScore.score : firstScore.score,
         playerReaction: firstIsPlayer ? firstScore.reaction : secondScore.reaction,
@@ -694,7 +723,9 @@ Died: ${state.ghost.died}
       aiInsult: state.aiInsult,
       playerTotal,
       aiTotal,
-      winner
+      winner,
+      firstBanter: state.firstRoastBanter,
+      secondBanter: state.secondRoastBanter
     };
 
     if (winner === 'player') {
@@ -738,7 +769,6 @@ Died: ${state.ghost.died}
     // Toggle who goes first next round
     state.playerGoesFirst = !state.playerGoesFirst;
 
-    await delay(1000);
     state.screen = 'results';
   } catch (err) {
     console.error(err);
@@ -748,6 +778,22 @@ Died: ${state.ghost.died}
 
   state.loading = false;
   render();
+}
+
+// Helper to wait for user to click continue
+function waitForContinue() {
+  return new Promise(resolve => {
+    state.continueResolver = resolve;
+    render();
+  });
+}
+
+// Called when user clicks continue during judging
+export function handleJudgingContinue() {
+  if (state.continueResolver) {
+    state.continueResolver();
+    state.continueResolver = null;
+  }
 }
 
 async function nextRound() {

@@ -1,7 +1,7 @@
 // All rendering functions
 import { $ } from './utils.js';
 import { state, VERSION } from './state.js';
-import { bindEvents } from './game.js';
+import { bindEvents, handleJudgingContinue } from './game.js';
 import { HOST } from '../data/index.js';
 
 export function render() {
@@ -533,7 +533,7 @@ function renderPresentation() {
 }
 
 function renderJudging() {
-  const { roundJudges, judgeResults, currentJudgeIndex, opponent, hostLine, currentRoaster, playerInsult, aiInsult, playerName } = state;
+  const { roundJudges, judgeResults, opponent, hostLine, currentRoaster, playerInsult, aiInsult, playerName, loading, showBanter, judgingComplete, firstRoastBanter, secondRoastBanter, presentationPhase } = state;
   const displayName = playerName || 'YOU';
 
   // Use currentRoaster directly - it's set by game.js and persists through judging
@@ -541,9 +541,8 @@ function renderJudging() {
   const judgingLabel = judgingPlayer ? `🎭 ${displayName}` : `${opponent.emoji} ${opponent.name}`;
   const currentInsult = judgingPlayer ? playerInsult : aiInsult;
 
-  // Reverse the results so newest appears on top
-  const reversedResults = [...judgeResults].reverse();
-  const reversedIndices = judgeResults.map((_, i) => judgeResults.length - 1 - i);
+  // Get the current banter based on which roast we're judging
+  const currentBanter = presentationPhase === 1 ? firstRoastBanter : secondRoastBanter;
 
   return `
     <div class="judging">
@@ -563,40 +562,46 @@ function renderJudging() {
         <div class="roast-being-judged-text">"${currentInsult}"</div>
       </div>
 
-      <div class="judges-progress">
-        ${roundJudges.map((j, i) => `
-          <div class="judge-progress-item ${i < judgeResults.length ? 'done' : i === currentJudgeIndex ? 'active' : ''}">
-            <div class="judge-progress-emoji">${j.emoji}</div>
-            <div class="judge-progress-status">
-              ${i < judgeResults.length ? '✓' : i === currentJudgeIndex ? '...' : ''}
-            </div>
+      ${loading ? `
+        <div class="judges-loading">
+          <div class="judges-loading-emojis">
+            ${roundJudges.map(j => `<span class="loading-emoji">${j.emoji}</span>`).join('')}
           </div>
-        `).join('')}
-      </div>
-
-      ${currentJudgeIndex < roundJudges.length ? `
-        <div class="current-judge-thinking">
-          <div class="thinking-emoji">${roundJudges[currentJudgeIndex].emoji}</div>
-          <p class="thinking-text">${roundJudges[currentJudgeIndex].name} is judging...</p>
+          <p class="loading-text">Judges are deliberating...</p>
         </div>
       ` : ''}
 
       ${judgeResults.length > 0 ? `
         <div class="judge-results-stream">
-          ${reversedResults.map((result, ri) => {
-            const originalIndex = judgeResults.length - 1 - ri;
-            return `
+          ${judgeResults.map((result, i) => `
             <div class="judge-result-card revealed">
-              <div class="judge-result-emoji">${roundJudges[originalIndex].emoji}</div>
+              <div class="judge-result-emoji">${result.emoji || roundJudges[i]?.emoji || '🎭'}</div>
               <div class="judge-result-content">
                 <div class="judge-result-name">${result.name}</div>
-                <div class="judge-result-reaction" id="judge-reaction-${originalIndex}">${result.reaction ? `"${result.reaction}"` : ''}</div>
+                <div class="judge-result-reaction" id="judge-reaction-${i}"></div>
               </div>
               <div class="judge-result-score-single">
                 <div class="judge-score-value">${result.score}</div>
               </div>
             </div>
-          `}).join('')}
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${showBanter && currentBanter.length > 0 ? `
+        <div class="judge-banter">
+          <div class="banter-label">💬 Judges React</div>
+          <div class="banter-lines">
+            ${currentBanter.map((line, i) => `
+              <div class="banter-line" id="banter-${i}"></div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${judgingComplete ? `
+        <div class="judging-continue">
+          <button class="btn" id="judging-continue-btn">Continue →</button>
         </div>
       ` : ''}
     </div>
