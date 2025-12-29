@@ -581,26 +581,37 @@ function renderResults() {
 
   return `
     <div class="results">
-      <div class="scoreboard">
-        <div class="score-box">
-          <div class="score-label">${displayName}</div>
-          <div class="score-value">${scores.player}</div>
-        </div>
-        <div class="score-center">
-          <div class="score-vs">RESULTS</div>
-        </div>
-        <div class="score-box">
-          <div class="score-label">${opponent.emoji} ${opponent.name}</div>
-          <div class="score-value">${scores.ai}</div>
-        </div>
-      </div>
-
       ${hostLine ? `
         <div class="host-aside centered">
           <span class="host-aside-emoji">${HOST.emoji}</span>
           <span class="host-aside-text" id="host-aside-text"></span>
         </div>
       ` : ''}
+
+      <div class="round-winner-banner">
+        <div class="round-winner-label">ROUND WINNER</div>
+        <div class="round-winner-text ${results.winner}">
+          ${results.winner === 'player' ? `🏆 ${displayName}` : results.winner === 'ai' ? `${opponent.emoji} ${opponent.name}` : '🤝 TIE'}
+        </div>
+      </div>
+
+      <button class="btn btn-full" id="next-btn">
+        ${scores.player >= 2 || scores.ai >= 2 ? 'Final Results' : 'Next Ghost'}
+      </button>
+
+      <div class="scoreboard">
+        <div class="score-box">
+          <div class="score-label">${displayName}</div>
+          <div class="score-value">${scores.player}</div>
+        </div>
+        <div class="score-center">
+          <div class="score-vs">MATCH</div>
+        </div>
+        <div class="score-box">
+          <div class="score-label">${opponent.emoji} ${opponent.name}</div>
+          <div class="score-value">${scores.ai}</div>
+        </div>
+      </div>
 
       <div class="results-grid">
         <div class="result-card ${results.winner === 'player' ? 'winner-player' : ''}">
@@ -637,17 +648,6 @@ function renderResults() {
           </div>
         `).join('')}
       </div>
-
-      <div class="round-winner-banner">
-        <div class="round-winner-label">ROUND WINNER</div>
-        <div class="round-winner-text ${results.winner}">
-          ${results.winner === 'player' ? `🏆 ${displayName}` : results.winner === 'ai' ? `${opponent.emoji} ${opponent.name}` : '🤝 TIE'}
-        </div>
-      </div>
-
-      <button class="btn btn-full" id="next-btn">
-        ${scores.player >= 2 || scores.ai >= 2 ? 'Final Results' : 'Next Ghost'}
-      </button>
     </div>
   `;
 }
