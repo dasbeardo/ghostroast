@@ -127,37 +127,44 @@ BEGIN JSON:`;
   return parsed;
 }
 
-// EXPERIMENTAL: Simplified judge prompt - less rules, more character
+// EXPERIMENTAL V2: Method Acting + Option B approach
+// - "You ARE [character]" framing
+// - Ghost details presented as scene-setting, not a rubric
+// - No ghost-specificity requirements
+// - Higher temp (0.9) and more tokens (300) for creative freedom
 export async function getJudgeSingleRoastResponseV2(judge, ghostContext, roasterName, roasterEmoji, roast, isSecondRoast, priorJudgeReactions, firstRoastContext) {
 
-  // Minimal context building
-  let context = '';
+  // Build context for second roast / prior judges
+  let situationContext = '';
   if (isSecondRoast && firstRoastContext) {
-    context = `\n\nYou already saw ${firstRoastContext.roasterName}'s roast: "${firstRoastContext.roast}" — you gave it a ${firstRoastContext.yourScore}.\nNow here comes the second roast.`;
+    situationContext += `\n\nYou already heard ${firstRoastContext.roasterName}'s roast: "${firstRoastContext.roast}" — you gave it a ${firstRoastContext.yourScore}. Now here comes the second one.`;
   }
-
   if (priorJudgeReactions.length > 0) {
     const others = priorJudgeReactions.map(r => `${r.name} gave it a ${r.score}`).join(', ');
-    context += `\n\n${others} already scored this one.`;
+    situationContext += `\n\n${others} already scored this one.`;
   }
 
-  // Character essence only - strip out the "REACTIONS BY SCORE" template garbage
-  // Extract just the first paragraph of personality (the core voice)
+  // Extract just the core personality (first paragraph) - skip the template examples
   const personalityCore = judge.personality.split('\n\n')[0];
 
-  const systemPrompt = `You're ${judge.name} ${judge.emoji} — judging a roast battle called ROAST MORTEM.
+  // Method acting system prompt - "You ARE the character"
+  const systemPrompt = `You ARE ${judge.name} ${judge.emoji}. Not playing them. You ARE them.
+
+You're at a roast battle called ROAST MORTEM. Dead people get roasted. It's a whole thing.
 
 ${personalityCore}
 
 Score range: ${judge.scoreRange[0]}-${judge.scoreRange[1]}. That's your lane.
 
-Your job: React to this roast THE WAY YOU WOULD. Not how a "judge" would. Not with analysis. Just... be you, watching someone try to be funny. Did they make you laugh? Did they bomb? Did they say something unexpected?
+Did the joke land? Was it funny? That's all that matters. React like you're actually there watching someone try to be funny. Not like a judge giving notes — like YOU, hearing a joke.
 
 Go off. Be yourself. The reaction IS the entertainment.`;
 
-  const userPrompt = `THE GHOST BEING ROASTED:
-${ghostContext}
-${context}
+  // User prompt with Option B ghost framing - "details don't matter"
+  const userPrompt = `Tonight's target is some dead person. The details don't matter — what matters is they're dead and people are lining up to roast them.
+
+For context: ${ghostContext}
+${situationContext}
 ---
 
 ${roasterEmoji} ${roasterName} grabs the mic:
@@ -166,9 +173,9 @@ ${roasterEmoji} ${roasterName} grabs the mic:
 
 ---
 
-React as ${judge.name}. Say what you'd actually say. Give your score somewhere in the reaction naturally, or at the end.
+React as ${judge.name}. Did it land? Score it ${judge.scoreRange[0]}-${judge.scoreRange[1]}.
 
-Format: {"name":"${judge.name}","score":N,"reaction":"your reaction"}`;
+{"name":"${judge.name}","score":N,"reaction":"..."}`;
 
   const data = await callOpenAI({
     model: 'gpt-5.2',
@@ -176,8 +183,8 @@ Format: {"name":"${judge.name}","score":N,"reaction":"your reaction"}`;
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt }
     ],
-    max_completion_tokens: 300,  // More room to breathe
-    temperature: 0.9  // More creative variance
+    max_completion_tokens: 300,
+    temperature: 0.9
   });
 
   if (data.error) {
