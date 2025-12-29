@@ -84,7 +84,7 @@ Return valid JSON only. Each judge reacts in character (3-5 sentences). Then add
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt }
     ],
-    max_completion_tokens: 600,
+    max_completion_tokens: 800,
     temperature: 0.9
   });
 
