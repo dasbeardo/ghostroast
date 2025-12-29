@@ -21,32 +21,50 @@ export async function getJudgeSingleRoastResponse(judge, ghostContext, roasterNa
     firstRoastMemory = `\n\n---\n\nYOU ALREADY JUDGED THE FIRST ROAST:\n${firstRoastContext.roasterName}'s roast: "${firstRoastContext.roast}"\nYour reaction: "${firstRoastContext.yourReaction}" (Score: ${firstRoastContext.yourScore})\n\nNow you're hearing the SECOND roast. You can compare, contrast, or just react fresh. Your score for the first roast is LOCKED—no changing it. Judge this new roast on its own merits, but feel free to reference the first if it's natural.`;
   }
 
-  // Build catchphrases and actions strings if available
+  // Build catchphrases, actions, and forbidden strings if available
   const catchphrasesStr = judge.catchphrases ? `\nYOUR SIGNATURE PHRASES (use naturally): ${judge.catchphrases.join(', ')}` : '';
   const actionsStr = judge.actions ? `\nYOUR PHYSICAL COMEDY (use sparingly for emphasis): ${judge.actions.join(', ')}` : '';
+  const forbiddenStr = judge.forbidden ? `\nNEVER DO THESE (breaks character): ${judge.forbidden.join(', ')}` : '';
 
-  const systemPrompt = `You are ${judge.name} ${judge.emoji}, a judge on "THE GHOST ROAST" — a comedy roast battle where contestants craft insults about a deceased person.
+  const systemPrompt = `You are ${judge.name} ${judge.emoji}, a judge on "ROAST MORTEM" — a comedy roast battle where contestants craft insults about a deceased person.
 
 YOUR PERSONALITY AND VOICE:
 ${judge.personality}
 ${catchphrasesStr}
 ${actionsStr}
+${forbiddenStr}
+
+VOICE ANCHOR: You are ONLY ${judge.name}. Never blend into a generic judge voice. Every word must sound like something ONLY your character would say.
 
 YOUR SCORE RANGE: ${judge.scoreRange[0]}-${judge.scoreRange[1]} (STAY WITHIN THIS RANGE)
 
-HOW TO JUDGE THIS ROAST - Consider the COMPLETE joke:
-1. IS IT FUNNY? Does the full sentence land as a joke? Would it get laughs?
-2. DOES IT ROAST THE GHOST? Does it actually insult THIS specific ghost given their bio?
-3. FLOW & TIMING - Does it read well? Is there a satisfying punchline or payoff?
-4. CLEVERNESS - Any wordplay, unexpected twists, or smart connections to the ghost's life/death?
+COMEDY PRIORITY LADDER (in order of importance):
+1. SURPRISE - Did the punchline subvert expectations? Unexpected > predictable.
+2. SPECIFICITY - Does it roast THIS ghost specifically, not just generic insults?
+3. COMMITMENT - Does the joke commit to a bit, or hedge with "kinda" energy?
+4. RHYTHM - Does it flow? Is there a clean setup → payoff structure?
 
-CRITICAL:
-- BE ENTERTAINING FIRST. Your reaction should make the audience laugh.
-- Judge the OVERALL joke, not individual word choices
-- Stay COMPLETELY in character with your speech patterns
-- Your reaction should be 25-50 words, punchy and entertaining
-- You can use ONE action per reaction for physical comedy (e.g., *puffs cigar*)
-- React to THIS roast specifically${interJudgeInstruction}`;
+HOW TO JUDGE THIS ROAST:
+- Judge the OVERALL joke as a complete sentence, not individual words
+- Ask yourself: Would this get laughs at an actual roast?
+- Cleverness matters: wordplay, callbacks, unexpected twists
+
+SCORING CALIBRATION:
+- ${judge.scoreRange[0]}: Reserved for jokes that actively make things worse
+- ${Math.floor((judge.scoreRange[0] + judge.scoreRange[1]) / 2)}: Competent but forgettable, no real laughs
+- ${judge.scoreRange[1]}: Genuinely surprising AND funny, would get crowd reaction
+
+REACTION STRUCTURE:
+1. PHYSICAL BEAT: One action that shows your gut reaction (*slaps table*, *adjusts glasses*, etc.)
+2. VERDICT LINE: Your in-character take on the joke (15-30 words max)
+
+FORBIDDEN:
+- Never use "solid effort," "not bad," "decent," or neutral praise
+- No explanations of why something is funny—just react
+- Don't hedge with "I mean..." or "To be fair..."
+- Never break character or sound like a different judge${interJudgeInstruction}
+
+Respond with ONLY valid JSON. No markdown, no code blocks, no extra text.`;
 
   const userPrompt = `${ghostContext}${firstRoastMemory}${priorContext}
 
@@ -56,10 +74,12 @@ ${roasterEmoji} ${roasterName} steps up to the mic and delivers:
 
 "${roast}"
 
-Judge this roast in character. How does it land?
+React in character. One physical beat, then your verdict.
 
-Return ONLY this JSON (no markdown, no code blocks):
-{"name":"${judge.name}","score":N,"reaction":"your in-character reaction here"}`;
+RESPOND WITH EXACTLY THIS FORMAT:
+{"name":"${judge.name}","score":N,"reaction":"*action* Your reaction here"}
+
+BEGIN JSON:`;
 
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -73,7 +93,7 @@ Return ONLY this JSON (no markdown, no code blocks):
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
       ],
-      max_completion_tokens: 350
+      max_completion_tokens: 180
     })
   });
 
