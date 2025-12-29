@@ -1,11 +1,14 @@
 // Game logic
 import { shuffle, $, typeText, delay } from './utils.js';
 import { state } from './state.js';
-import { getJudgeResponse } from './api.js';
+import { getJudgeSingleRoastResponse } from './api.js';
 import {
   GHOSTS, JUDGES, TEMPLATES, WORD_POOLS, OPPONENTS,
   HOST_OPENINGS, HOST_GHOST_INTROS, HOST_GHOST_REACTIONS,
-  HOST_DRAFTING_START, HOST_JUDGING_INTROS,
+  HOST_DRAFTING_START,
+  HOST_FIRST_UP_PLAYER, HOST_FIRST_UP_AI,
+  HOST_AFTER_FIRST_ROAST, HOST_SECOND_UP_PLAYER, HOST_SECOND_UP_AI,
+  HOST_AFTER_SECOND_ROAST,
   HOST_ROUND_WINNER_PLAYER, HOST_ROUND_WINNER_AI, HOST_ROUND_TIE,
   HOST_MATCH_WIN, HOST_MATCH_LOSS, HOST_CLOSINGS,
   getHostLine
@@ -227,6 +230,9 @@ async function startRound(excluded) {
   state.presentationPhase = 0;
   state.hostPhase = 'ghostIntro';
   state.showContinue = false;
+  state.firstRoastScores = [];
+  state.secondRoastScores = [];
+  state.currentRoaster = null;
   state.screen = 'ghostIntro';
   render();
 
@@ -255,112 +261,238 @@ async function submitToJudges() {
   state.playerInsult = buildInsult(state.playerTemplate, state.playerSlots);
   state.aiInsult = buildInsult(state.aiTemplate, state.aiSlots);
 
-  // PRESENTATION PHASE - show the jokes with drama
-  state.screen = 'presentation';
-  state.presentationPhase = 1;
-  state.showContinue = false;
-  render();
+  // Determine who goes first (alternates each round)
+  const firstIsPlayer = state.playerGoesFirst;
+  const firstRoaster = firstIsPlayer ? 'player' : 'ai';
+  const secondRoaster = firstIsPlayer ? 'ai' : 'player';
+  const firstInsult = firstIsPlayer ? state.playerInsult : state.aiInsult;
+  const secondInsult = firstIsPlayer ? state.aiInsult : state.playerInsult;
+  const firstName = firstIsPlayer ? 'YOU' : state.opponent.name;
+  const secondName = firstIsPlayer ? state.opponent.name : 'YOU';
+  const firstEmoji = firstIsPlayer ? '🎭' : state.opponent.emoji;
+  const secondEmoji = firstIsPlayer ? state.opponent.emoji : '🎭';
 
-  // Player's joke types out
-  await delay(500);
-  const playerJokeEl = document.getElementById('player-joke-text');
-  if (playerJokeEl) {
-    playerJokeEl.textContent = '"';
-    const playerSpan = document.createElement('span');
-    playerJokeEl.appendChild(playerSpan);
-    await typeText(playerSpan, state.playerInsult, { baseSpeed: 30 });
-    playerJokeEl.textContent = `"${state.playerInsult}"`;
-    await delay(1000);
-  }
-
-  // AI's joke types out - update DOM directly, don't re-render
-  const aiJokeCard = document.querySelector('.presentation-joke:nth-child(2)');
-  if (aiJokeCard) aiJokeCard.classList.add('active');
-
-  await delay(500);
-  const aiJokeEl = document.getElementById('ai-joke-text');
-  if (aiJokeEl) {
-    aiJokeEl.textContent = '"';
-    const aiSpan = document.createElement('span');
-    aiJokeEl.appendChild(aiSpan);
-    await typeText(aiSpan, state.aiInsult, { baseSpeed: 30 });
-    aiJokeEl.textContent = `"${state.aiInsult}"`;
-    await delay(1000);
-  }
-
-  // Transition to judging
-  state.presentationPhase = 3;
-  state.loading = true;
-  state.screen = 'judging';
-  state.judgeResults = [];
-  state.currentJudgeIndex = 0;
-  state.hostLine = getHostLine(HOST_JUDGING_INTROS);
-
-  // Shuffle judge order for this round
-  state.roundJudges = shuffle([...state.judges]);
-  render();
-
-  // Type the host's judging intro
-  await delay(300);
-  const hostAsideEl = document.getElementById('host-aside-text');
-  if (hostAsideEl) {
-    await typeText(hostAsideEl, state.hostLine, { baseSpeed: 20 });
-  }
-
-  // Simplified context for judges - just the jokes, no template structure
+  // Ghost context for judges
   const ghostContext = `🎭 TONIGHT'S GHOST: ${state.ghost.emoji} ${state.ghost.name}
 Died: ${state.ghost.died}
 • ${state.ghost.bio[0]}
 • ${state.ghost.bio[1]}
-• ${state.ghost.bio[2]}
+• ${state.ghost.bio[2]}`;
 
-🎤 THE ROASTS:
-PLAYER: "${state.playerInsult}"
-${state.opponent.emoji} ${state.opponent.name}: "${state.aiInsult}"`;
+  // Shuffle judge order for this round
+  state.roundJudges = shuffle([...state.judges]);
+
+  // ===== FIRST ROAST PRESENTATION =====
+  state.screen = 'presentation';
+  state.currentRoaster = firstRoaster;
+  state.presentationPhase = 1;
+  state.showContinue = false;
+  state.hostLine = getHostLine(firstIsPlayer ? HOST_FIRST_UP_PLAYER : HOST_FIRST_UP_AI);
+  render();
+
+  // Type host intro for first roaster
+  await delay(300);
+  let hostAsideEl = document.getElementById('host-aside-text');
+  if (hostAsideEl) {
+    await typeText(hostAsideEl, state.hostLine, { baseSpeed: 20 });
+  }
+  await delay(800);
+
+  // Type out first roast
+  const firstJokeEl = document.getElementById('first-joke-text');
+  if (firstJokeEl) {
+    firstJokeEl.textContent = '"';
+    const span = document.createElement('span');
+    firstJokeEl.appendChild(span);
+    await typeText(span, firstInsult, { baseSpeed: 30 });
+    firstJokeEl.textContent = `"${firstInsult}"`;
+    await delay(1000);
+  }
+
+  // ===== FIRST ROAST JUDGING =====
+  state.hostLine = getHostLine(HOST_AFTER_FIRST_ROAST);
+  state.screen = 'judging';
+  state.loading = true;
+  state.judgeResults = [];
+  state.currentJudgeIndex = 0;
+  render();
+
+  // Type host transition
+  await delay(300);
+  hostAsideEl = document.getElementById('host-aside-text');
+  if (hostAsideEl) {
+    await typeText(hostAsideEl, state.hostLine, { baseSpeed: 20 });
+  }
 
   try {
-    // Process each judge sequentially
+    // Each judge scores the first roast
     for (let i = 0; i < state.roundJudges.length; i++) {
       state.currentJudgeIndex = i;
-      state.hostLine = ''; // Clear host line during judging
       render();
 
       const judge = state.roundJudges[i];
-      const priorReactions = state.judgeResults;
+      const priorReactions = state.judgeResults.map(r => ({
+        name: r.name,
+        reaction: r.reaction,
+        score: r.score
+      }));
 
-      const result = await getJudgeResponse(judge, ghostContext, priorReactions, state.playerInsult, state.aiInsult, state.opponent);
+      const result = await getJudgeSingleRoastResponse(
+        judge, ghostContext, firstName, firstEmoji, firstInsult,
+        false, priorReactions, null
+      );
 
-      // Add result but with empty reaction initially (for typewriter)
+      // Add result with empty reaction initially (for typewriter)
       const reactionText = result.reaction;
       result.reaction = '';
+      result.roaster = firstRoaster;
       state.judgeResults.push(result);
       render();
 
-      // Type out the judge's reaction with quotes
+      // Type out the judge's reaction
       await delay(200);
       const reactionEl = document.getElementById(`judge-reaction-${i}`);
       if (reactionEl) {
-        // Create a span for the typing effect
         reactionEl.innerHTML = `"<span id="typing-target-${i}"></span>"`;
         const typingTarget = document.getElementById(`typing-target-${i}`);
         if (typingTarget) {
           await typeText(typingTarget, reactionText, { baseSpeed: 25 });
         }
-        // Store the final reaction in state for results screen
         state.judgeResults[i].reaction = reactionText;
       }
-
-      // Pause so user can read
-      await delay(1200);
+      await delay(1000);
     }
 
-    // Calculate final scores
-    const playerTotal = state.judgeResults.reduce((sum, j) => sum + j.playerScore, 0);
-    const aiTotal = state.judgeResults.reduce((sum, j) => sum + j.aiScore, 0);
+    // Store first roast scores
+    state.firstRoastScores = state.judgeResults.map(r => ({
+      name: r.name,
+      score: r.score,
+      reaction: r.reaction,
+      roaster: firstRoaster
+    }));
+
+    // ===== SECOND ROAST PRESENTATION =====
+    state.screen = 'presentation';
+    state.currentRoaster = secondRoaster;
+    state.presentationPhase = 2;
+    state.hostLine = getHostLine(firstIsPlayer ? HOST_SECOND_UP_AI : HOST_SECOND_UP_PLAYER);
+    render();
+
+    // Type host intro for second roaster
+    await delay(500);
+    hostAsideEl = document.getElementById('host-aside-text');
+    if (hostAsideEl) {
+      await typeText(hostAsideEl, state.hostLine, { baseSpeed: 20 });
+    }
+    await delay(800);
+
+    // Type out second roast
+    const secondJokeEl = document.getElementById('second-joke-text');
+    if (secondJokeEl) {
+      secondJokeEl.textContent = '"';
+      const span = document.createElement('span');
+      secondJokeEl.appendChild(span);
+      await typeText(span, secondInsult, { baseSpeed: 30 });
+      secondJokeEl.textContent = `"${secondInsult}"`;
+      await delay(1000);
+    }
+
+    // ===== SECOND ROAST JUDGING =====
+    state.hostLine = getHostLine(HOST_AFTER_SECOND_ROAST);
+    state.screen = 'judging';
+    state.judgeResults = []; // Reset for second roast judging display
+    state.currentJudgeIndex = 0;
+    render();
+
+    await delay(300);
+    hostAsideEl = document.getElementById('host-aside-text');
+    if (hostAsideEl) {
+      await typeText(hostAsideEl, state.hostLine, { baseSpeed: 20 });
+    }
+
+    // Each judge scores the second roast (with memory of their first reaction)
+    for (let i = 0; i < state.roundJudges.length; i++) {
+      state.currentJudgeIndex = i;
+      render();
+
+      const judge = state.roundJudges[i];
+      const priorReactions = state.judgeResults.map(r => ({
+        name: r.name,
+        reaction: r.reaction,
+        score: r.score
+      }));
+
+      // Give judge context of their first roast reaction
+      const firstRoastContext = {
+        roasterName: firstName,
+        roast: firstInsult,
+        yourReaction: state.firstRoastScores[i].reaction,
+        yourScore: state.firstRoastScores[i].score
+      };
+
+      const result = await getJudgeSingleRoastResponse(
+        judge, ghostContext, secondName, secondEmoji, secondInsult,
+        true, priorReactions, firstRoastContext
+      );
+
+      const reactionText = result.reaction;
+      result.reaction = '';
+      result.roaster = secondRoaster;
+      state.judgeResults.push(result);
+      render();
+
+      await delay(200);
+      const reactionEl = document.getElementById(`judge-reaction-${i}`);
+      if (reactionEl) {
+        reactionEl.innerHTML = `"<span id="typing-target-${i}"></span>"`;
+        const typingTarget = document.getElementById(`typing-target-${i}`);
+        if (typingTarget) {
+          await typeText(typingTarget, reactionText, { baseSpeed: 25 });
+        }
+        state.judgeResults[i].reaction = reactionText;
+      }
+      await delay(1000);
+    }
+
+    // Store second roast scores
+    state.secondRoastScores = state.judgeResults.map(r => ({
+      name: r.name,
+      score: r.score,
+      reaction: r.reaction,
+      roaster: secondRoaster
+    }));
+
+    // ===== CALCULATE FINAL RESULTS =====
+    // Sum up player scores and AI scores from both passes
+    let playerTotal = 0;
+    let aiTotal = 0;
+
+    state.firstRoastScores.forEach(s => {
+      if (s.roaster === 'player') playerTotal += s.score;
+      else aiTotal += s.score;
+    });
+    state.secondRoastScores.forEach(s => {
+      if (s.roaster === 'player') playerTotal += s.score;
+      else aiTotal += s.score;
+    });
+
     const winner = playerTotal > aiTotal ? 'player' : playerTotal < aiTotal ? 'ai' : 'tie';
 
+    // Combine judge results for display
+    const combinedJudges = state.roundJudges.map((judge, i) => {
+      const firstScore = state.firstRoastScores[i];
+      const secondScore = state.secondRoastScores[i];
+      return {
+        name: judge.name,
+        playerScore: firstIsPlayer ? firstScore.score : secondScore.score,
+        aiScore: firstIsPlayer ? secondScore.score : firstScore.score,
+        playerReaction: firstIsPlayer ? firstScore.reaction : secondScore.reaction,
+        aiReaction: firstIsPlayer ? secondScore.reaction : firstScore.reaction
+      };
+    });
+
     state.results = {
-      judges: state.judgeResults,
+      judges: combinedJudges,
       playerInsult: state.playerInsult,
       aiInsult: state.aiInsult,
       playerTotal,
@@ -380,7 +512,9 @@ ${state.opponent.emoji} ${state.opponent.name}: "${state.aiInsult}"`;
       state.hostLine = getHostLine(HOST_ROUND_TIE);
     }
 
-    // Short delay before showing final results
+    // Toggle who goes first next round
+    state.playerGoesFirst = !state.playerGoesFirst;
+
     await delay(1000);
     state.screen = 'results';
   } catch (err) {

@@ -1,6 +1,95 @@
 // OpenAI API integration
 import { state } from './state.js';
 
+// Judge a single roast (used in the new alternating flow)
+export async function getJudgeSingleRoastResponse(judge, ghostContext, roasterName, roasterEmoji, roast, isSecondRoast, priorJudgeReactions, firstRoastContext) {
+  // Build context from prior judges who already scored THIS roast
+  let priorContext = '';
+  let interJudgeInstruction = '';
+  if (priorJudgeReactions.length > 0) {
+    priorContext = `\n\n---\n\nPRIOR JUDGES ON THIS ROAST:\n\n`;
+    priorContext += priorJudgeReactions.map(r =>
+      `${r.name}: "${r.reaction}" (Score: ${r.score})`
+    ).join('\n');
+
+    interJudgeInstruction = `\n\nCONTEXT: ${priorJudgeReactions.map(r => r.name).join(' and ')} already reacted. You CAN reference their take if it feels natural—agree, disagree, or be confused by it. But react authentically to the ROAST first.`;
+  }
+
+  // If this is the second roast, include what they said about the first
+  let firstRoastMemory = '';
+  if (isSecondRoast && firstRoastContext) {
+    firstRoastMemory = `\n\n---\n\nYOU ALREADY JUDGED THE FIRST ROAST:\n${firstRoastContext.roasterName}'s roast: "${firstRoastContext.roast}"\nYour reaction: "${firstRoastContext.yourReaction}" (Score: ${firstRoastContext.yourScore})\n\nNow you're hearing the SECOND roast. You can compare, contrast, or just react fresh. Your score for the first roast is LOCKED—no changing it. Judge this new roast on its own merits, but feel free to reference the first if it's natural.`;
+  }
+
+  // Build catchphrases and actions strings if available
+  const catchphrasesStr = judge.catchphrases ? `\nYOUR SIGNATURE PHRASES (use naturally): ${judge.catchphrases.join(', ')}` : '';
+  const actionsStr = judge.actions ? `\nYOUR PHYSICAL COMEDY (use sparingly for emphasis): ${judge.actions.join(', ')}` : '';
+
+  const systemPrompt = `You are ${judge.name} ${judge.emoji}, a judge on "THE GHOST ROAST" — a comedy roast battle where contestants craft insults about a deceased person.
+
+YOUR PERSONALITY AND VOICE:
+${judge.personality}
+${catchphrasesStr}
+${actionsStr}
+
+YOUR SCORE RANGE: ${judge.scoreRange[0]}-${judge.scoreRange[1]} (STAY WITHIN THIS RANGE)
+
+HOW TO JUDGE THIS ROAST - Consider the COMPLETE joke:
+1. IS IT FUNNY? Does the full sentence land as a joke? Would it get laughs?
+2. DOES IT ROAST THE GHOST? Does it actually insult THIS specific ghost given their bio?
+3. FLOW & TIMING - Does it read well? Is there a satisfying punchline or payoff?
+4. CLEVERNESS - Any wordplay, unexpected twists, or smart connections to the ghost's life/death?
+
+CRITICAL:
+- BE ENTERTAINING FIRST. Your reaction should make the audience laugh.
+- Judge the OVERALL joke, not individual word choices
+- Stay COMPLETELY in character with your speech patterns
+- Your reaction should be 25-50 words, punchy and entertaining
+- You can use ONE action per reaction for physical comedy (e.g., *puffs cigar*)
+- React to THIS roast specifically${interJudgeInstruction}`;
+
+  const userPrompt = `${ghostContext}${firstRoastMemory}${priorContext}
+
+---
+
+${roasterEmoji} ${roasterName} steps up to the mic and delivers:
+
+"${roast}"
+
+Judge this roast in character. How does it land?
+
+Return ONLY this JSON (no markdown, no code blocks):
+{"name":"${judge.name}","score":N,"reaction":"your in-character reaction here"}`;
+
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${state.apiKey}`
+    },
+    body: JSON.stringify({
+      model: 'gpt-5.2',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      max_completion_tokens: 350
+    })
+  });
+
+  const data = await res.json();
+
+  if (data.error) {
+    throw new Error(data.error.message);
+  }
+
+  const text = data.choices?.[0]?.message?.content || '';
+  const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+
+  return parsed;
+}
+
+// Legacy function - judges both roasts at once (kept for reference)
 export async function getJudgeResponse(judge, ghostContext, priorReactions, playerInsult, aiInsult, opponent) {
   // Build context from prior judges
   let priorContext = '';

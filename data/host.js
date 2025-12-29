@@ -82,13 +82,59 @@ export const HOST_DRAFTING_START = [
   "The art of the roast is in the specifics. Be specific. Be cruel. Be *funny*."
 ];
 
-// When roasts are submitted, judges are deliberating
+// When roasts are submitted, judges are deliberating (legacy)
 export const HOST_JUDGING_INTROS = [
   "The roasts have been delivered. Now we wait for our *esteemed* panel to weigh in...",
   "And now, the moment of judgment. The judges are deliberating, which is fancy talk for 'arguing about nothing.'",
   "Let's see what our panel thinks. And remember: they're already dead, so their opinions are eternal.",
   "The judges are reviewing the evidence. I use 'evidence' loosely.",
   "Both roasts are in. Time to see who burned brightest... if you know what I mean."
+];
+
+// First roaster takes the stage
+export const HOST_FIRST_UP_PLAYER = [
+  "You're up first. No pressure. Well, some pressure. It's a competition.",
+  "The stage is yours. Don't waste it.",
+  "Ladies, gentlemen, and assorted spirits... our human contestant takes the mic.",
+  "You drew first blood. Metaphorically. Let's hear it."
+];
+
+export const HOST_FIRST_UP_AI = [
+  "The algorithm goes first tonight. Let's see what the machine cooked up.",
+  "First up: our digital competitor. No pulse, all confidence.",
+  "The AI takes the stage. It doesn't have stage fright. It doesn't have *anything*.",
+  "Machine gets the first shot. They've been computing insults all day."
+];
+
+// After first roast, before first judging
+export const HOST_AFTER_FIRST_ROAST = [
+  "And there it is. Let's see what our judges think... *so far*.",
+  "The first shot has been fired. Judges, your thoughts?",
+  "One roast down. Time for some early feedback.",
+  "Opening salvo delivered. Let's get a temperature check from our panel."
+];
+
+// Second roaster takes the stage
+export const HOST_SECOND_UP_PLAYER = [
+  "Now it's YOUR turn. You've seen their score. You know what you're up against.",
+  "The rebuttal is yours. Make it count.",
+  "And now, the human responds. No pressure. Okay, *some* pressure.",
+  "Time for the counter-roast. The floor is yours."
+];
+
+export const HOST_SECOND_UP_AI = [
+  "Now the machine gets its shot. They've been waiting... patiently. As machines do.",
+  "The algorithm's turn. They've analyzed the first roast. They're ready.",
+  "And now our digital friend responds. Cold. Calculated. Probably.",
+  "Second roaster steps up. No feelings to hurt, no nerves to calm."
+];
+
+// After second roast, before second judging
+export const HOST_AFTER_SECOND_ROAST = [
+  "Both roasts delivered. Final judgments incoming...",
+  "And that's the second roast! Judges, complete your scoring.",
+  "Two roasts, one winner. Let's finish this.",
+  "The roasting is complete. Now we find out who burned brighter."
 ];
 
 // After each judge scores (reacting to judges)

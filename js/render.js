@@ -255,41 +255,54 @@ function renderDrafting() {
 }
 
 function renderPresentation() {
-  const { ghost, opponent, presentationPhase, playerInsult, aiInsult } = state;
+  const { ghost, opponent, presentationPhase, currentRoaster, hostLine } = state;
+
+  // Use currentRoaster directly - it's set by game.js when entering presentation
+  const isPlayerTurn = currentRoaster === 'player';
+  const currentLabel = isPlayerTurn ? '🎭 YOU' : `${opponent.emoji} ${opponent.name}`;
+  const showingFirst = presentationPhase === 1;
 
   return `
     <div class="presentation">
       <div class="presentation-header">
         <div class="presentation-ghost">${ghost.emoji} ${ghost.name}</div>
-        <div class="presentation-title">THE ROASTS</div>
+        <div class="presentation-title">${showingFirst ? 'FIRST ROAST' : 'SECOND ROAST'}</div>
       </div>
 
-      <div class="presentation-jokes">
-        <div class="presentation-joke ${presentationPhase >= 1 ? 'active' : ''}">
-          <div class="joke-label">🎭 YOU</div>
-          <div class="joke-text" id="player-joke-text">${presentationPhase > 1 ? `"${playerInsult}"` : ''}</div>
-        </div>
-
-        <div class="presentation-joke ${presentationPhase >= 2 ? 'active' : ''}">
-          <div class="joke-label">${opponent.emoji} ${opponent.name}</div>
-          <div class="joke-text" id="ai-joke-text">${presentationPhase > 2 ? `"${aiInsult}"` : ''}</div>
-        </div>
-      </div>
-
-      ${presentationPhase < 3 ? `
-        <div class="presentation-status">
-          ${presentationPhase === 1 ? 'Delivering your roast...' : 'Opponent is responding...'}
+      ${hostLine ? `
+        <div class="host-aside centered">
+          <span class="host-aside-emoji">${HOST.emoji}</span>
+          <span class="host-aside-text" id="host-aside-text"></span>
         </div>
       ` : ''}
+
+      <div class="presentation-single">
+        <div class="presentation-joke active">
+          <div class="joke-label">${currentLabel}</div>
+          <div class="joke-text" id="${showingFirst ? 'first' : 'second'}-joke-text"></div>
+        </div>
+      </div>
+
+      <div class="presentation-status">
+        ${isPlayerTurn ? 'Delivering your roast...' : `${opponent.name} is roasting...`}
+      </div>
     </div>
   `;
 }
 
 function renderJudging() {
-  const { roundJudges, judgeResults, currentJudgeIndex, opponent, hostLine } = state;
+  const { roundJudges, judgeResults, currentJudgeIndex, opponent, hostLine, currentRoaster } = state;
+
+  // Use currentRoaster directly - it's set by game.js and persists through judging
+  const judgingPlayer = currentRoaster === 'player';
+  const judgingLabel = judgingPlayer ? '🎭 YOU' : `${opponent.emoji} ${opponent.name}`;
 
   return `
     <div class="judging">
+      <div class="judging-header">
+        <div class="judging-for">Judging: ${judgingLabel}</div>
+      </div>
+
       ${hostLine ? `
         <div class="host-aside centered">
           <span class="host-aside-emoji">${HOST.emoji}</span>
@@ -317,9 +330,8 @@ function renderJudging() {
                 <div class="judge-result-name">${result.name}</div>
                 <div class="judge-result-reaction" id="judge-reaction-${i}">${result.reaction ? `"${result.reaction}"` : ''}</div>
               </div>
-              <div class="judge-result-scores">
-                <div class="judge-score-player">You: ${result.playerScore}</div>
-                <div class="judge-score-ai">${opponent.emoji}: ${result.aiScore}</div>
+              <div class="judge-result-score-single">
+                <div class="judge-score-value">${result.score}</div>
               </div>
             </div>
           `).join('')}
@@ -373,7 +385,7 @@ function renderResults() {
 
       <div class="results-grid">
         <div class="result-card ${results.winner === 'player' ? 'winner-player' : ''}">
-          <div class="result-card-label">YOU</div>
+          <div class="result-card-label">🎭 YOU</div>
           <div class="result-card-insult">"${results.playerInsult}"</div>
           <div class="result-card-score player">${results.playerTotal}</div>
         </div>
@@ -384,17 +396,24 @@ function renderResults() {
         </div>
       </div>
 
-      <div class="judge-results">
+      <div class="judge-results-dual">
         ${results.judges.map((j, i) => `
-          <div class="judge-result-card">
-            <div class="judge-result-emoji">${roundJudges[i]?.emoji || '🎭'}</div>
-            <div class="judge-result-content">
+          <div class="judge-result-card-dual">
+            <div class="judge-result-header">
+              <div class="judge-result-emoji">${roundJudges[i]?.emoji || '🎭'}</div>
               <div class="judge-result-name">${j.name}</div>
-              <div class="judge-result-reaction">"${j.reaction}"</div>
             </div>
-            <div class="judge-result-scores">
-              <div class="judge-score-player">${j.playerScore}</div>
-              <div class="judge-score-ai">${j.aiScore}</div>
+            <div class="judge-dual-reactions">
+              <div class="judge-dual-reaction player">
+                <div class="dual-reaction-label">On your roast:</div>
+                <div class="dual-reaction-text">"${j.playerReaction}"</div>
+                <div class="dual-reaction-score">${j.playerScore}</div>
+              </div>
+              <div class="judge-dual-reaction ai">
+                <div class="dual-reaction-label">On ${opponent.name}'s:</div>
+                <div class="dual-reaction-text">"${j.aiReaction}"</div>
+                <div class="dual-reaction-score">${j.aiScore}</div>
+              </div>
             </div>
           </div>
         `).join('')}

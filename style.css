@@ -1299,7 +1299,7 @@ body::after {
   line-height: 1.5;
 }
 
-/* Presentation Screen */
+/* Presentation Screen - Single Roast at a Time */
 .presentation {
   max-width: 520px;
   margin: 0 auto;
@@ -1308,12 +1308,12 @@ body::after {
 
 .presentation-header {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
 }
 
 .presentation-ghost {
-  font-size: 56px;
-  margin-bottom: 12px;
+  font-size: 48px;
+  margin-bottom: 8px;
   filter: drop-shadow(0 0 20px rgba(78, 205, 196, 0.4));
 }
 
@@ -1325,17 +1325,15 @@ body::after {
   font-weight: 600;
 }
 
-.presentation-jokes {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.presentation-single {
+  margin-top: 20px;
 }
 
 .presentation-joke {
   background:
     linear-gradient(135deg, rgba(45, 16, 53, 0.9) 0%, rgba(26, 10, 31, 0.95) 100%);
   border-radius: 14px;
-  padding: 24px;
+  padding: 28px;
   opacity: 0.3;
   transition: all 0.5s ease;
   transform: translateY(15px) scale(0.98);
@@ -1350,17 +1348,18 @@ body::after {
 }
 
 .joke-label {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--gold);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   text-transform: uppercase;
   letter-spacing: 2px;
+  font-weight: 600;
 }
 
 .joke-text {
-  font-size: 19px;
+  font-size: 20px;
   line-height: 1.7;
-  min-height: 60px;
+  min-height: 70px;
   color: var(--text-cream);
   font-style: italic;
 }
@@ -1377,6 +1376,111 @@ body::after {
 @keyframes statusPulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
+}
+
+/* Judging header showing who is being judged */
+.judging-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.judging-for {
+  font-size: 16px;
+  color: var(--gold-bright);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Single score display for one-at-a-time judging */
+.judge-result-score-single {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+}
+
+.judge-score-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--gold-bright);
+  text-shadow: 0 0 16px rgba(212, 165, 116, 0.4);
+}
+
+/* Dual reactions results display */
+.judge-results-dual {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.judge-result-card-dual {
+  background:
+    linear-gradient(135deg, rgba(45, 16, 53, 0.9) 0%, rgba(26, 10, 31, 0.95) 100%);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.judge-result-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(212, 165, 116, 0.15);
+}
+
+.judge-dual-reactions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.judge-dual-reaction {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.judge-dual-reaction.player {
+  border-left: 3px solid #4ade80;
+}
+
+.judge-dual-reaction.ai {
+  border-left: 3px solid #f87171;
+}
+
+.dual-reaction-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  color: var(--gold-dim);
+}
+
+.dual-reaction-text {
+  font-size: 13px;
+  color: var(--text-cream);
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.dual-reaction-score {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.judge-dual-reaction.player .dual-reaction-score {
+  color: #4ade80;
+  text-shadow: 0 0 12px rgba(74, 222, 128, 0.3);
+}
+
+.judge-dual-reaction.ai .dual-reaction-score {
+  color: #f87171;
+  text-shadow: 0 0 12px rgba(248, 113, 113, 0.3);
 }
 
 /* Version */

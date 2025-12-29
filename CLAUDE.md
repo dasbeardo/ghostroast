@@ -1,6 +1,6 @@
 # The Ghost Roast - Project Doc
 
-**Version**: 0.1.0
+**Version**: 0.2.0
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three randomly selected AI judges score the final jokes.
@@ -69,12 +69,16 @@ roastaghost/
 - Key stored in localStorage (`roastaghost_apikey`)
 - Never hardcoded, never sent anywhere except OpenAI
 
-### Judge System
-- 3 separate API calls per round (one per judge)
-- Sequential - each judge sees prior judges' reactions
+### Judge System (v0.2.0 - One-at-a-Time Flow)
+- Roasts are presented and judged ONE AT A TIME
+- Who goes first ALTERNATES each round (playerGoesFirst toggles)
+- Each judge gives 2 reactions per round (one per roast)
+- 6 API calls per round total (3 judges × 2 roasts)
+- On second roast, judges have context of their first reaction (but scores are LOCKED)
+- Judges within each roast phase see prior judges' reactions
 - Judge order shuffled each round
-- Judges evaluate COMPLETE jokes holistically (not individual words)
-- Simplified scoring (no bonus system)
+- Judges evaluate COMPLETE jokes holistically with 25-50 word reactions
+- Results screen shows both reactions per judge side-by-side
 
 ### Host System
 - Mort Holloway hosts the show with typewriter dialogue
@@ -114,18 +118,31 @@ ROUND LOOP (best of 3):
   Player clicks blanks, picks words from WEIGHTED pools
   (Ghost-themed words appear more often)
   ↓
-  PRESENTATION PHASE
-  Player's joke types out dramatically
-  AI's joke types out dramatically
+  === ONE-AT-A-TIME JUDGING (v0.2.0) ===
   ↓
-  JUDGING PHASE (streaming)
-  Mort intro → Judge 1 types → Judge 2 types → Judge 3 types
+  FIRST ROAST PRESENTATION
+  Host introduces first roaster (alternates each round)
+  First roast types out dramatically
+  ↓
+  FIRST ROAST JUDGING
+  Host transitions → Each judge scores (25-50 word reactions)
+  Scores locked immediately
+  ↓
+  SECOND ROAST PRESENTATION
+  Host introduces second roaster
+  Second roast types out dramatically
+  ↓
+  SECOND ROAST JUDGING
+  Host transitions → Each judge scores with context of first
+  (They remember what they said about first roast, can compare)
   ↓
   RESULTS SCREEN
-  Mort announces winner
+  Shows both roasts with total scores
+  Each judge shows BOTH reactions side-by-side
+  Mort announces round winner
   ↓
   If someone has 2 wins → MATCH END (host closing)
-  Else → Next round
+  Else → Next round (toggle who goes first)
 ```
 
 ---

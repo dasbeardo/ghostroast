@@ -1,6 +1,6 @@
 // Game state - single source of truth
 
-export const VERSION = '0.1.0';
+export const VERSION = '0.2.0';
 
 export const state = {
   screen: 'apiKey',  // Start with API key screen
@@ -39,5 +39,11 @@ export const state = {
   currentHostText: '',    // Persisted host text (survives re-renders)
 
   // Presentation phase
-  presentationPhase: 0    // 0=not started, 1=player presenting, 2=ai presenting, 3=done
+  presentationPhase: 0,   // 0=not started, 1=player presenting, 2=ai presenting, 3=done
+
+  // Single-joke judging flow
+  playerGoesFirst: true,  // Alternates each round
+  currentRoaster: null,   // 'player' or 'ai' - who is being judged right now
+  firstRoastScores: [],   // Scores from judging the first roast
+  secondRoastScores: []   // Scores from judging the second roast
 };
