@@ -1,6 +1,6 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.4.0
+**Version**: 0.4.2
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three randomly selected AI judges score the final jokes.
@@ -31,13 +31,17 @@ roastaghost/
 │   └── utils.js        # shuffle, $, typeText, delay
 ├── data/
 │   ├── index.js        # Re-exports all data
-│   ├── ghosts.js       # 27 ghost characters (with theme tags)
-│   ├── judges.js       # 12 judges with personalities
+│   ├── ghosts.js       # 132 ghost characters (with theme tags)
+│   ├── judges.js       # 29 judges with personalities + forbidden behaviors
 │   ├── templates.js    # 16 roast templates (2 slots each)
 │   ├── wordPools.js    # Themed word pools (500+ words)
 │   ├── opponents.js    # 10 AI opponents
 │   └── host.js         # Mort Holloway host character + dialogue templates
 ├── ghostroast/         # Git repo (sync files here before committing)
+├── worker/             # Cloudflare Worker for API proxy (optional sharing feature)
+│   ├── worker.js       # The Worker code
+│   ├── wrangler.toml   # Deployment config
+│   └── DEPLOY.md       # Step-by-step deployment instructions
 ├── server.js           # Express server (NOT USED - for future deployment)
 ├── package.json        # Node deps (NOT USED locally)
 ├── .gitignore
@@ -64,10 +68,18 @@ roastaghost/
 - Creates ghost-relevant roast options without guaranteeing them
 - Themes: `crypto`, `influencer`, `boomer`, `mlm`, `corporate`, `fitness`, `bro`, `wealth`
 
-### API Key Handling
+### API Key Handling (Two Modes)
+**Direct Mode** (default):
 - User inputs their own OpenAI API key on first launch
 - Key stored in localStorage (`roastmortem_apikey`)
 - Never hardcoded, never sent anywhere except OpenAI
+
+**Proxy Mode** (for sharing with friends):
+- Set `PROXY_URL` in `js/state.js` to your Cloudflare Worker URL
+- User enters a password instead of API key
+- Worker validates password and proxies requests to OpenAI
+- Your real API key stays secret on Cloudflare
+- See `worker/DEPLOY.md` for setup instructions
 
 ### Judge System (v0.2.0 - One-at-a-Time Flow)
 - Roasts are presented and judged ONE AT A TIME
@@ -170,25 +182,14 @@ ROUND LOOP (best of 3):
 
 ## Data Inventory
 
-### Ghosts (27)
+### Ghosts (132)
 Fictional deceased people with:
 - Name, emoji, cause of death
 - 3 bio lines (humorous facts about them)
 - **Theme tags** (e.g., `["crypto"]`, `["boomer", "corporate"]`)
 
-### Judges (12)
-- Professor Burns 🎓 (pompous academic, 4-8)
-- Street Cred Steve 🔥 (hype man, 3-9)
-- Yo Mama Martha 👵 (roast veteran, 3-8)
-- The Nihilist 🖤 (nothing matters, 1-5)
-- Hype Beast ⚡ (loses mind over everything, 7-10)
-- Soli the Turtle Farmer 🐢 (obscure JRPG nerd, 3-6)
-- Auntie Petty ⛪ (church lady passive-aggression, 4-8)
-- The Algorithm 📊 (speaks in metrics, 3-8)
-- Bro Council Representative 🍻 (fire or not fire, 4-8)
-- Everyone's Mom 👩‍👦 (confused but supportive, 3-7)
-- Legal Counsel ⚖️ (worried about liability, 3-7)
-- Sleep-Deprived Intern 😴 (wildcard chaos, 2-9)
+### Judges (29)
+Each judge has: personality, scoreRange, catchphrases, actions, and **forbidden behaviors** (to prevent character bleed). See `data/judges.js` for the full list.
 
 ### Templates (16)
 2-slot templates with tighter punchline structure:
@@ -241,6 +242,11 @@ The eternal host of Roast Mortem. Key traits:
 - [ ] Could add more ghost themes (nerd, spiritual, etc.)
 
 ### Completed Recently
+- [x] **Cloudflare Worker proxy (v0.4.2)** - Share game with friends using password, hides API key
+- [x] **GPT prompt optimization (v0.4.2)** - Comedy Priority Ladder, forbidden behaviors, scoring calibration
+- [x] **Expanded to 132 ghosts** - Massive content expansion
+- [x] **Expanded to 29 judges** - Many new judge personalities
+- [x] **Save data export/import (v0.4.1)** - Backup and restore player progress
 - [x] **Rebrand to Roast Mortem (v0.4.0)** - New name, updated localStorage keys, all branding
 - [x] **Player profile system** - Name input screen, stats displayed on menu/end screens
 - [x] **Comprehensive stats tracking** - Wins, losses, streaks, judge averages, opponent records
@@ -264,7 +270,6 @@ The eternal host of Roast Mortem. Key traits:
 - Sound effects / crowd reactions
 - Daily ghost mode
 - Tournament mode
-- Cloudflare deployment
 
 ---
 
@@ -275,8 +280,8 @@ js/main.js          → imports render.js, game.js → calls render()
 js/render.js        → imports state.js, utils.js, game.js (bindEvents), data/host
 js/game.js          → imports state.js, utils.js, api.js, data/*
                     → has buildWeightedPool() for themed word selection
-js/api.js           → imports state.js (for API key), uses GPT-5.2
-js/state.js         → game state, VERSION, API key + player stats (localStorage)
+js/api.js           → imports state.js, PROXY_URL; callOpenAI() helper handles both modes
+js/state.js         → game state, VERSION, PROXY_URL config, API key + player stats (localStorage)
 js/utils.js         → standalone (shuffle, $, typeText, delay)
 data/index.js       → re-exports all data files
 ```
