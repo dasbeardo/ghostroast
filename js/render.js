@@ -533,7 +533,7 @@ function renderPresentation() {
 }
 
 function renderJudging() {
-  const { roundJudges, judgeResults, opponent, hostLine, currentRoaster, playerInsult, aiInsult, playerName, loading, showBanter, judgingComplete, firstRoastBanter, secondRoastBanter, presentationPhase } = state;
+  const { roundJudges, judgeResults, opponent, hostLine, currentRoaster, playerInsult, aiInsult, playerName, loading, showBanter, judgingComplete, firstRoastBanter, secondRoastBanter, presentationPhase, reactionsTyped } = state;
   const displayName = playerName || 'YOU';
 
   // Use currentRoaster directly - it's set by game.js and persists through judging
@@ -578,7 +578,7 @@ function renderJudging() {
               <div class="judge-result-emoji">${result.emoji || roundJudges[i]?.emoji || '🎭'}</div>
               <div class="judge-result-content">
                 <div class="judge-result-name">${result.name}</div>
-                <div class="judge-result-reaction" id="judge-reaction-${i}"></div>
+                <div class="judge-result-reaction" id="judge-reaction-${i}">${reactionsTyped ? `"${result.reaction}"` : ''}</div>
               </div>
               <div class="judge-result-score-single">
                 <div class="judge-score-value">${result.score}</div>
@@ -593,7 +593,7 @@ function renderJudging() {
           <div class="banter-label">💬 Judges React</div>
           <div class="banter-lines">
             ${currentBanter.map((line, i) => `
-              <div class="banter-line" id="banter-${i}"></div>
+              <div class="banter-line" id="banter-${i}">${reactionsTyped ? line : ''}</div>
             `).join('')}
           </div>
         </div>

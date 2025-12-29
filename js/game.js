@@ -506,6 +506,7 @@ async function submitToJudges() {
   state.loading = true;
   state.judgeResults = [];
   state.firstRoastBanter = [];
+  state.reactionsTyped = false;
   render();
 
   // Type host transition
@@ -566,6 +567,9 @@ async function submitToJudges() {
       }
     }
 
+    // Mark reactions as typed so re-renders preserve content
+    state.reactionsTyped = true;
+
     // Store first roast scores
     state.firstRoastScores = state.judgeResults.map(r => ({
       name: r.name,
@@ -612,6 +616,7 @@ async function submitToJudges() {
     state.loading = true;
     state.judgeResults = [];
     state.secondRoastBanter = [];
+    state.reactionsTyped = false;
     render();
 
     await delay(300);
@@ -676,6 +681,9 @@ async function submitToJudges() {
         }
       }
     }
+
+    // Mark reactions as typed so re-renders preserve content
+    state.reactionsTyped = true;
 
     // Store second roast scores
     state.secondRoastScores = state.judgeResults.map(r => ({

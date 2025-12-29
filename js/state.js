@@ -116,7 +116,8 @@ export const state = {
   secondRoastBanter: [],  // Banter lines after second roast judging
   showBanter: false,      // Whether to show banter section
   judgingComplete: false, // Whether current judging phase is done (show continue)
-  continueResolver: null  // Promise resolver for continue button
+  continueResolver: null, // Promise resolver for continue button
+  reactionsTyped: false   // Whether reactions have finished typing (persist content on re-render)
 };
 
 // Save player stats to localStorage
