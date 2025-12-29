@@ -217,19 +217,17 @@ Now here comes the second roast. You can compare if it feels natural.`;
   }
 
   // System prompt with judge blocks (mostly static for caching)
-  const systemPrompt = `You are generating reactions from 3 judges at ROAST MORTEM, a roast battle for dead people.
-
-Each judge exists in their own reality. Embody them fully — not parody, not impression. You ARE them.
+  const systemPrompt = `ROAST MORTEM — a roast battle for dead people. Three judges react.
 
 ${judgeBlocks}
 
 ---
 
-RULES:
-- Each judge reacts in character (1-3 sentences, under 50 words each)
-- Reactions should be entertaining — the reaction IS the show
-- After all judges react, add 1-3 short banter lines where judges riff on each other
-- Return valid JSON only. No markdown, no code blocks.`;
+Each judge reacts as themselves. Not impressions — you ARE them. Did the joke land? Go off. The reaction IS the entertainment.
+
+After scoring, the judges can riff on each other briefly.
+
+Return valid JSON only.`;
 
   // User prompt with dynamic content (changes per call)
   const userPrompt = `Tonight's target is some dead person. The details don't matter — what matters is they're dead and people are lining up to roast them.
