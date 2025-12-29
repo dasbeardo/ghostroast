@@ -127,6 +127,69 @@ BEGIN JSON:`;
   return parsed;
 }
 
+// EXPERIMENTAL: Simplified judge prompt - less rules, more character
+export async function getJudgeSingleRoastResponseV2(judge, ghostContext, roasterName, roasterEmoji, roast, isSecondRoast, priorJudgeReactions, firstRoastContext) {
+
+  // Minimal context building
+  let context = '';
+  if (isSecondRoast && firstRoastContext) {
+    context = `\n\nYou already saw ${firstRoastContext.roasterName}'s roast: "${firstRoastContext.roast}" — you gave it a ${firstRoastContext.yourScore}.\nNow here comes the second roast.`;
+  }
+
+  if (priorJudgeReactions.length > 0) {
+    const others = priorJudgeReactions.map(r => `${r.name} gave it a ${r.score}`).join(', ');
+    context += `\n\n${others} already scored this one.`;
+  }
+
+  // Character essence only - strip out the "REACTIONS BY SCORE" template garbage
+  // Extract just the first paragraph of personality (the core voice)
+  const personalityCore = judge.personality.split('\n\n')[0];
+
+  const systemPrompt = `You're ${judge.name} ${judge.emoji} — judging a roast battle called ROAST MORTEM.
+
+${personalityCore}
+
+Score range: ${judge.scoreRange[0]}-${judge.scoreRange[1]}. That's your lane.
+
+Your job: React to this roast THE WAY YOU WOULD. Not how a "judge" would. Not with analysis. Just... be you, watching someone try to be funny. Did they make you laugh? Did they bomb? Did they say something unexpected?
+
+Go off. Be yourself. The reaction IS the entertainment.`;
+
+  const userPrompt = `THE GHOST BEING ROASTED:
+${ghostContext}
+${context}
+---
+
+${roasterEmoji} ${roasterName} grabs the mic:
+
+"${roast}"
+
+---
+
+React as ${judge.name}. Say what you'd actually say. Give your score somewhere in the reaction naturally, or at the end.
+
+Format: {"name":"${judge.name}","score":N,"reaction":"your reaction"}`;
+
+  const data = await callOpenAI({
+    model: 'gpt-5.2',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt }
+    ],
+    max_completion_tokens: 300,  // More room to breathe
+    temperature: 0.9  // More creative variance
+  });
+
+  if (data.error) {
+    throw new Error(data.error.message);
+  }
+
+  const text = data.choices?.[0]?.message?.content || '';
+  const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+
+  return parsed;
+}
+
 // Legacy function - judges both roasts at once (kept for reference)
 export async function getJudgeResponse(judge, ghostContext, priorReactions, playerInsult, aiInsult, opponent) {
   // Build context from prior judges

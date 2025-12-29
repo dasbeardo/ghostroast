@@ -1,7 +1,7 @@
 // Game logic
 import { shuffle, $, typeText, delay } from './utils.js';
-import { state, savePlayerStats, exportSaveData, importSaveData, PROXY_URL } from './state.js';
-import { getJudgeSingleRoastResponse } from './api.js';
+import { state, savePlayerStats, exportSaveData, importSaveData, PROXY_URL, USE_EXPERIMENTAL_JUDGES } from './state.js';
+import { getJudgeSingleRoastResponse, getJudgeSingleRoastResponseV2 } from './api.js';
 import {
   GHOSTS, JUDGES, TEMPLATES, WORD_POOLS, OPPONENTS,
   HOST_OPENINGS, HOST_GHOST_INTROS, HOST_GHOST_REACTIONS,
@@ -13,6 +13,11 @@ import {
   HOST_MATCH_WIN, HOST_MATCH_LOSS, HOST_CLOSINGS,
   getHostLine, getPlayerAwareOpening
 } from '../data/index.js';
+
+// Helper to pick the right judge function based on experimental flag
+const getJudgeResponse = USE_EXPERIMENTAL_JUDGES
+  ? getJudgeSingleRoastResponseV2
+  : getJudgeSingleRoastResponse;
 
 // Forward declaration - render will be injected to avoid circular dependency
 let render = () => {};
@@ -527,7 +532,7 @@ Died: ${state.ghost.died}
         score: r.score
       }));
 
-      const result = await getJudgeSingleRoastResponse(
+      const result = await getJudgeResponse(
         judge, ghostContext, firstName, firstEmoji, firstInsult,
         false, priorReactions, null
       );
@@ -622,7 +627,7 @@ Died: ${state.ghost.died}
         yourScore: state.firstRoastScores[i].score
       };
 
-      const result = await getJudgeSingleRoastResponse(
+      const result = await getJudgeResponse(
         judge, ghostContext, secondName, secondEmoji, secondInsult,
         true, priorReactions, firstRoastContext
       );

@@ -6,6 +6,10 @@ export const VERSION = '0.4.2';
 // Leave empty to use direct API key mode
 export const PROXY_URL = '';  // e.g., 'https://roast-mortem-api.your-subdomain.workers.dev'
 
+// EXPERIMENTAL: Use simplified judge prompts (V2)
+// Set to true to test the new less-constrained judge reactions
+export const USE_EXPERIMENTAL_JUDGES = true;
+
 // Migrate old localStorage keys (from pre-rebrand)
 function migrateOldData() {
   // Check for old stats
