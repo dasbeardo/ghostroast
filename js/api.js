@@ -234,7 +234,7 @@ ${roasterEmoji} ${roasterName} grabs the mic:
 
 ---
 
-Return valid JSON only. Each judge reacts in character (1-3 sentences, under 50 words each). Then add 1-3 short banter lines where judges riff on each other's reactions.
+Return valid JSON only. Each judge reacts in character (3-5 sentences). Then add 1-3 short banter lines where judges riff on each other's reactions.
 
 {
   "judges": [
