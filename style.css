@@ -1829,3 +1829,81 @@ body::after {
   color: var(--gold);
   font-weight: 600;
 }
+
+/* Stats Actions */
+.stats-actions {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* Save Data Section */
+.save-data-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(212, 165, 116, 0.15);
+}
+
+.save-data-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.import-area {
+  margin-top: 16px;
+}
+
+.import-area.hidden {
+  display: none;
+}
+
+.import-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid rgba(212, 165, 116, 0.3);
+  background: rgba(26, 10, 31, 0.9);
+  color: var(--text-cream);
+  font-family: monospace;
+  font-size: 12px;
+  resize: vertical;
+  margin-bottom: 12px;
+}
+
+.import-textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.import-textarea::placeholder {
+  color: var(--gold-dim);
+  opacity: 0.6;
+}
+
+.import-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.save-message {
+  text-align: center;
+  margin-top: 12px;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  min-height: 20px;
+}
+
+.save-message.success {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+}
+
+.save-message.error {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+}

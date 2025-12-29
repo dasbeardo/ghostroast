@@ -1,6 +1,6 @@
 // Game logic
 import { shuffle, $, typeText, delay } from './utils.js';
-import { state, savePlayerStats } from './state.js';
+import { state, savePlayerStats, exportSaveData, importSaveData } from './state.js';
 import { getJudgeSingleRoastResponse } from './api.js';
 import {
   GHOSTS, JUDGES, TEMPLATES, WORD_POOLS, OPPONENTS,
@@ -190,6 +190,67 @@ export function bindEvents() {
     state.screen = 'menu';
     render();
   };
+
+  // Export/Import save data
+  const exportBtn = $('#export-btn');
+  if (exportBtn) {
+    exportBtn.onclick = () => {
+      const data = exportSaveData();
+      // Copy to clipboard
+      navigator.clipboard.writeText(data).then(() => {
+        const msg = $('#save-message');
+        if (msg) {
+          msg.textContent = 'Save data copied to clipboard!';
+          msg.className = 'save-message success';
+          setTimeout(() => { msg.textContent = ''; msg.className = 'save-message'; }, 3000);
+        }
+      }).catch(() => {
+        // Fallback: show in a prompt
+        prompt('Copy this save data:', data);
+      });
+    };
+  }
+
+  const importBtn = $('#import-btn');
+  if (importBtn) {
+    importBtn.onclick = () => {
+      const area = $('#import-area');
+      if (area) area.classList.remove('hidden');
+    };
+  }
+
+  const importCancelBtn = $('#import-cancel-btn');
+  if (importCancelBtn) {
+    importCancelBtn.onclick = () => {
+      const area = $('#import-area');
+      if (area) area.classList.add('hidden');
+      const textarea = $('#import-textarea');
+      if (textarea) textarea.value = '';
+    };
+  }
+
+  const importConfirmBtn = $('#import-confirm-btn');
+  if (importConfirmBtn) {
+    importConfirmBtn.onclick = () => {
+      const textarea = $('#import-textarea');
+      const msg = $('#save-message');
+      if (textarea && textarea.value.trim()) {
+        const result = importSaveData(textarea.value.trim());
+        if (result.success) {
+          if (msg) {
+            msg.textContent = `Loaded save data for ${result.playerName}!`;
+            msg.className = 'save-message success';
+          }
+          setTimeout(() => render(), 1500);
+        } else {
+          if (msg) {
+            msg.textContent = result.error;
+            msg.className = 'save-message error';
+          }
+        }
+      }
+    };
+  }
 
   // Skip typing on click anywhere during typing
   if (state.isTyping) {

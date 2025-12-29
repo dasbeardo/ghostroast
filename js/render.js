@@ -285,7 +285,26 @@ function renderStats() {
         </div>
       ` : ''}
 
-      <button class="btn" id="back-to-menu-btn">Back to Menu</button>
+      <div class="stats-actions">
+        <button class="btn" id="back-to-menu-btn">Back to Menu</button>
+      </div>
+
+      <div class="save-data-section">
+        <h2 class="stats-section-title">Save Data</h2>
+        <div class="save-data-buttons">
+          <button class="btn btn-small" id="export-btn">Export</button>
+          <button class="btn btn-small" id="import-btn">Import</button>
+        </div>
+        <div id="import-area" class="import-area hidden">
+          <textarea id="import-textarea" class="import-textarea" placeholder="Paste save data here..."></textarea>
+          <div class="import-buttons">
+            <button class="btn btn-small" id="import-confirm-btn">Load Data</button>
+            <button class="btn-link" id="import-cancel-btn">Cancel</button>
+          </div>
+        </div>
+        <div id="save-message" class="save-message"></div>
+      </div>
+
       <div class="version">v${VERSION}</div>
     </div>
   `;

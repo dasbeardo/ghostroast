@@ -1,6 +1,26 @@
 // Game state - single source of truth
 
-export const VERSION = '0.4.0';
+export const VERSION = '0.4.1';
+
+// Migrate old localStorage keys (from pre-rebrand)
+function migrateOldData() {
+  // Check for old stats
+  const oldStats = localStorage.getItem('roastaghost_stats');
+  if (oldStats && !localStorage.getItem('roastmortem_stats')) {
+    localStorage.setItem('roastmortem_stats', oldStats);
+    localStorage.removeItem('roastaghost_stats');
+  }
+
+  // Check for old API key
+  const oldKey = localStorage.getItem('roastaghost_apikey');
+  if (oldKey && !localStorage.getItem('roastmortem_apikey')) {
+    localStorage.setItem('roastmortem_apikey', oldKey);
+    localStorage.removeItem('roastaghost_apikey');
+  }
+}
+
+// Run migration on load
+migrateOldData();
 
 // Load player stats from localStorage
 function loadPlayerStats() {
@@ -86,4 +106,45 @@ export const state = {
 // Save player stats to localStorage
 export function savePlayerStats() {
   localStorage.setItem('roastmortem_stats', JSON.stringify(state.stats));
+}
+
+// Export save data as JSON string
+export function exportSaveData() {
+  const data = {
+    version: VERSION,
+    exportedAt: new Date().toISOString(),
+    stats: state.stats
+  };
+  return JSON.stringify(data, null, 2);
+}
+
+// Import save data from JSON string
+export function importSaveData(jsonString) {
+  try {
+    const data = JSON.parse(jsonString);
+
+    // Validate it has stats
+    if (!data.stats || typeof data.stats !== 'object') {
+      return { success: false, error: 'Invalid save data: missing stats' };
+    }
+
+    // Validate required fields exist
+    const requiredFields = ['playerName', 'totalWins', 'totalLosses'];
+    for (const field of requiredFields) {
+      if (!(field in data.stats)) {
+        return { success: false, error: `Invalid save data: missing ${field}` };
+      }
+    }
+
+    // Merge imported data into current state
+    state.stats = data.stats;
+    state.playerName = data.stats.playerName || '';
+
+    // Save to localStorage
+    savePlayerStats();
+
+    return { success: true, playerName: data.stats.playerName };
+  } catch (e) {
+    return { success: false, error: 'Could not parse save data: ' + e.message };
+  }
 }
