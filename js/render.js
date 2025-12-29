@@ -291,11 +291,16 @@ function renderPresentation() {
 }
 
 function renderJudging() {
-  const { roundJudges, judgeResults, currentJudgeIndex, opponent, hostLine, currentRoaster } = state;
+  const { roundJudges, judgeResults, currentJudgeIndex, opponent, hostLine, currentRoaster, playerInsult, aiInsult } = state;
 
   // Use currentRoaster directly - it's set by game.js and persists through judging
   const judgingPlayer = currentRoaster === 'player';
   const judgingLabel = judgingPlayer ? '🎭 YOU' : `${opponent.emoji} ${opponent.name}`;
+  const currentInsult = judgingPlayer ? playerInsult : aiInsult;
+
+  // Reverse the results so newest appears on top
+  const reversedResults = [...judgeResults].reverse();
+  const reversedIndices = judgeResults.map((_, i) => judgeResults.length - 1 - i);
 
   return `
     <div class="judging">
@@ -306,9 +311,14 @@ function renderJudging() {
       ${hostLine ? `
         <div class="host-aside centered">
           <span class="host-aside-emoji">${HOST.emoji}</span>
-          <span class="host-aside-text" id="host-aside-text"></span>
+          <span class="host-aside-text" id="host-aside-text">${state.currentHostText || ''}</span>
         </div>
       ` : ''}
+
+      <div class="roast-being-judged">
+        <div class="roast-being-judged-label">${judgingLabel}</div>
+        <div class="roast-being-judged-text">"${currentInsult}"</div>
+      </div>
 
       <div class="judges-progress">
         ${roundJudges.map((j, i) => `
@@ -321,27 +331,29 @@ function renderJudging() {
         `).join('')}
       </div>
 
+      ${currentJudgeIndex < roundJudges.length ? `
+        <div class="current-judge-thinking">
+          <div class="thinking-emoji">${roundJudges[currentJudgeIndex].emoji}</div>
+          <p class="thinking-text">${roundJudges[currentJudgeIndex].name} is judging...</p>
+        </div>
+      ` : ''}
+
       ${judgeResults.length > 0 ? `
         <div class="judge-results-stream">
-          ${judgeResults.map((result, i) => `
+          ${reversedResults.map((result, ri) => {
+            const originalIndex = judgeResults.length - 1 - ri;
+            return `
             <div class="judge-result-card revealed">
-              <div class="judge-result-emoji">${roundJudges[i].emoji}</div>
+              <div class="judge-result-emoji">${roundJudges[originalIndex].emoji}</div>
               <div class="judge-result-content">
                 <div class="judge-result-name">${result.name}</div>
-                <div class="judge-result-reaction" id="judge-reaction-${i}">${result.reaction ? `"${result.reaction}"` : ''}</div>
+                <div class="judge-result-reaction" id="judge-reaction-${originalIndex}">${result.reaction ? `"${result.reaction}"` : ''}</div>
               </div>
               <div class="judge-result-score-single">
                 <div class="judge-score-value">${result.score}</div>
               </div>
             </div>
-          `).join('')}
-        </div>
-      ` : ''}
-
-      ${currentJudgeIndex < roundJudges.length ? `
-        <div class="current-judge-thinking">
-          <div class="thinking-emoji">${roundJudges[currentJudgeIndex].emoji}</div>
-          <p class="thinking-text">${roundJudges[currentJudgeIndex].name} is judging...</p>
+          `}).join('')}
         </div>
       ` : ''}
     </div>

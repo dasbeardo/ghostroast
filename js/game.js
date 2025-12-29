@@ -311,17 +311,19 @@ Died: ${state.ghost.died}
 
   // ===== FIRST ROAST JUDGING =====
   state.hostLine = getHostLine(HOST_AFTER_FIRST_ROAST);
+  state.currentHostText = ''; // Clear for typing
   state.screen = 'judging';
   state.loading = true;
   state.judgeResults = [];
   state.currentJudgeIndex = 0;
   render();
 
-  // Type host transition
+  // Type host transition and persist it
   await delay(300);
   hostAsideEl = document.getElementById('host-aside-text');
   if (hostAsideEl) {
     await typeText(hostAsideEl, state.hostLine, { baseSpeed: 20 });
+    state.currentHostText = state.hostLine; // Persist after typing
   }
 
   try {
@@ -399,6 +401,7 @@ Died: ${state.ghost.died}
 
     // ===== SECOND ROAST JUDGING =====
     state.hostLine = getHostLine(HOST_AFTER_SECOND_ROAST);
+    state.currentHostText = ''; // Clear for typing
     state.screen = 'judging';
     state.judgeResults = []; // Reset for second roast judging display
     state.currentJudgeIndex = 0;
@@ -408,6 +411,7 @@ Died: ${state.ghost.died}
     hostAsideEl = document.getElementById('host-aside-text');
     if (hostAsideEl) {
       await typeText(hostAsideEl, state.hostLine, { baseSpeed: 20 });
+      state.currentHostText = state.hostLine; // Persist after typing
     }
 
     // Each judge scores the second roast (with memory of their first reaction)
