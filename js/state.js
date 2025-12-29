@@ -36,6 +36,7 @@ export const state = {
   isTyping: false,        // Whether typewriter is currently running
   canSkip: false,         // Whether user can skip current typing
   showContinue: false,    // Whether to show continue button
+  currentHostText: '',    // Persisted host text (survives re-renders)
 
   // Presentation phase
   presentationPhase: 0    // 0=not started, 1=player presenting, 2=ai presenting, 3=done

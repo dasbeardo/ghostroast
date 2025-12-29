@@ -48,6 +48,7 @@ function buildWeightedPool(poolName, ghostThemes = []) {
 async function hostSpeak(text, elementId = 'host-text') {
   state.isTyping = true;
   state.showContinue = false;
+  state.currentHostText = '';  // Clear while typing
   render();
 
   // Small delay to ensure DOM is ready
@@ -62,6 +63,7 @@ async function hostSpeak(text, elementId = 'host-text') {
 
   state.isTyping = false;
   state.showContinue = true;
+  state.currentHostText = text;  // Store text so it persists through re-render
   render();
 }
 

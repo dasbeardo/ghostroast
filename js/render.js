@@ -49,7 +49,7 @@ function renderHostBox(showContinue = false) {
         <div class="host-name">Mort</div>
       </div>
       <div class="host-dialogue">
-        <p class="host-text" id="host-text"></p>
+        <p class="host-text" id="host-text">${state.currentHostText || ''}</p>
         ${state.isTyping ? `<span class="typing-indicator">▌</span>` : ''}
       </div>
       ${showContinue && state.showContinue ? `
