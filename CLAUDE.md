@@ -1,9 +1,9 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.5.0
+**Version**: 0.6.0
 
 ## What This Is
-A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three randomly selected AI judges score the final jokes.
+A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three AI judges (player-selected or random) score the final jokes.
 
 ## Current State
 **Working prototype** - Playable at `http://localhost:3000` (run `python3 -m http.server 3000`)
@@ -32,7 +32,7 @@ roastaghost/
 ├── data/
 │   ├── index.js        # Re-exports all data
 │   ├── ghosts.js       # 132 ghost characters (with theme tags)
-│   ├── judges.js       # 12 V4 method-acting judges (celebrity personas)
+│   ├── judges.js       # 29 V4 method-acting judges (celebrity personas)
 │   ├── templates.js    # 16 roast templates (2 slots each)
 │   ├── wordPools.js    # Themed word pools (500+ words)
 │   ├── opponents.js    # 10 AI opponents
@@ -89,8 +89,21 @@ roastaghost/
 - On second roast, judges have context of their first reaction (but scores are LOCKED)
 - Judges within each roast phase see prior judges' reactions
 - Judge order shuffled each round
-- Judges evaluate COMPLETE jokes holistically with 25-50 word reactions
+- Judges evaluate COMPLETE jokes holistically with 3-5 sentence reactions
 - Results screen shows both reactions per judge side-by-side
+
+### Judge Selection (v0.6.0)
+- Before match starts, player chooses 3 judges from the full roster (29)
+- Tap judges to select/deselect, 3 slots show current picks
+- "Surprise Me" button for random selection
+- Prevents unfamiliar judge confusion while keeping discovery possible
+
+### Card Stack UI (v0.6.0)
+- Judge reactions display as stacked cards instead of scrolling list
+- Cards animate in one at a time as reactions complete
+- Banter card appears on top after all judges react
+- Swipe or use dots/arrows to navigate between cards
+- Scores pop in after each reaction finishes typing
 
 ### Host System
 - Mort Holloway hosts the show with typewriter dialogue
@@ -128,7 +141,10 @@ PLAYER NAME SCREEN (v0.3.0)
 MENU → START GAME (or VIEW STATS)
   ↓
 Pick random opponent (from 10)
-Pick 3 random judges (from 12)
+  ↓
+JUDGE SELECTION (v0.6.0)
+  Player picks 3 judges OR clicks "Surprise Me" for random
+  ↓
 Set scores to 0-0, round to 1
   ↓
 MATCH OPENING (HOST)
@@ -188,12 +204,16 @@ Fictional deceased people with:
 - 3 bio lines (humorous facts about them)
 - **Theme tags** (e.g., `["crypto"]`, `["boomer", "corporate"]`)
 
-### Judges (12)
+### Judges (29)
 V4 "Method Acting" format with celebrity personas. Each judge has:
 - id, name, emoji, scoreRange
 - personality (second-person immersive description)
 
-Current roster: Tommy Wiseau, Donald Trump, Kanye West, Macho Man Randy Savage, Borat, Christopher Walken, Samuel L. Jackson, Owen Wilson, Gordon Ramsay, Jeff Goldblum, Morgan Freeman, Gilbert Gottfried.
+Current roster:
+- **Original 12**: Tommy Wiseau, Donald Trump, Kanye West, Macho Man Randy Savage, Borat, Christopher Walken, Samuel L. Jackson, Owen Wilson, Gordon Ramsay, Jeff Goldblum, Morgan Freeman, Gilbert Gottfried
+- **Wrestling (5)**: Ric Flair, Vince McMahon, The Iron Sheik, Ultimate Warrior, Jesse Ventura
+- **Actors/Characters (6)**: Moira Rose, Werner Herzog, Nicolas Cage, David Attenborough, Gary Busey, Jennifer Coolidge
+- **Villains/TV (6)**: GLaDOS, Darth Vader, Simon Cowell, Judge Judy, Dr. Phil, Chris Hansen
 
 **V3 Panel Judging**: Single API call returns all 3 judges' reactions + banter between them.
 
@@ -248,10 +268,12 @@ The eternal host of Roast Mortem. Key traits:
 - [ ] Could add more ghost themes (nerd, spiritual, etc.)
 
 ### Completed Recently
+- [x] **Card stack UI (v0.6.0)** - Judge reactions as swipeable cards, scores pop in after typing
+- [x] **Judge selection screen (v0.6.0)** - Pick your 3 judges or use "Surprise Me" for random
+- [x] **Expanded to 29 judges (v0.6.0)** - Wrestling legends, actors, TV personalities, villains
 - [x] **Cloudflare Worker proxy (v0.4.2)** - Share game with friends using password, hides API key
 - [x] **GPT prompt optimization (v0.4.2)** - Comedy Priority Ladder, forbidden behaviors, scoring calibration
 - [x] **Expanded to 132 ghosts** - Massive content expansion
-- [x] **Expanded to 29 judges** - Many new judge personalities
 - [x] **Save data export/import (v0.4.1)** - Backup and restore player progress
 - [x] **Rebrand to Roast Mortem (v0.4.0)** - New name, updated localStorage keys, all branding
 - [x] **Player profile system** - Name input screen, stats displayed on menu/end screens
