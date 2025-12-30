@@ -220,6 +220,174 @@ body::after {
   font-size: 15px;
 }
 
+/* ===== JUDGE SELECTION SCREEN ===== */
+.judge-select {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.judge-select-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.judge-select-header h2 {
+  font-size: 1rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.opponent-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(212, 165, 116, 0.1);
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(212, 165, 116, 0.3);
+}
+
+.opponent-emoji {
+  font-size: 2rem;
+}
+
+.opponent-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.judge-select-body {
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.judge-select-body h3 {
+  font-size: 1.5rem;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.judge-select-hint {
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.judge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 500px) {
+  .judge-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.judge-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  background: rgba(30, 20, 15, 0.8);
+  border: 2px solid rgba(212, 165, 116, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.judge-tile:hover:not(.disabled) {
+  background: rgba(212, 165, 116, 0.1);
+  border-color: rgba(212, 165, 116, 0.5);
+  transform: translateY(-2px);
+}
+
+.judge-tile.selected {
+  background: rgba(212, 165, 116, 0.2);
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(212, 165, 116, 0.3);
+}
+
+.judge-tile.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.judge-tile-emoji {
+  font-size: 1.8rem;
+}
+
+.judge-tile-name {
+  font-size: 0.7rem;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.judge-select-selected {
+  margin-bottom: 24px;
+}
+
+.selected-judges {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.selected-judge-slot {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 20, 15, 0.8);
+  border: 2px dashed rgba(212, 165, 116, 0.3);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.selected-judge-slot.filled {
+  border-style: solid;
+  border-color: var(--gold);
+  background: rgba(212, 165, 116, 0.1);
+}
+
+.selected-judge-emoji {
+  font-size: 2rem;
+}
+
+.empty-slot {
+  font-size: 1.5rem;
+  color: #555;
+}
+
+.judge-select-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid rgba(212, 165, 116, 0.5);
+  color: var(--gold);
+}
+
+.btn-secondary:hover {
+  background: rgba(212, 165, 116, 0.1);
+  border-color: var(--gold);
+}
+
 /* API Key Screen */
 .api-key-screen {
   display: flex;

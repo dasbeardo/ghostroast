@@ -73,6 +73,7 @@ export const state = {
   ghost: null,
   judges: [],
   roundJudges: [], // Shuffled order for this round
+  selectedJudges: [], // Judges being selected on selection screen
 
   // Player's roast
   playerTemplate: null,

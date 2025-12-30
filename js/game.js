@@ -263,6 +263,20 @@ export function bindEvents() {
     render();
   };
 
+  // Judge selection screen
+  document.querySelectorAll('.judge-tile').forEach(tile => {
+    tile.onclick = () => {
+      const judgeId = tile.dataset.judgeId;
+      toggleJudgeSelection(judgeId);
+    };
+  });
+
+  const randomJudgesBtn = $('#random-judges-btn');
+  if (randomJudgesBtn) randomJudgesBtn.onclick = selectRandomJudges;
+
+  const confirmJudgesBtn = $('#confirm-judges-btn');
+  if (confirmJudgesBtn) confirmJudgesBtn.onclick = confirmJudgeSelection;
+
   // Judging continue button (V3 panel approach)
   const judgingContinueBtn = $('#judging-continue-btn');
   if (judgingContinueBtn) judgingContinueBtn.onclick = handleJudgingContinue;
@@ -400,10 +414,40 @@ async function handleContinue() {
 
 async function startGame() {
   state.opponent = OPPONENTS[Math.floor(Math.random() * OPPONENTS.length)];
-  state.judges = shuffle(JUDGES).slice(0, 3);
+  state.selectedJudges = [];
   state.scores = { player: 0, ai: 0 };
   state.round = 1;
   state.usedGhosts = [];
+
+  // Go to judge selection screen
+  state.screen = 'judgeSelect';
+  render();
+}
+
+function toggleJudgeSelection(judgeId) {
+  const judge = JUDGES.find(j => j.id === judgeId);
+  if (!judge) return;
+
+  const existingIndex = state.selectedJudges.findIndex(j => j.id === judgeId);
+  if (existingIndex >= 0) {
+    // Deselect
+    state.selectedJudges.splice(existingIndex, 1);
+  } else if (state.selectedJudges.length < 3) {
+    // Select
+    state.selectedJudges.push(judge);
+  }
+  render();
+}
+
+function selectRandomJudges() {
+  state.selectedJudges = shuffle([...JUDGES]).slice(0, 3);
+  render();
+}
+
+async function confirmJudgeSelection() {
+  if (state.selectedJudges.length !== 3) return;
+
+  state.judges = [...state.selectedJudges];
 
   // Show match opening with host
   state.screen = 'matchOpening';

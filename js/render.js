@@ -2,7 +2,7 @@
 import { $ } from './utils.js';
 import { state, VERSION } from './state.js';
 import { bindEvents, handleJudgingContinue } from './game.js';
-import { HOST } from '../data/index.js';
+import { HOST, JUDGES } from '../data/index.js';
 
 export function render() {
   const app = $('#app');
@@ -22,6 +22,9 @@ export function render() {
       break;
     case 'stats':
       app.innerHTML = renderStats();
+      break;
+    case 'judgeSelect':
+      app.innerHTML = renderJudgeSelect();
       break;
     case 'matchOpening':
       app.innerHTML = renderMatchOpening();
@@ -343,6 +346,62 @@ function renderStats() {
       </div>
 
       <div class="version">v${VERSION}</div>
+    </div>
+  `;
+}
+
+function renderJudgeSelect() {
+  const { opponent, selectedJudges, playerName } = state;
+  const displayName = playerName || 'YOU';
+
+  return `
+    <div class="judge-select">
+      <div class="judge-select-header">
+        <h2>Your Opponent</h2>
+        <div class="opponent-preview">
+          <span class="opponent-emoji">${opponent.emoji}</span>
+          <span class="opponent-name">${opponent.name}</span>
+        </div>
+      </div>
+
+      <div class="judge-select-body">
+        <h3>Choose Your Judges</h3>
+        <p class="judge-select-hint">Select 3 judges or let fate decide</p>
+
+        <div class="judge-grid">
+          ${JUDGES.map(judge => {
+            const isSelected = selectedJudges.some(j => j.id === judge.id);
+            const isDisabled = !isSelected && selectedJudges.length >= 3;
+            return `
+              <button class="judge-tile ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}"
+                      data-judge-id="${judge.id}" ${isDisabled ? 'disabled' : ''}>
+                <span class="judge-tile-emoji">${judge.emoji}</span>
+                <span class="judge-tile-name">${judge.name}</span>
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="judge-select-selected">
+          <div class="selected-judges">
+            ${[0, 1, 2].map(i => {
+              const judge = selectedJudges[i];
+              return `
+                <div class="selected-judge-slot ${judge ? 'filled' : 'empty'}">
+                  ${judge ? `<span class="selected-judge-emoji">${judge.emoji}</span>` : '<span class="empty-slot">?</span>'}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <div class="judge-select-actions">
+          <button class="btn btn-secondary" id="random-judges-btn">🎲 Surprise Me</button>
+          <button class="btn" id="confirm-judges-btn" ${selectedJudges.length < 3 ? 'disabled' : ''}>
+            Start Match →
+          </button>
+        </div>
+      </div>
     </div>
   `;
 }
