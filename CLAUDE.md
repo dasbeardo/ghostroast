@@ -1,6 +1,6 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.6.0
+**Version**: 0.6.1
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three AI judges (player-selected or random) score the final jokes.
@@ -32,7 +32,7 @@ roastaghost/
 ├── data/
 │   ├── index.js        # Re-exports all data
 │   ├── ghosts.js       # 132 ghost characters (with theme tags)
-│   ├── judges.js       # 29+ V4 method-acting judges (with tags for filtering)
+│   ├── judges.js       # 36 V4 method-acting judges (with tags for filtering)
 │   ├── templates.js    # 16 roast templates (2 slots each)
 │   ├── wordPools.js    # Themed word pools (500+ words)
 │   ├── opponents.js    # 10 AI opponents
@@ -205,17 +205,19 @@ Fictional deceased people with:
 - 3 bio lines (humorous facts about them)
 - **Theme tags** (e.g., `["crypto"]`, `["boomer", "corporate"]`)
 
-### Judges (29+)
+### Judges (36)
 V4 "Method Acting" format with celebrity personas. Each judge has:
 - id, name, emoji, scoreRange
 - tags (for filtering: `wrestling`, `politics`, `actors`, `tv`, `villains`, `sports`, `chaos`)
 - personality (second-person immersive description)
 
-Current roster:
+Current roster (36 judges):
 - **Original 12**: Tommy Wiseau, Donald Trump, Kanye West, Macho Man Randy Savage, Borat, Christopher Walken, Samuel L. Jackson, Owen Wilson, Gordon Ramsay, Jeff Goldblum, Morgan Freeman, Gilbert Gottfried
 - **Wrestling (5)**: Ric Flair, Vince McMahon, The Iron Sheik, Ultimate Warrior, Jesse Ventura
-- **Actors/Characters (6)**: Moira Rose, Werner Herzog, Nicolas Cage, David Attenborough, Gary Busey, Jennifer Coolidge
+- **Actors/Characters (7)**: Moira Rose, Werner Herzog, Nicolas Cage, David Attenborough, Gary Busey, Jennifer Coolidge, William Shatner
 - **Villains/TV (6)**: GLaDOS, Darth Vader, Simon Cowell, Judge Judy, Dr. Phil, Chris Hansen
+- **Politics (3)**: Sarah Palin, Barack Obama, George W. Bush
+- **Media/Chaos (3)**: Alex Jones, Joe Rogan, John Madden
 
 **V3 Panel Judging**: Single API call returns all 3 judges' reactions + banter between them.
 
