@@ -74,6 +74,7 @@ export const state = {
   judges: [],
   roundJudges: [], // Shuffled order for this round
   selectedJudges: [], // Judges being selected on selection screen
+  judgeFilter: null,  // Current filter tag (null = show all)
 
   // Player's roast
   playerTemplate: null,

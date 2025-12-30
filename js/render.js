@@ -2,7 +2,7 @@
 import { $ } from './utils.js';
 import { state, VERSION } from './state.js';
 import { bindEvents, handleJudgingContinue } from './game.js';
-import { HOST, JUDGES } from '../data/index.js';
+import { HOST, JUDGES, JUDGE_TAGS } from '../data/index.js';
 
 export function render() {
   const app = $('#app');
@@ -351,8 +351,13 @@ function renderStats() {
 }
 
 function renderJudgeSelect() {
-  const { opponent, selectedJudges, playerName } = state;
+  const { opponent, selectedJudges, playerName, judgeFilter } = state;
   const displayName = playerName || 'YOU';
+
+  // Filter judges based on current filter
+  const filteredJudges = judgeFilter
+    ? JUDGES.filter(j => j.tags && j.tags.includes(judgeFilter))
+    : JUDGES;
 
   return `
     <div class="judge-select">
@@ -368,8 +373,17 @@ function renderJudgeSelect() {
         <h3>Choose Your Judges</h3>
         <p class="judge-select-hint">Select 3 judges or let fate decide</p>
 
+        <div class="judge-filter-bar">
+          <button class="filter-btn ${!judgeFilter ? 'active' : ''}" data-filter="">All</button>
+          ${JUDGE_TAGS.map(tag => `
+            <button class="filter-btn ${judgeFilter === tag ? 'active' : ''}" data-filter="${tag}">
+              ${tag.charAt(0).toUpperCase() + tag.slice(1)}
+            </button>
+          `).join('')}
+        </div>
+
         <div class="judge-grid">
-          ${JUDGES.map(judge => {
+          ${filteredJudges.map(judge => {
             const isSelected = selectedJudges.some(j => j.id === judge.id);
             const isDisabled = !isSelected && selectedJudges.length >= 3;
             return `

@@ -271,6 +271,15 @@ export function bindEvents() {
     };
   });
 
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.onclick = () => {
+      const filter = btn.dataset.filter;
+      state.judgeFilter = filter || null;
+      render();
+    };
+  });
+
   const randomJudgesBtn = $('#random-judges-btn');
   if (randomJudgesBtn) randomJudgesBtn.onclick = selectRandomJudges;
 

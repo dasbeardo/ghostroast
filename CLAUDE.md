@@ -32,7 +32,7 @@ roastaghost/
 ├── data/
 │   ├── index.js        # Re-exports all data
 │   ├── ghosts.js       # 132 ghost characters (with theme tags)
-│   ├── judges.js       # 29 V4 method-acting judges (celebrity personas)
+│   ├── judges.js       # 29+ V4 method-acting judges (with tags for filtering)
 │   ├── templates.js    # 16 roast templates (2 slots each)
 │   ├── wordPools.js    # Themed word pools (500+ words)
 │   ├── opponents.js    # 10 AI opponents
@@ -93,9 +93,10 @@ roastaghost/
 - Results screen shows both reactions per judge side-by-side
 
 ### Judge Selection (v0.6.0)
-- Before match starts, player chooses 3 judges from the full roster (29)
+- Before match starts, player chooses 3 judges from the full roster
 - Tap judges to select/deselect, 3 slots show current picks
 - "Surprise Me" button for random selection
+- **Filter by tag**: wrestling, politics, actors, tv, villains, chaos
 - Prevents unfamiliar judge confusion while keeping discovery possible
 
 ### Card Stack UI (v0.6.0)
@@ -204,9 +205,10 @@ Fictional deceased people with:
 - 3 bio lines (humorous facts about them)
 - **Theme tags** (e.g., `["crypto"]`, `["boomer", "corporate"]`)
 
-### Judges (29)
+### Judges (29+)
 V4 "Method Acting" format with celebrity personas. Each judge has:
 - id, name, emoji, scoreRange
+- tags (for filtering: `wrestling`, `politics`, `actors`, `tv`, `villains`, `chaos`)
 - personality (second-person immersive description)
 
 Current roster:
@@ -269,8 +271,8 @@ The eternal host of Roast Mortem. Key traits:
 
 ### Completed Recently
 - [x] **Card stack UI (v0.6.0)** - Judge reactions as swipeable cards, scores pop in after typing
-- [x] **Judge selection screen (v0.6.0)** - Pick your 3 judges or use "Surprise Me" for random
-- [x] **Expanded to 29 judges (v0.6.0)** - Wrestling legends, actors, TV personalities, villains
+- [x] **Judge selection screen (v0.6.0)** - Pick your 3 judges, filter by category, or use "Surprise Me"
+- [x] **Expanded judge roster (v0.6.0)** - 29+ judges with tags for filtering (wrestling, politics, actors, tv, villains, chaos)
 - [x] **Cloudflare Worker proxy (v0.4.2)** - Share game with friends using password, hides API key
 - [x] **GPT prompt optimization (v0.4.2)** - Comedy Priority Ladder, forbidden behaviors, scoring calibration
 - [x] **Expanded to 132 ghosts** - Massive content expansion
