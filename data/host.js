@@ -40,7 +40,13 @@ export const HOST_OPENINGS = [
   "From the great beyond to your screen, it's time for another round of posthumous punishment...",
   "Goooood evening. I'm Mort Holloway, your host for Roast Mortem. The show where death is just the punchline.",
   "Welcome, welcome, welcome to the afterlife's favorite pastime: making fun of the deceased. The network loves it.",
-  "Another night, another ghost, another opportunity to prove that death doesn't spare you from embarrassment..."
+  "Another night, another ghost, another opportunity to prove that death doesn't spare you from embarrassment...",
+  "We're coming to you live—a term I use very loosely—from the deepest circle of the VIP lounge. Put your spectral hands together!",
+  "Goooood evening! They say you can't take it with you, but tonight's guests managed to bring their utter lack of charisma across the divine threshold. Amazing.",
+  "The network executives—may they rot in peace—told me to keep tonight's show 'family friendly.' I told them, 'Have you met most families?' Hiyoooo!",
+  "Look at this crowd! I haven't seen this many stiff bodies since my third wedding night! *Sips martini* Too soon? It's been fifty years, honey, get over it.",
+  "Annnnnnd hello! We are back from the only show where first time comics can die for a second time... Roast Mortem!",
+  "Gooooood evening ladies and germs! This fucker just died and now they're stuck waiting to fill out all the paperwork. Let's give 'em something to do... You're playing... Roast Mortem!"
 ];
 
 // Ghost intro lines - when revealing the ghost
