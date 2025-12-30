@@ -117,7 +117,11 @@ export const state = {
   showBanter: false,      // Whether to show banter section
   judgingComplete: false, // Whether current judging phase is done (show continue)
   continueResolver: null, // Promise resolver for continue button
-  reactionsTyped: false   // Whether reactions have finished typing (persist content on re-render)
+  reactionsTyped: false,  // Whether reactions have finished typing (persist content on re-render)
+
+  // Card stack UI
+  visibleCards: 0,        // How many judge cards have been revealed (0-3, then 4 for banter)
+  currentCardIndex: 0     // Which card is currently shown (0 = top/newest, 3 = oldest judge)
 };
 
 // Save player stats to localStorage

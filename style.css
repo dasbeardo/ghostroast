@@ -2001,3 +2001,175 @@ body::after {
   0%, 100% { box-shadow: 0 0 0 0 rgba(212, 165, 116, 0.4); }
   50% { box-shadow: 0 0 0 8px rgba(212, 165, 116, 0); }
 }
+
+/* ===== CARD STACK UI ===== */
+.card-stack {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  height: 280px;
+  perspective: 1000px;
+}
+
+.judge-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, rgba(30, 20, 15, 0.95), rgba(45, 30, 20, 0.95));
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.judge-card.active {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  z-index: 10;
+}
+
+.judge-card.prev {
+  transform: translateX(-110%);
+  opacity: 0;
+  z-index: 5;
+}
+
+.judge-card.next {
+  transform: translateX(0) scale(0.95);
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.judge-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+}
+
+.judge-card-emoji {
+  font-size: 2rem;
+}
+
+.judge-card-name {
+  flex: 1;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.judge-card-score {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  background: rgba(212, 165, 116, 0.15);
+  padding: 4px 16px;
+  border-radius: 8px;
+}
+
+.judge-card-reaction {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  font-style: italic;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+/* Banter card specifics */
+.banter-card .judge-card-header {
+  border-bottom-color: rgba(212, 165, 116, 0.3);
+}
+
+.banter-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.banter-card .banter-line {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text);
+  padding-left: 8px;
+  border-left: 2px solid rgba(212, 165, 116, 0.3);
+}
+
+/* Card dots indicator */
+.card-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.card-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(212, 165, 116, 0.3);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.card-dot.active {
+  background: var(--gold);
+  transform: scale(1.2);
+}
+
+.card-dot:hover {
+  background: rgba(212, 165, 116, 0.6);
+}
+
+/* Card navigation buttons */
+.card-nav {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.card-nav-btn {
+  background: rgba(212, 165, 116, 0.15);
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  color: var(--gold);
+  font-size: 1.2rem;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card-nav-btn:hover:not(:disabled) {
+  background: rgba(212, 165, 116, 0.25);
+  border-color: var(--gold);
+}
+
+.card-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Card entrance animation */
+@keyframes cardSlideIn {
+  from {
+    transform: translateY(-30px) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.judge-card.entering {
+  animation: cardSlideIn 0.4s ease-out forwards;
+}

@@ -533,7 +533,7 @@ function renderPresentation() {
 }
 
 function renderJudging() {
-  const { roundJudges, judgeResults, opponent, hostLine, currentRoaster, playerInsult, aiInsult, playerName, loading, showBanter, judgingComplete, firstRoastBanter, secondRoastBanter, presentationPhase, reactionsTyped } = state;
+  const { roundJudges, judgeResults, opponent, hostLine, currentRoaster, playerInsult, aiInsult, playerName, loading, showBanter, judgingComplete, firstRoastBanter, secondRoastBanter, presentationPhase, reactionsTyped, visibleCards, currentCardIndex } = state;
   const displayName = playerName || 'YOU';
 
   // Use currentRoaster directly - it's set by game.js and persists through judging
@@ -543,6 +543,23 @@ function renderJudging() {
 
   // Get the current banter based on which roast we're judging
   const currentBanter = presentationPhase === 1 ? firstRoastBanter : secondRoastBanter;
+
+  // Build cards array in appearance order: [Judge1, Judge2, Judge3, Banter]
+  const allCards = [];
+  judgeResults.forEach((result, i) => {
+    allCards.push({ type: 'judge', judgeIndex: i, result });
+  });
+  if (showBanter && currentBanter.length > 0) {
+    allCards.push({ type: 'banter', banter: currentBanter });
+  }
+
+  // Only include cards that have been revealed
+  const revealedCards = allCards.slice(0, visibleCards);
+
+  // Reverse for deck order (newest on top = index 0)
+  const deckCards = revealedCards.slice().reverse();
+
+  const totalCards = deckCards.length;
 
   return `
     <div class="judging">
@@ -571,32 +588,57 @@ function renderJudging() {
         </div>
       ` : ''}
 
-      ${judgeResults.length > 0 ? `
-        <div class="judge-results-stream">
-          ${judgeResults.map((result, i) => `
-            <div class="judge-result-card revealed">
-              <div class="judge-result-emoji">${result.emoji || roundJudges[i]?.emoji || '🎭'}</div>
-              <div class="judge-result-content">
-                <div class="judge-result-name">${result.name}</div>
-                <div class="judge-result-reaction" id="judge-reaction-${i}">${reactionsTyped ? `"${result.reaction}"` : ''}</div>
-              </div>
-              <div class="judge-result-score-single">
-                <div class="judge-score-value">${result.score}</div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      ` : ''}
+      ${totalCards > 0 ? `
+        <div class="card-stack" id="card-stack">
+          ${deckCards.map((card, deckIndex) => {
+            const isActive = deckIndex === currentCardIndex;
+            const isPrev = deckIndex < currentCardIndex;
+            const isNext = deckIndex > currentCardIndex;
+            const cardClass = isActive ? 'active' : (isPrev ? 'prev' : 'next');
 
-      ${showBanter && currentBanter.length > 0 ? `
-        <div class="judge-banter">
-          <div class="banter-label">💬 Judges React</div>
-          <div class="banter-lines">
-            ${currentBanter.map((line, i) => `
-              <div class="banter-line" id="banter-${i}">${reactionsTyped ? line : ''}</div>
+            if (card.type === 'judge') {
+              const result = card.result;
+              const i = card.judgeIndex;
+              return `
+                <div class="judge-card ${cardClass}" data-index="${deckIndex}">
+                  <div class="judge-card-header">
+                    <span class="judge-card-emoji">${result.emoji || roundJudges[i]?.emoji || '🎭'}</span>
+                    <span class="judge-card-name">${result.name}</span>
+                    <span class="judge-card-score">${result.score}</span>
+                  </div>
+                  <div class="judge-card-reaction" id="judge-reaction-${i}">${reactionsTyped ? `"${result.reaction}"` : ''}</div>
+                </div>
+              `;
+            } else {
+              // Banter card
+              return `
+                <div class="judge-card banter-card ${cardClass}" data-index="${deckIndex}">
+                  <div class="judge-card-header">
+                    <span class="judge-card-emoji">💬</span>
+                    <span class="judge-card-name">Judges React</span>
+                  </div>
+                  <div class="banter-card-content">
+                    ${card.banter.map((line, i) => `
+                      <div class="banter-line" id="banter-${i}">${reactionsTyped ? line : ''}</div>
+                    `).join('')}
+                  </div>
+                </div>
+              `;
+            }
+          }).join('')}
+        </div>
+
+        ${totalCards > 1 ? `
+          <div class="card-dots">
+            ${deckCards.map((_, i) => `
+              <span class="card-dot ${i === currentCardIndex ? 'active' : ''}" data-index="${i}"></span>
             `).join('')}
           </div>
-        </div>
+          <div class="card-nav">
+            <button class="card-nav-btn" id="card-prev" ${currentCardIndex >= totalCards - 1 ? 'disabled' : ''}>←</button>
+            <button class="card-nav-btn" id="card-next" ${currentCardIndex <= 0 ? 'disabled' : ''}>→</button>
+          </div>
+        ` : ''}
       ` : ''}
 
       ${judgingComplete ? `

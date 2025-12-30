@@ -267,6 +267,43 @@ export function bindEvents() {
   const judgingContinueBtn = $('#judging-continue-btn');
   if (judgingContinueBtn) judgingContinueBtn.onclick = handleJudgingContinue;
 
+  // Card navigation (prev/next buttons)
+  const cardPrevBtn = $('#card-prev');
+  if (cardPrevBtn) cardPrevBtn.onclick = () => navigateCard(1);
+
+  const cardNextBtn = $('#card-next');
+  if (cardNextBtn) cardNextBtn.onclick = () => navigateCard(-1);
+
+  // Card dots (click to jump)
+  document.querySelectorAll('.card-dot').forEach(dot => {
+    dot.onclick = () => {
+      const index = parseInt(dot.dataset.index);
+      state.currentCardIndex = index;
+      render();
+    };
+  });
+
+  // Card swipe handling
+  const cardStack = $('#card-stack');
+  if (cardStack) {
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    cardStack.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    cardStack.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) {
+        // Swipe left = go to older cards (increment index)
+        // Swipe right = go to newer cards (decrement index)
+        navigateCard(diff > 0 ? 1 : -1);
+      }
+    }, { passive: true });
+  }
+
   // Export/Import save data
   const exportBtn = $('#export-btn');
   if (exportBtn) {
@@ -507,6 +544,9 @@ async function submitToJudges() {
   state.judgeResults = [];
   state.firstRoastBanter = [];
   state.reactionsTyped = false;
+  state.visibleCards = 0;
+  state.currentCardIndex = 0;
+  state.showBanter = false;
   render();
 
   // Type host transition
@@ -529,20 +569,24 @@ async function submitToJudges() {
       null
     );
 
-    // Store results and banter
+    // Store all results (but visibleCards controls what's shown)
     state.judgeResults = panelResponse.judges.map((j, i) => ({
       ...j,
       roaster: firstRoaster
     }));
     state.firstRoastBanter = panelResponse.banter || [];
     state.loading = false;
-    state.showBanter = true;
-    state.judgingComplete = true;
     render();
 
-    // Type out each judge's reaction
+    // Reveal each judge card one at a time
     for (let i = 0; i < state.judgeResults.length; i++) {
-      await delay(300);
+      await delay(400);
+      state.visibleCards = i + 1;
+      state.currentCardIndex = 0; // Newest card always on top
+      render();
+
+      // Type out reaction on the visible card
+      await delay(200);
       const reactionEl = document.getElementById(`judge-reaction-${i}`);
       if (reactionEl) {
         const reactionText = state.judgeResults[i].reaction;
@@ -552,23 +596,32 @@ async function submitToJudges() {
           await typeText(typingTarget, reactionText, { baseSpeed: 20 });
         }
       }
-      await delay(500);
+      await delay(300);
     }
 
-    // Type banter
+    // Reveal banter card
     if (state.firstRoastBanter.length > 0) {
-      await delay(500);
+      await delay(400);
+      state.showBanter = true;
+      state.visibleCards = state.judgeResults.length + 1;
+      state.currentCardIndex = 0;
+      render();
+
+      // Type out banter lines
+      await delay(200);
       for (let i = 0; i < state.firstRoastBanter.length; i++) {
         const banterEl = document.getElementById(`banter-${i}`);
         if (banterEl) {
           await typeText(banterEl, state.firstRoastBanter[i], { baseSpeed: 15 });
-          await delay(400);
+          await delay(300);
         }
       }
     }
 
-    // Mark reactions as typed so re-renders preserve content
+    // Mark reactions as typed and show continue button
     state.reactionsTyped = true;
+    state.judgingComplete = true;
+    render();
 
     // Store first roast scores
     state.firstRoastScores = state.judgeResults.map(r => ({
@@ -617,6 +670,9 @@ async function submitToJudges() {
     state.judgeResults = [];
     state.secondRoastBanter = [];
     state.reactionsTyped = false;
+    state.visibleCards = 0;
+    state.currentCardIndex = 0;
+    state.showBanter = false;
     render();
 
     await delay(300);
@@ -644,20 +700,24 @@ async function submitToJudges() {
       firstRoastContext
     );
 
-    // Store results and banter
+    // Store all results (but visibleCards controls what's shown)
     state.judgeResults = panelResponse2.judges.map((j, i) => ({
       ...j,
       roaster: secondRoaster
     }));
     state.secondRoastBanter = panelResponse2.banter || [];
     state.loading = false;
-    state.showBanter = true;
-    state.judgingComplete = true;
     render();
 
-    // Type out each judge's reaction
+    // Reveal each judge card one at a time
     for (let i = 0; i < state.judgeResults.length; i++) {
-      await delay(300);
+      await delay(400);
+      state.visibleCards = i + 1;
+      state.currentCardIndex = 0; // Newest card always on top
+      render();
+
+      // Type out reaction on the visible card
+      await delay(200);
       const reactionEl = document.getElementById(`judge-reaction-${i}`);
       if (reactionEl) {
         const reactionText = state.judgeResults[i].reaction;
@@ -667,23 +727,32 @@ async function submitToJudges() {
           await typeText(typingTarget, reactionText, { baseSpeed: 20 });
         }
       }
-      await delay(500);
+      await delay(300);
     }
 
-    // Type banter
+    // Reveal banter card
     if (state.secondRoastBanter.length > 0) {
-      await delay(500);
+      await delay(400);
+      state.showBanter = true;
+      state.visibleCards = state.judgeResults.length + 1;
+      state.currentCardIndex = 0;
+      render();
+
+      // Type out banter lines
+      await delay(200);
       for (let i = 0; i < state.secondRoastBanter.length; i++) {
         const banterEl = document.getElementById(`banter-${i}`);
         if (banterEl) {
           await typeText(banterEl, state.secondRoastBanter[i], { baseSpeed: 15 });
-          await delay(400);
+          await delay(300);
         }
       }
     }
 
-    // Mark reactions as typed so re-renders preserve content
+    // Mark reactions as typed and show continue button
     state.reactionsTyped = true;
+    state.judgingComplete = true;
+    render();
 
     // Store second roast scores
     state.secondRoastScores = state.judgeResults.map(r => ({
@@ -801,6 +870,20 @@ export function handleJudgingContinue() {
   if (state.continueResolver) {
     state.continueResolver();
     state.continueResolver = null;
+  }
+}
+
+// Navigate card stack (direction: 1 = older cards, -1 = newer cards)
+function navigateCard(direction) {
+  const { visibleCards, showBanter, firstRoastBanter, secondRoastBanter, presentationPhase } = state;
+  const currentBanter = presentationPhase === 1 ? firstRoastBanter : secondRoastBanter;
+  const hasBanter = showBanter && currentBanter.length > 0;
+  const totalCards = Math.min(visibleCards, 3 + (hasBanter ? 1 : 0));
+
+  const newIndex = state.currentCardIndex + direction;
+  if (newIndex >= 0 && newIndex < totalCards) {
+    state.currentCardIndex = newIndex;
+    render();
   }
 }
 
