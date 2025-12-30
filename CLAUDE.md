@@ -1,6 +1,6 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.6.1
+**Version**: 0.6.2
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three AI judges (player-selected or random) score the final jokes.
@@ -73,6 +73,7 @@ roastaghost/
 - User inputs their own OpenAI API key on first launch
 - Key stored in localStorage (`roastmortem_apikey`)
 - Never hardcoded, never sent anywhere except OpenAI
+- **URL sharing (v0.6.2)**: Share `roastmortem.com/#YOUR_API_KEY` to auto-fill the key (hash cleared from URL after reading)
 
 **Proxy Mode** (for sharing with friends):
 - Set `PROXY_URL` in `js/state.js` to your Cloudflare Worker URL
