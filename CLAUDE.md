@@ -1,6 +1,6 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.4.2
+**Version**: 0.6.2
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three randomly selected AI judges score the final jokes.
