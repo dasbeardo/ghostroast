@@ -547,6 +547,8 @@ async function submitToJudges() {
   state.visibleCards = 0;
   state.currentCardIndex = 0;
   state.showBanter = false;
+  state.typedReactionCount = 0;
+  state.banterTyped = false;
   render();
 
   // Type host transition
@@ -596,6 +598,10 @@ async function submitToJudges() {
           await typeText(typingTarget, reactionText, { baseSpeed: 20 });
         }
       }
+
+      // Mark this reaction as typed (reveals score with pop animation)
+      state.typedReactionCount = i + 1;
+      render();
       await delay(300);
     }
 
@@ -616,6 +622,10 @@ async function submitToJudges() {
           await delay(300);
         }
       }
+
+      // Mark banter as typed
+      state.banterTyped = true;
+      render();
     }
 
     // Mark reactions as typed and show continue button
@@ -673,6 +683,8 @@ async function submitToJudges() {
     state.visibleCards = 0;
     state.currentCardIndex = 0;
     state.showBanter = false;
+    state.typedReactionCount = 0;
+    state.banterTyped = false;
     render();
 
     await delay(300);
@@ -727,6 +739,10 @@ async function submitToJudges() {
           await typeText(typingTarget, reactionText, { baseSpeed: 20 });
         }
       }
+
+      // Mark this reaction as typed (reveals score with pop animation)
+      state.typedReactionCount = i + 1;
+      render();
       await delay(300);
     }
 
@@ -747,6 +763,10 @@ async function submitToJudges() {
           await delay(300);
         }
       }
+
+      // Mark banter as typed
+      state.banterTyped = true;
+      render();
     }
 
     // Mark reactions as typed and show continue button

@@ -121,7 +121,9 @@ export const state = {
 
   // Card stack UI
   visibleCards: 0,        // How many judge cards have been revealed (0-3, then 4 for banter)
-  currentCardIndex: 0     // Which card is currently shown (0 = top/newest, 3 = oldest judge)
+  currentCardIndex: 0,    // Which card is currently shown (0 = top/newest, 3 = oldest judge)
+  typedReactionCount: 0,  // How many judge reactions have finished typing (for persistence)
+  banterTyped: false      // Whether banter has finished typing
 };
 
 // Save player stats to localStorage

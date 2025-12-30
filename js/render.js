@@ -533,7 +533,7 @@ function renderPresentation() {
 }
 
 function renderJudging() {
-  const { roundJudges, judgeResults, opponent, hostLine, currentRoaster, playerInsult, aiInsult, playerName, loading, showBanter, judgingComplete, firstRoastBanter, secondRoastBanter, presentationPhase, reactionsTyped, visibleCards, currentCardIndex } = state;
+  const { roundJudges, judgeResults, opponent, hostLine, currentRoaster, playerInsult, aiInsult, playerName, loading, showBanter, judgingComplete, firstRoastBanter, secondRoastBanter, presentationPhase, reactionsTyped, visibleCards, currentCardIndex, typedReactionCount, banterTyped } = state;
   const displayName = playerName || 'YOU';
 
   // Use currentRoaster directly - it's set by game.js and persists through judging
@@ -599,18 +599,22 @@ function renderJudging() {
             if (card.type === 'judge') {
               const result = card.result;
               const i = card.judgeIndex;
+              const isTyped = i < typedReactionCount;
+              const showScore = isTyped || reactionsTyped;
+              const showReaction = isTyped ? `"${result.reaction}"` : '';
               return `
                 <div class="judge-card ${cardClass}" data-index="${deckIndex}">
                   <div class="judge-card-header">
                     <span class="judge-card-emoji">${result.emoji || roundJudges[i]?.emoji || '🎭'}</span>
                     <span class="judge-card-name">${result.name}</span>
-                    <span class="judge-card-score">${result.score}</span>
+                    <span class="judge-card-score ${showScore ? 'revealed' : 'hidden'}">${result.score}</span>
                   </div>
-                  <div class="judge-card-reaction" id="judge-reaction-${i}">${reactionsTyped ? `"${result.reaction}"` : ''}</div>
+                  <div class="judge-card-reaction" id="judge-reaction-${i}">${showReaction}</div>
                 </div>
               `;
             } else {
               // Banter card
+              const showBanterContent = banterTyped || reactionsTyped;
               return `
                 <div class="judge-card banter-card ${cardClass}" data-index="${deckIndex}">
                   <div class="judge-card-header">
@@ -619,7 +623,7 @@ function renderJudging() {
                   </div>
                   <div class="banter-card-content">
                     ${card.banter.map((line, i) => `
-                      <div class="banter-line" id="banter-${i}">${reactionsTyped ? line : ''}</div>
+                      <div class="banter-line" id="banter-${i}">${showBanterContent ? line : ''}</div>
                     `).join('')}
                   </div>
                 </div>
