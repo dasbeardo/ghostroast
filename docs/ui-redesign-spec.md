@@ -404,6 +404,99 @@ Introduces **Destiny**, the mystic fortune teller character. Mort has an Amazing
 
 ---
 
+### Screen 7 & 8: Roast Presentation & Judging
+
+**Purpose:** Present both roasts and get judge reactions/scores. Combined flow since they're tightly linked.
+
+**API Optimization:**
+- API call fires immediately on "Lock In Roast" button
+- Judge responses loading in background during roast presentations
+- Minimizes perceived wait time before judging
+
+**Visual Style:**
+- 80s/90s video game aesthetic
+- Chunky, bold speech bubbles
+- Retro arcade feel
+
+**Layout:**
+- Screen dims (modal focus)
+- Center: Speaker's portrait (larger) + retro speech bubble
+- Persistent header: current roaster spotlighted/highlighted
+- Ghost: small, corner position
+
+---
+
+**FIRST ROAST FLOW:**
+
+*Beat 1 - Roaster Introduction*
+- [Who goes first alternates each round]
+- Mort: "First up... [Player/Opponent Name]!"
+- Current roaster spotlighted in header
+
+*Beat 2 - Roast Delivery*
+- [Speaker portrait center stage, speech bubble appears]
+- Roast text types out in chunky retro speech bubble
+- Tap to complete typing instantly
+
+*Beat 3 - Mort Transition*
+- Mort: [Quick reaction - "Ooh!" / "Bold move." / "Interesting choice."]
+- Mort: "Judges?"
+
+*Beat 4 - Judge 1 Reacts*
+- [Judge 1 portrait spotlights]
+- Reaction types out in speech bubble
+- Score pops in after reaction complete (e.g., "7/10")
+- Tap to speed through
+
+*Beat 5 - Judge 2 Reacts*
+- [Judge 2 portrait spotlights]
+- Same flow: reaction → score pops in
+
+*Beat 6 - Judge 3 Reacts*
+- [Judge 3 portrait spotlights]
+- Same flow: reaction → score pops in
+- First roast total now visible
+
+---
+
+**SECOND ROAST FLOW:**
+
+*Beat 7 - Transition*
+- Mort: "And now... [Player/Opponent Name]!"
+- Second roaster spotlighted
+
+*Beat 8 - Roast Delivery*
+- Same flow as first roast
+- Speech bubble with roast text
+
+*Beat 9 - Mort Transition*
+- Mort: [Reaction]
+- Mort: "Judges?"
+
+*Beats 10-12 - Judges React*
+- Same one-by-one flow
+- Each score pops after reaction
+- Second roast total visible after Judge 3
+
+---
+
+**Animation:**
+- Screen dim for modal focus
+- Portrait spotlight (scale up slightly, glow effect)
+- Retro speech bubble slides/pops in
+- Text typewriter effect
+- Score pop-in (scale bounce effect)
+- All CSS-based
+
+**Notes:**
+- Who goes first alternates each round (tracked in state)
+- Judges see context of first roast when judging second (API handles this)
+- Same flow for both roasts - can revisit if feels repetitive in practice
+- Tap-to-skip applies throughout
+- Running score totals visible in UI
+
+---
+
 ## Save System
 
 ### Checkpoint Approach (Fuller)
@@ -467,8 +560,7 @@ Save state at two points:
 - [x] Screen 4: Match Opening
 - [x] Screen 5: Ghost Intro
 - [x] Screen 6: Drafting Phase
-- [ ] Screen 7: Roast Presentation
-- [ ] Screen 8: Judging Phase
+- [x] Screen 7 & 8: Roast Presentation & Judging
 - [ ] Screen 9: Results Screen
 - [ ] Screen 10: Match End
 - [ ] In-Game Menu Overlay
