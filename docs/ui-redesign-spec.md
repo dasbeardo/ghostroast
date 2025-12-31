@@ -22,6 +22,21 @@ Transform from "web app" feel to "premium game" experience.
 
 Keeps pacing in player's control. Veterans can blast through, first-timers enjoy the show.
 
+### Tap Portrait for Info
+
+**Global interaction:** Tapping any character portrait opens an info overlay.
+
+| Portrait | Info Displayed |
+|----------|----------------|
+| Player | Stats popup (wins, streaks, high scores) |
+| Opponent | Bio + head-to-head history vs player |
+| Judges | Personality blurb, scoring tendencies |
+| Ghost | Full bio card (name, cause of death, 3 bio lines) |
+| Mort | Easter egg - fun facts about the host |
+| Destiny | Easter egg - cryptic fortune or backstory |
+
+Small overlay/tooltip style. Tap elsewhere to dismiss.
+
 ### Animation Constraints
 
 All art assets are static images. Visual dynamism achieved through:
@@ -269,6 +284,65 @@ Introduces **Destiny**, the mystic fortune teller character. Mort has an Amazing
 
 ---
 
+### Screen 5: Ghost Intro
+
+**Purpose:** Introduce the ghost to be roasted this round. Happens at the start of each round.
+
+**Layout:**
+- Mort: top-left, smaller (narrator position)
+- Ghost: center-bottom-right, larger (spotlight position)
+- Persistent UI shell visible behind
+
+**Beat-by-Beat Breakdown:**
+
+*Beat 1 - Mort Sets Up*
+- [Mort in narrator position, top-left]
+- Mort: "Our next dearly departed..."
+- Mort: "[Ghost Name]. Cause of death: [Cause]."
+
+*Beat 2 - Ghost Appears*
+- [Ghost portrait fades in with floaty/wobbly animation]
+- Ghost settles into position with subtle continuous bobbing (CSS keyframe)
+- Position: center-bottom-right, larger than Mort
+
+*Beat 3 - Bio Delivery*
+- Mort reads bio lines one-by-one (typewriter, comedic timing)
+- Mort: "[Bio line 1]"
+- [beat]
+- Mort: "[Bio line 2]"
+- [beat]
+- Mort: "[Bio line 3]"
+
+*Beat 4 - Tale of the Tape*
+- [Ghost bio card appears next to ghost portrait]
+- All 3 bio lines displayed together for reference
+- Card shows: Name, Cause of Death, Bio lines
+
+*Beat 5 - Mort Reaction*
+- Mort: [Reaction line - generic or ghost-tagged]
+- Generic examples: "Well that's... something." / "They really lived, didn't they?"
+- Tagged lines: specific jokes for certain ghosts
+
+*Beat 6 - Ready State*
+- [Persistent layout fully active]
+- "Start Roasting" button appears
+- All portraits now tappable for info
+- Player can take their time or proceed immediately
+
+**Animation:**
+- Ghost fade-in with wobbly/floaty effect (translateY oscillation + slight rotate)
+- Subtle continuous bobbing while ghost is on screen
+- Bio card slides in or fades in
+- All CSS-based
+
+**Notes:**
+- Ghost-tagged Mort reactions: lines flagged for specific ghosts
+- Generic Mort reactions: work for any ghost (larger pool)
+- System picks ghost-tagged line if available, else generic
+- Ghost bio card remains accessible via tap throughout round
+
+---
+
 ## Save System
 
 ### Checkpoint Approach (Fuller)
@@ -330,7 +404,7 @@ Save state at two points:
 - [x] Screen 2: Main Menu
 - [x] Screen 3: Judge Selection
 - [x] Screen 4: Match Opening
-- [ ] Screen 5: Ghost Intro
+- [x] Screen 5: Ghost Intro
 - [ ] Screen 6: Drafting Phase
 - [ ] Screen 7: Roast Presentation
 - [ ] Screen 8: Judging Phase
