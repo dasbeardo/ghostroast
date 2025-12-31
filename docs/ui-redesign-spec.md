@@ -343,6 +343,67 @@ Introduces **Destiny**, the mystic fortune teller character. Mort has an Amazing
 
 ---
 
+### Screen 6: Drafting Phase
+
+**Purpose:** Player fills in their template by selecting words for each blank. Core gameplay.
+
+**Layout:**
+- Player's template: center/main focus, large and readable
+- Ghost: small portrait in corner (tappable for full bio)
+- Persistent UI shell visible
+- Opponent's template/progress: NOT shown
+
+**Flow:**
+
+*Beat 1 - Template Appears*
+- Player's template displayed with blanks highlighted
+- First blank is auto-selected (pulsing or highlighted)
+- Ghost shrinks to corner position
+- Reroll counter visible (default: 1 available)
+
+*Beat 2+ - Word Selection (per blank)*
+- First blank highlighted → tap opens word picker modal
+- Select word → modal closes, word fills blank
+- Next blank auto-highlights (forced sequential order)
+- Repeat until all blanks filled
+
+*Completion State*
+- All blanks filled → "Lock In Roast" button appears
+- Player can tap filled blanks to change choice (reopens picker for that slot)
+- "Lock In" → save checkpoint, proceed to presentation
+
+**Word Picker Modal:**
+- Bottom sheet style (slides up from bottom, mobile-friendly)
+- Grid of word chips (tappable buttons)
+- Scroll if more words than fit on screen
+- Ghost-themed words appear more often (not visually distinct)
+- "Shuffle" button to reroll word options
+- Close/cancel button to back out without selecting
+
+**Reroll/Shuffle Mechanic:**
+- Limited rerolls per match (default: 1)
+- Reroll counter visible during drafting
+- Tapping "Shuffle" in modal uses a reroll, refreshes word options
+- When rerolls exhausted, shuffle button disabled/hidden
+- Reroll count could be a setting (0, 1, 2, unlimited)
+
+**Animation:**
+- Word picker slides up from bottom
+- Selected word animates into blank (quick scale/pop)
+- Blanks pulse when active
+- All CSS-based
+
+**Settings (Future):**
+- Blank selection order: Sequential (default) vs Free choice
+- Rerolls per match: 0, 1, 2, unlimited
+
+**Notes:**
+- AI picks all its words immediately (random from pools) before player drafts
+- No timer currently (may add as option later)
+- Save checkpoint triggers after "Lock In" pressed
+
+---
+
 ## Save System
 
 ### Checkpoint Approach (Fuller)
@@ -405,7 +466,7 @@ Save state at two points:
 - [x] Screen 3: Judge Selection
 - [x] Screen 4: Match Opening
 - [x] Screen 5: Ghost Intro
-- [ ] Screen 6: Drafting Phase
+- [x] Screen 6: Drafting Phase
 - [ ] Screen 7: Roast Presentation
 - [ ] Screen 8: Judging Phase
 - [ ] Screen 9: Results Screen
