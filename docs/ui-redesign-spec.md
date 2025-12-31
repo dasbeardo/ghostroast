@@ -152,30 +152,47 @@ Once a game starts, these elements remain visible at all times:
 
 Introduces **Destiny**, the mystic fortune teller character. Mort has an Amazing Jonathan-style dynamic with her - dismissive, exasperated, but stuck with her.
 
-**The Scene:**
-1. Player clicks "Let Destiny Decide" button
-2. Mort sighs: "Fine... I'll get her."
-3. Destiny's portrait fades in with mystical glow effect
-4. 3 tarot cards appear face-down on a mystical surface
-5. Destiny does dramatic buildup (typewriter dialogue)
-6. Mort undercuts: "The card, Destiny. Flip the card."
-7. Cards flip one-by-one (CSS rotateY transform)
-8. Each card reveals judge portrait in tarot-style frame
-9. Destiny gives cryptic one-liner per judge
-10. Mort translates/undercuts each reveal
-11. After all 3: Destiny vanishes, Mort brushes off glitter
+**Beat-by-Beat Breakdown:**
 
-**Sample Dialogue:**
-- Destiny: "The spirits reveal... a force of CHAOS..."
-- Mort: "It's Gordon Ramsay. Just say Gordon Ramsay."
-- Destiny: "The fates have spoken. Your path is sealed."
-- Mort: "Great. Thanks. Don't you have somewhere to haunt?"
+*Beat 1 - Mort's Reluctance*
+- [Feature modal: Mort's image + text box]
+- Mort: "Oof... Fine... I'll go get her."
+- [Mort's image fades away]
+
+*Beat 2 - Mort Off-Screen*
+- [Text box, no image]
+- Mort: "DESTINY! ...Destiny, we need you out here!"
+- [pause]
+- Mort: "Yes, it's for a reading. No, I don't— just come out here."
+
+*Beat 3 - Destiny Arrives*
+- [Destiny's image fades in with glow, text box]
+- Destiny: "The veil between worlds grows thin tonight..."
+- [Mort's image fades back in, smaller/to the side]
+- Mort: "It's a Tuesday."
+
+*Beat 4 - The Cards Appear*
+- [3 tarot cards slide in face-down, arranged below portraits]
+- Destiny: "Three souls shall be revealed... three who will pass judgment..."
+- Mort: "That's the idea, yes."
+
+*Beats 5, 6, 7 - Card Reveals (one per judge)*
+- Destiny builds dramatic tension
+- Card flips (CSS rotateY), judge portrait revealed in tarot frame
+- Destiny: cryptic one-liner about judge
+- Mort: undercuts/translates
+- Repeat x3
+
+*Beat 8 - Destiny's Exit*
+- Destiny: "The fates have spoken."
+- [Destiny fades out with sparkle effect]
+- Mort: [brushing off] "Every time with the glitter..."
 
 **Animation (static art):**
-- Destiny portrait: fade in with glow/pulse
-- Cards: slide in, then CSS flip on reveal
-- Judge portraits: scale up on reveal
-- Destiny exit: fade out with particle/sparkle effect (CSS)
+- Mort/Destiny portraits: fade in/out transitions
+- Cards: slide in, CSS rotateY flip on reveal
+- Judge portraits: scale up on reveal within tarot frame
+- Destiny exit: fade out with CSS particle/sparkle effect
 
 **Running Gags:**
 - Destiny leaves mystical residue/glitter Mort complains about
@@ -183,7 +200,8 @@ Introduces **Destiny**, the mystic fortune teller character. Mort has an Amazing
 - Predictions that may or may not come true later
 
 **Notes:**
-- Judge intro lines: 3-5 prewritten signature lines per judge
+- Judge intro lines: 3-5 prewritten signature lines per judge (Destiny's cryptic version)
+- Dialogue variety versions to be added later
 - Comedy comes from dialogue timing, not animation
 - Destiny may appear elsewhere for dramatic moments (TBD)
 - "Let Destiny Decide" pulls from currently filtered pool (or all if no filter)
