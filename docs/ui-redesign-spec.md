@@ -90,6 +90,61 @@ Once a game starts, these elements remain visible at all times:
 
 ---
 
+### Screen 3: Judge Selection
+
+**Purpose:** Player selects 3 judges for the match. First screen after clicking "New Game".
+
+**Flow:**
+1. Opponent is assigned randomly (shown in header)
+2. Player browses/filters judges
+3. Player selects 3 judges (or uses "Surprise Me")
+4. Proceed to match
+
+**Layout - Top to Bottom:**
+
+| Element | Description |
+|---------|-------------|
+| Header | "Choose Your Judges" + opponent already shown |
+| Filter Bar | Tag buttons (wrestling, politics, actors, tv, villains, sports, chaos) + "All" |
+| View Toggle | Small icon to switch between Carousel and List view |
+| Browse Area | Carousel (default) or List view of filtered judges |
+| Selection Slots | 3 slots at bottom showing current picks |
+| Action Buttons | "Surprise Me" + "Start Match" (enabled when 3 selected) |
+
+**Carousel View (Default):**
+- Shows 2-3 judges per "page" on mobile (like a hand of cards)
+- Swipe horizontally to see next page
+- Scales to 3-4 per page on larger screens
+- Each judge card shows: portrait, name, tag icon
+- Tap card to select/deselect
+
+**List View (Alternative):**
+- Compact scrollable rows
+- Each row: small portrait + name + tag icon
+- Fast scanning for players who know who they want
+- Tap row to select/deselect
+
+**Selection Slots:**
+- 3 slots fixed at bottom
+- Empty slots show placeholder outline
+- Filled slots show judge portrait + name
+- Tap filled slot to remove that judge
+
+**"Surprise Me" - Curtain Reveal:**
+- Mort appears center stage
+- 3 curtained panels displayed
+- Curtains open one-by-one with dramatic timing
+- Each reveal shows judge portrait + prewritten intro line
+- Judge intro lines: 3-5 signature lines per judge (prewritten, instant delivery)
+- Example: Gordon Ramsay - "Finally, some bloody talent to judge!"
+
+**Notes:**
+- Filter persists while browsing
+- "Surprise Me" pulls from currently filtered pool (or all if no filter)
+- Judges already selected are visually marked in browse view
+
+---
+
 ## Save System
 
 ### Checkpoint Approach (Fuller)
@@ -148,7 +203,7 @@ Save state at two points:
 
 - [x] Screen 1: API Key Entry
 - [x] Screen 2: Main Menu
-- [ ] Screen 3: Judge Selection
+- [x] Screen 3: Judge Selection
 - [ ] Screen 4: Match Opening
 - [ ] Screen 5: Ghost Intro
 - [ ] Screen 6: Drafting Phase
