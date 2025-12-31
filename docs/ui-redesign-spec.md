@@ -11,6 +11,16 @@ Transform from "web app" feel to "premium game" experience.
 - **Mobile-first** - primary target is mobile, scales up for desktop
 - **Character portraits** - replace all emoji with square profile images
 - **Static art** - all character images are static; dynamism comes from animation and writing
+- **Tap to skip** - tapping screen speeds up or skips current animation/dialogue
+
+### Tap-to-Skip Behavior
+
+**Global rule:** Tapping anywhere during animations:
+- If text is typing → complete it instantly
+- If waiting for next beat → advance to next beat
+- If animation in progress → complete it instantly
+
+Keeps pacing in player's control. Veterans can blast through, first-timers enjoy the show.
 
 ### Animation Constraints
 
@@ -212,6 +222,53 @@ Introduces **Destiny**, the mystic fortune teller character. Mort has an Amazing
 
 ---
 
+### Screen 4: Match Opening
+
+**Purpose:** Transition into the match. Mort goes full host mode - introduces the show, himself, judges, and contestants.
+
+**Context:** Judges are selected. Persistent UI shell now visible (but dimmed for modal focus).
+
+**Beat-by-Beat Breakdown:**
+
+*Beat 1 - Show Intro*
+- [Modal focus on Mort, background dimmed]
+- Mort: "Ladies, gentlemen, and spirits of all ages..."
+- Mort: "Welcome to ROAST MORTEM!"
+
+*Beat 2 - Host Intro*
+- Mort: "I'm your host, Mortimer Holloway."
+- Mort: "Let's meet tonight's contestants."
+
+*Beat 3 - Contestant Intro*
+- [Player portrait slides in from left, Opponent from right]
+- Mort: "[Player Name]... versus... [Opponent Name]!"
+- [Portraits settle into persistent header positions]
+
+*Beat 4 - Judge Panel Intro*
+- Mort: "And your judges tonight..."
+- [Each judge fades in one-by-one with quick intro line]
+- Judge 1: [Quick intro line/joke]
+- Judge 2: [Quick intro line/joke]
+- Judge 3: [Quick intro line/joke]
+
+*Beat 5 - Stakes & Start*
+- Mort: "Best of three. May the best roast win."
+- [Button appears: "Start Round 1" OR auto-advance after brief pause]
+
+**Animation:**
+- Modal overlay dims persistent UI shell
+- Contestant portraits slide in from sides
+- Judge portraits fade in sequentially
+- All uses CSS transitions/transforms
+
+**Notes:**
+- Each judge has 5-10 prewritten quick intro lines (rotates)
+- If judges selected via Destiny, these intros are shorter (already introduced)
+- Total runtime: ~10-15 seconds if tapping through
+- Dialogue variety versions to be added later
+
+---
+
 ## Save System
 
 ### Checkpoint Approach (Fuller)
@@ -272,7 +329,7 @@ Save state at two points:
 - [x] Screen 1: API Key Entry
 - [x] Screen 2: Main Menu
 - [x] Screen 3: Judge Selection
-- [ ] Screen 4: Match Opening
+- [x] Screen 4: Match Opening
 - [ ] Screen 5: Ghost Intro
 - [ ] Screen 6: Drafting Phase
 - [ ] Screen 7: Roast Presentation
