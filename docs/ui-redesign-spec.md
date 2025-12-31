@@ -497,6 +497,70 @@ Introduces **Destiny**, the mystic fortune teller character. Mort has an Amazing
 
 ---
 
+### Screen 9: Results Screen
+
+**Purpose:** Show round results, declare round winner, allow drill-down into judge details.
+
+**Layout:**
+- Match score: prominent at top (e.g., "1-0" in best of 3)
+- Mort: reaction/commentary area
+- Round score cards: side-by-side (Player score | Opponent score)
+- Continue button: fixed position (always same spot in UI)
+
+**Elements:**
+
+*Match Score*
+- Best-of-3 progress displayed prominently
+- Updates after winner announced
+
+*Mort's Reaction*
+- Announces round winner
+- Mort: "[Winner] takes the round!" / "And [Player] pulls ahead!"
+- Variety lines for different scenarios (close match, blowout, tie-breaker, etc.)
+
+*Round Score Cards (Side-by-Side)*
+- Player card: portrait + round score total
+- Opponent card: portrait + round score total
+- Winner highlighted/glowing
+- **Tappable** - opens detail modal
+
+*Score Card Detail Modal (on tap)*
+- Expands selected card to modal focus
+- Shows the roast text
+- Swipeable cards for each judge:
+  - Judge portrait
+  - Judge reaction to this roast
+  - Score given
+- Final card: Judge banter (judges reacting to each other)
+- Swipe through or use dots/arrows to navigate
+- Tap outside or X to close
+
+*Continue Button*
+- Fixed position (bottom of screen, always same spot)
+- "Next Round" (if match continues)
+- "Final Results" (if match decided)
+
+**Judge Banter:**
+- After individual scores, judges have brief banter exchange
+- API returns this as part of judging response
+- Shows as final swipeable card in detail modal
+- Adds personality, judges react to each other's takes
+
+**Animation:**
+- Score cards slide in from sides
+- Winner card glows/pulses
+- Detail modal expands from tapped card
+- Swipe transitions between judge cards
+- All CSS-based
+
+**Notes:**
+- Both score cards tappable for their respective details
+- Judge banter generated each round (part of API call)
+- Continue button always in same position for muscle memory
+- Match score updates after Mort announces winner
+
+---
+
 ## Save System
 
 ### Checkpoint Approach (Fuller)
@@ -561,7 +625,7 @@ Save state at two points:
 - [x] Screen 5: Ghost Intro
 - [x] Screen 6: Drafting Phase
 - [x] Screen 7 & 8: Roast Presentation & Judging
-- [ ] Screen 9: Results Screen
+- [x] Screen 9: Results Screen
 - [ ] Screen 10: Match End
 - [ ] In-Game Menu Overlay
 - [ ] Stats Screen
