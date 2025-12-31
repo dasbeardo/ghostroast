@@ -10,6 +10,24 @@ Transform from "web app" feel to "premium game" experience.
 - **Modals for focus** - overlays direct user attention
 - **Mobile-first** - primary target is mobile, scales up for desktop
 - **Character portraits** - replace all emoji with square profile images
+- **Static art** - all character images are static; dynamism comes from animation and writing
+
+### Animation Constraints
+
+All art assets are static images. Visual dynamism achieved through:
+
+**CSS Animation Toolkit:**
+- Transforms (scale, rotate, translate)
+- Fades and opacity transitions
+- Slides (elements entering from off-screen)
+- Shake/wobble for emphasis
+- Glow/pulse effects (CSS filters, box-shadow)
+- Timing delays between elements
+
+**The Heavy Lifting:**
+- Typewriter text effect for dialogue
+- Pacing and beats between lines
+- Strong writing for comedy and drama
 
 ---
 
@@ -130,17 +148,48 @@ Once a game starts, these elements remain visible at all times:
 - Filled slots show judge portrait + name
 - Tap filled slot to remove that judge
 
-**"Surprise Me" - Curtain Reveal:**
-- Mort appears center stage
-- 3 curtained panels displayed
-- Curtains open one-by-one with dramatic timing
-- Each reveal shows judge portrait + prewritten intro line
-- Judge intro lines: 3-5 signature lines per judge (prewritten, instant delivery)
-- Example: Gordon Ramsay - "Finally, some bloody talent to judge!"
+**"Let Destiny Decide" - Tarot Reading:**
+
+Introduces **Destiny**, the mystic fortune teller character. Mort has an Amazing Jonathan-style dynamic with her - dismissive, exasperated, but stuck with her.
+
+**The Scene:**
+1. Player clicks "Let Destiny Decide" button
+2. Mort sighs: "Fine... I'll get her."
+3. Destiny's portrait fades in with mystical glow effect
+4. 3 tarot cards appear face-down on a mystical surface
+5. Destiny does dramatic buildup (typewriter dialogue)
+6. Mort undercuts: "The card, Destiny. Flip the card."
+7. Cards flip one-by-one (CSS rotateY transform)
+8. Each card reveals judge portrait in tarot-style frame
+9. Destiny gives cryptic one-liner per judge
+10. Mort translates/undercuts each reveal
+11. After all 3: Destiny vanishes, Mort brushes off glitter
+
+**Sample Dialogue:**
+- Destiny: "The spirits reveal... a force of CHAOS..."
+- Mort: "It's Gordon Ramsay. Just say Gordon Ramsay."
+- Destiny: "The fates have spoken. Your path is sealed."
+- Mort: "Great. Thanks. Don't you have somewhere to haunt?"
+
+**Animation (static art):**
+- Destiny portrait: fade in with glow/pulse
+- Cards: slide in, then CSS flip on reveal
+- Judge portraits: scale up on reveal
+- Destiny exit: fade out with particle/sparkle effect (CSS)
+
+**Running Gags:**
+- Destiny leaves mystical residue/glitter Mort complains about
+- Mort questions if she's actually psychic
+- Predictions that may or may not come true later
 
 **Notes:**
+- Judge intro lines: 3-5 prewritten signature lines per judge
+- Comedy comes from dialogue timing, not animation
+- Destiny may appear elsewhere for dramatic moments (TBD)
+- "Let Destiny Decide" pulls from currently filtered pool (or all if no filter)
+
+**General Notes:**
 - Filter persists while browsing
-- "Surprise Me" pulls from currently filtered pool (or all if no filter)
 - Judges already selected are visually marked in browse view
 
 ---
@@ -190,6 +239,7 @@ Save state at two points:
   - Judges (36)
   - Opponents (10)
   - Host (Mort)
+  - Destiny (mystic fortune teller)
   - Player stand-in set (TBD)
 
 ### Image Specs
