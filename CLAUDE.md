@@ -1,6 +1,6 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.4.2
+**Version**: 0.6.2
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three randomly selected AI judges score the final jokes.
@@ -270,6 +270,79 @@ The eternal host of Roast Mortem. Key traits:
 - Sound effects / crowd reactions
 - Daily ghost mode
 - Tournament mode
+
+---
+
+## Design Discussion: GPT-Powered AI Comedians (v0.5.0?)
+
+### The Problem
+Random word selection for AI opponents rarely creates comedy. Judges are now excellent, which highlights how weak the jokes tend to be. Comedy requires surprise, specificity, and setup/punchline connection—random assembly doesn't provide this.
+
+### Why Cards Against Humanity Works
+1. **Pre-written punchlines** - White cards are *already funny* ("A windmill full of corpses")
+2. **High floor, variable ceiling** - Almost any combination works because cards are crafted
+3. **Low cognitive load** - Players recognize what's funny, they don't construct it
+4. **Absurdity > Insults** - Humor from bizarre juxtaposition, not just being mean
+
+### Proposed Solution: GPT-Generated AI Jokes
+Replace random word selection with GPT-generated jokes for AI opponents. Each opponent becomes a distinct comedian character with:
+- **Personality/voice** - How they talk, their comedic style
+- **Strengths** - What they're good at (clean hits, shock value, wordplay)
+- **Weaknesses** - What they struggle with (slow setups, dated refs, tries too hard)
+- **Voice examples** - Sample jokes to establish their style
+
+This creates real rivalries, adds personality, and ensures AI jokes are actually funny.
+
+### Opponent Archetypes (Candidates)
+
+| Archetype | Style | Strength | Weakness |
+|-----------|-------|----------|----------|
+| The Hack | Safe observational humor | Consistent 5-6s | Never hits 9-10s |
+| The Edgelord | Shock value, boundary-pushing | Can hit 10s | Sometimes bombs to 2-3 |
+| The Cerebral | Clever wordplay, references | Intellectual judges love them | "Too smart" for some |
+| The Crowd-Worker | References judges, meta-jokes | Builds rapport | Sometimes sycophantic |
+| The One-Liner Machine | Rapid, punchy | High floor | No depth |
+| The Storyteller | Long setups, big payoffs | Huge when it lands | Often "ran out of time" |
+| The Art Comic | Weird, avant-garde | Specific judges adore them | Alienates mainstream |
+
+### Character Concepts Developed
+
+**Grandma Savage** 👵
+- Sweet old lady who looks like she bakes cookies, delivers DEVASTATING burns
+- Catskills comedy background, buried three husbands
+- Starts sweet, ends brutal: "You seem nice, dear. My third husband seemed nice too. They never found the body."
+
+**Sir David Attenburned** 🎬
+- Nature documentary narrator describing ghosts like pathetic wildlife
+- Hushed, reverent tones about deeply embarrassing behavior
+- "And here we observe the North American LinkedIn Male, frantically 'disrupting' his way toward extinction. Remarkable."
+
+**Other Ideas** (not yet developed):
+- **HR Helen** - Roasts through corporate policy language and write-ups
+- **Yelp Reviewer** - Reviews the ghost's life like a 2-star restaurant
+- **The Medium** - Channels the ghost, who roasts themselves
+- **LinkedIn Larry** - Toxic positivity thought leader ("Your death inspired me to be grateful")
+
+### API Prompt Structure
+Each comedian call includes:
+- Full character definition (persona, style, strengths, weaknesses, voice examples)
+- Ghost context (name, death, bio lines, themes)
+- Judge panel (so they can "read the room")
+- Game state (round, score, who goes first)
+- Opponent's joke (if going second—can react, contrast, or pivot)
+
+### Open Questions
+1. **Player experience** - Keep word-slot gameplay for player? (Asymmetric: player assembles, AI generates)
+2. **Format changes** - Pure ghost roasting vs roast battle (roasting each other)?
+3. **Kill Tony element** - Mix of roast rounds and "just be funny about X" rounds?
+4. **Callbacks** - Should AI comedians reference prior rounds/jokes?
+5. **API cost** - One extra GPT call per round (worth it for quality)
+
+### Implementation Notes
+- Expand `data/opponents.js` with full character definitions
+- New function in `api.js`: `generateComedianJoke(opponent, ghost, judges, context)`
+- AI joke generated during drafting phase (while player picks words)
+- Consider: AI goes first sometimes, player sees what they're up against
 
 ---
 
