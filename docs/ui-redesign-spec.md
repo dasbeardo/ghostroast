@@ -816,19 +816,139 @@ Save state at two points:
 
 ## Transitions
 
-TBD - Define animations between screens/phases
+**Philosophy:** Old variety show feel. Cheap network budget. Nothing too elaborate.
+
+**Transition Types:**
+
+| From → To | Transition |
+|-----------|------------|
+| Menu → Judge Selection | Simple fade or slide right |
+| Judge Selection → Match Opening | Curtain close / curtain open |
+| Between rounds | Quick wipe (horizontal or star) |
+| Screen to Modal | Dim background, modal fades/slides in |
+| Modal dismiss | Reverse of open |
+| Results → Next Round | Slide or fade |
+| Match End → Menu | Fade to black, fade up on menu |
+
+**Variety Show Toolkit:**
+- **Curtain wipe** - classic variety show transition
+- **Star wipe** - cheesy but fits the cheap aesthetic
+- **Horizontal wipe** - simple, clean
+- **Fade to black** - end of segment feel
+- **Slide** - panels sliding in/out
+
+**Notes:**
+- Keep transitions quick (200-400ms)
+- Don't overuse fancy wipes - save for key moments
+- Occasional "technical difficulties" joke transitions (future easter egg)
+- All achievable with CSS animations
 
 ---
 
 ## Color Palette
 
-TBD - Define primary, secondary, accent colors
+**Inspiration:**
+- Castlevania: Simon's Quest nighttime (deep purples, blues, amber torchlight)
+- 80s-90s gross-out cartoons (Ren & Stimpy, Real Monsters - garish accents)
+- Goth aesthetic (blacks, deep reds, shadows)
+
+**Primary Colors:**
+
+| Role | Color | Hex (approx) | Notes |
+|------|-------|--------------|-------|
+| Background Dark | Deep indigo/purple | #1a1a2e | Main background |
+| Background Mid | Muted purple | #16213e | Cards, panels |
+| Surface | Dark charcoal | #0f0f1a | Modals, overlays |
+
+**Accent Colors:**
+
+| Role | Color | Hex (approx) | Notes |
+|------|-------|--------------|-------|
+| Primary Accent | Sickly green | #7ec850 | Buttons, highlights, gross-out vibe |
+| Secondary Accent | Amber/orange | #e9a820 | Warmth, fire, scores |
+| Danger/Loss | Deep blood red | #8b0000 | Forfeits, losses |
+| Win/Success | Ghostly teal | #20c997 | Victories, positive |
+
+**Text Colors:**
+
+| Role | Color | Hex (approx) |
+|------|-------|--------------|
+| Primary Text | Off-white/cream | #f0e6d3 |
+| Secondary Text | Dusty gray | #a0a0a0 |
+| Highlight Text | Bright white | #ffffff |
+
+**Effects:**
+- Glow effects use accent colors with blur
+- Shadows are deep purple/black
+- Dim overlays: rgba(0,0,0,0.7)
+
+**Overall Feel:**
+- Dark and moody base
+- Pops of gross/garish color for accents
+- Warm amber for friendly elements (Mort, scores)
+- Sickly green for interactive elements
+- Never too clean - slightly grungy/retro
 
 ---
 
 ## Typography
 
-TBD - Define font choices for headings, body, special elements
+**Headings / Titles:**
+- **Font:** "Creepster" or "Butcherman" (Google Fonts) - spooky display font
+- **Fallback:** Impact, sans-serif
+- **Use:** Logo, major headings, winner announcements
+- **Style:** All caps for impact
+
+**UI Headings:**
+- **Font:** "Press Start 2P" or "VT323" (Google Fonts) - retro pixel/arcade feel
+- **Fallback:** monospace
+- **Use:** Screen titles, buttons, labels
+- **Style:** Fits the 80s/90s video game aesthetic
+
+**Body Text / Dialogue:**
+- **Font:** "Courier Prime" or "Special Elite" (Google Fonts) - typewriter feel
+- **Fallback:** Courier, monospace
+- **Use:** Mort's dialogue, judge reactions, roast text
+- **Style:** Fits the typewriter effect, adds character
+
+**Stats / Numbers:**
+- **Font:** "Orbitron" or "Press Start 2P"
+- **Use:** Scores, stats, counters
+- **Style:** Bold, clear, arcade scoreboard feel
+
+**Font Loading:**
+- Load via Google Fonts
+- Include fallbacks for offline/slow load
+- Subset if needed for performance
+
+---
+
+## Responsive Design
+
+**Current Approach:** Mobile-first. Desktop may get larger redesign later.
+
+**Mobile Target:**
+- Primary design target
+- 375px - 428px width (iPhone range)
+- Touch-optimized (tap targets 44px+)
+- Portrait orientation assumed
+
+**Tablet:**
+- Scale up mobile design
+- More breathing room
+- Possibly 3-4 judge cards per carousel page
+
+**Desktop (Future):**
+- May warrant significant redesign
+- Could use horizontal space differently
+- Side-by-side layouts possible
+- Keyboard shortcuts potential
+- For now: mobile design scales up
+
+**Breakpoints (tentative):**
+- Mobile: < 768px
+- Tablet: 768px - 1024px
+- Desktop: > 1024px
 
 ---
 
