@@ -648,3 +648,36 @@ TBD - Define primary, secondary, accent colors
 ## Typography
 
 TBD - Define font choices for headings, body, special elements
+
+---
+
+## Future Ideas
+
+### Directed Roasts / Judge Targeting
+
+**Concept:** Player can optionally tag their roast as "directed at" a specific judge.
+
+**Mechanics:**
+- During drafting, optional "Dedicate this roast to..." selector
+- Judges have relationship data:
+  - Loves/hates certain other judges
+  - Sensitive topics
+  - Ego triggers
+- API prompt includes context: "This roast referenced you" or "This roast mocked Tommy, who you adore"
+
+**Dynamic Reactions:**
+- Judge being roasted: defensive, flattered, or offended
+- Allied judge: defends their friend, scores harshly
+- Rival judge: loves seeing the other mocked, scores generously
+- Banter gets personal: "Did they just come at ME?"
+
+**Emergent Moments:**
+- Roast about Tommy → Kanye defends him → Ramsay mocks Kanye
+- Reference a judge's catchphrase → they love it or hate the mockery
+- Play judges against each other strategically
+
+**Implementation Notes:**
+- Judge relationship tags in data (allies, rivals, sensitive topics)
+- Conditional logic in API prompts
+- Could affect scoring or just reactions
+- Adds strategy layer without changing core gameplay
