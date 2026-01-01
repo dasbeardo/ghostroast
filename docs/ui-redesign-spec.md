@@ -561,6 +561,59 @@ Introduces **Destiny**, the mystic fortune teller character. Mort has an Amazing
 
 ---
 
+### Screen 10: Match End
+
+**Purpose:** Conclude the match, show final results, provide options to continue playing.
+
+**Design Philosophy:**
+- Low-key, scaled down - "the network" is cheap
+- No elaborate victory fanfare
+- Quick stats, simple send-off, move on
+
+**Layout:**
+- Final match score: prominent (e.g., "2-1")
+- Winner announcement (simple, not flashy)
+- Match stats summary
+- Mort's closing
+- Action buttons: fixed position at bottom
+
+**Elements:**
+
+*Winner Announcement*
+- Simple text: "[Player/Opponent] WINS!"
+- Winner portrait with subtle glow (nothing over-the-top)
+- Loser portrait slightly dimmed
+
+*Match Stats Summary*
+- Total points across all rounds (Player vs Opponent)
+- Rounds won/lost
+- Maybe: closest round, biggest blowout
+- Tappable for more detail (per-round breakdown)
+
+*Mort's Closing*
+- Quick send-off, nothing spectacular
+- Mort: "And that's a wrap, folks."
+- Variety lines for win/loss scenarios
+- Maybe a quip about the opponent or match quality
+
+*Action Buttons (fixed position)*
+- "Play Again" - new match, same flow (new opponent, judge selection)
+- "Main Menu" - return to menu
+- "View Stats" - open full stats screen
+
+**Animation:**
+- Minimal - winner portrait subtle glow
+- Stats fade/slide in
+- All understated to match cheap network vibe
+
+**Notes:**
+- No elaborate victory celebration
+- No MVP judge or complex awards
+- Keep it quick - players who want depth can tap into stats
+- Clears save data (match complete, no continue needed)
+
+---
+
 ## Save System
 
 ### Checkpoint Approach (Fuller)
@@ -626,7 +679,7 @@ Save state at two points:
 - [x] Screen 6: Drafting Phase
 - [x] Screen 7 & 8: Roast Presentation & Judging
 - [x] Screen 9: Results Screen
-- [ ] Screen 10: Match End
+- [x] Screen 10: Match End
 - [ ] In-Game Menu Overlay
 - [ ] Stats Screen
 - [ ] Import/Export Screen
@@ -681,3 +734,26 @@ TBD - Define font choices for headings, body, special elements
 - Conditional logic in API prompts
 - Could affect scoring or just reactions
 - Adds strategy layer without changing core gameplay
+
+---
+
+### Robot Judges / AI Taking Jobs in the Afterlife
+
+**Concept:** The celebrity judges are actually robots/AI impersonating the real celebrities.
+
+**Lore:**
+- Even in the afterlife, AI is taking jobs
+- "The network" is too cheap to hire real celebrity ghosts
+- These are budget robot impersonators
+- Explains any inconsistencies in judge behavior
+
+**Potential Reveals:**
+- Occasional glitches in judge dialogue
+- Mort makes offhand comments about "the talent budget"
+- Easter eggs where judges malfunction momentarily
+- Maybe a secret ending where you discover the truth
+
+**Tone:**
+- Dark comedy commentary on AI
+- Fits the "cheap network" aesthetic
+- Self-aware meta humor about AI-generated content
