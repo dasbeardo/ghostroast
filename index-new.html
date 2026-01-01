@@ -185,9 +185,44 @@
 
   <!-- Module Script -->
   <script type="module">
-    import { state, VERSION } from './js/state.js';
-    import { GameController } from './js/ui/GameController.js';
-    import { el, $ } from './js/ui/dom.js';
+    // Show error on screen (since we can't see console)
+    function showError(msg) {
+      const loading = document.getElementById('loading');
+      if (loading) {
+        loading.innerHTML = `<div style="color: #ff6b6b; padding: 20px; font-family: monospace; font-size: 12px; text-align: left; max-width: 90%; word-break: break-word;">
+          <strong style="color: #7ec850;">Error loading modules:</strong><br><br>${msg}
+        </div>`;
+      }
+    }
+
+    // Wrap imports in try-catch
+    let state, VERSION, GameController, el, $;
+
+    try {
+      const stateModule = await import('./js/state.js');
+      state = stateModule.state;
+      VERSION = stateModule.VERSION;
+    } catch (e) {
+      showError(`state.js: ${e.message}`);
+      throw e;
+    }
+
+    try {
+      const controllerModule = await import('./js/ui/GameController.js');
+      GameController = controllerModule.GameController;
+    } catch (e) {
+      showError(`GameController.js: ${e.message}`);
+      throw e;
+    }
+
+    try {
+      const domModule = await import('./js/ui/dom.js');
+      el = domModule.el;
+      $ = domModule.$;
+    } catch (e) {
+      showError(`dom.js: ${e.message}`);
+      throw e;
+    }
 
     // Check for API key in URL hash
     function checkUrlHash() {
