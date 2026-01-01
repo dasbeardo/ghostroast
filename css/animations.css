@@ -1,0 +1,394 @@
+/**
+ * Roast Mortem - Animations
+ * All keyframes and transition utilities in one place.
+ */
+
+/* ==========================================
+   ENTRANCE ANIMATIONS
+   ========================================== */
+
+/* Fade in */
+.animate-fade-in {
+  animation: fade-in var(--duration-normal) var(--ease-out);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Fade in up */
+.animate-fade-in-up {
+  animation: fade-in-up var(--duration-normal) var(--ease-out);
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in down */
+.animate-fade-in-down {
+  animation: fade-in-down var(--duration-normal) var(--ease-out);
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide in from left */
+.animate-slide-in-left {
+  animation: slide-in-left var(--duration-normal) var(--ease-out);
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide in from right */
+.animate-slide-in-right {
+  animation: slide-in-right var(--duration-normal) var(--ease-out);
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Pop in (with bounce) */
+.animate-pop-in {
+  animation: pop-in var(--duration-normal) var(--ease-bounce);
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Scale up */
+.animate-scale-up {
+  animation: scale-up var(--duration-fast) var(--ease-out);
+}
+
+@keyframes scale-up {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ==========================================
+   EXIT ANIMATIONS
+   ========================================== */
+
+.animate-fade-out {
+  animation: fade-out var(--duration-fast) var(--ease-in) forwards;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.animate-slide-out-down {
+  animation: slide-out-down var(--duration-normal) var(--ease-in) forwards;
+}
+
+@keyframes slide-out-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* ==========================================
+   LOOPING ANIMATIONS
+   ========================================== */
+
+/* Float (for ghosts) */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+/* Gentle bob */
+.animate-bob {
+  animation: bob 2s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Pulse (scale) */
+.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Glow pulse */
+.animate-glow {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: var(--glow-amber);
+  }
+  50% {
+    box-shadow: var(--glow-amber-strong);
+  }
+}
+
+/* Shake (for emphasis/error) */
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+/* Spin (for loading) */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   SPECIAL EFFECTS
+   ========================================== */
+
+/* Spotlight (zoom in with glow) */
+.animate-spotlight {
+  animation: spotlight var(--duration-slow) var(--ease-out);
+}
+
+@keyframes spotlight {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+    box-shadow: none;
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: var(--glow-amber-strong);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: var(--glow-amber);
+  }
+}
+
+/* Card flip (for tarot reveal) */
+.animate-card-flip {
+  animation: card-flip var(--duration-slow) var(--ease-out);
+  transform-style: preserve-3d;
+}
+
+@keyframes card-flip {
+  0% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+/* Reveal (used for dramatic reveals) */
+.animate-reveal {
+  animation: reveal var(--duration-dramatic) var(--ease-out);
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: blur(10px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(2px);
+  }
+  100% {
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* ==========================================
+   SCREEN TRANSITIONS
+   Variety show style wipes and transitions.
+   ========================================== */
+
+/* Curtain close (overlay for transitions) */
+.curtain-left,
+.curtain-right {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: var(--color-bg-dark);
+  z-index: var(--z-overlay);
+}
+
+.curtain-left {
+  left: 0;
+  animation: curtain-close-left var(--duration-slow) var(--ease-in-out) forwards;
+}
+
+.curtain-right {
+  right: 0;
+  animation: curtain-close-right var(--duration-slow) var(--ease-in-out) forwards;
+}
+
+@keyframes curtain-close-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes curtain-close-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* Curtain open (reverse) */
+.curtain-left.opening {
+  animation: curtain-open-left var(--duration-slow) var(--ease-in-out) forwards;
+}
+
+.curtain-right.opening {
+  animation: curtain-open-right var(--duration-slow) var(--ease-in-out) forwards;
+}
+
+@keyframes curtain-open-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes curtain-open-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+/* Horizontal wipe */
+.animate-wipe-in {
+  animation: wipe-in var(--duration-normal) var(--ease-out) forwards;
+}
+
+@keyframes wipe-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ==========================================
+   STAGGER DELAYS
+   For animating lists of items.
+   ========================================== */
+
+.stagger-1 { animation-delay: 50ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 150ms; }
+.stagger-4 { animation-delay: 200ms; }
+.stagger-5 { animation-delay: 250ms; }
+.stagger-6 { animation-delay: 300ms; }
+
+/* ==========================================
+   TRANSITION UTILITIES
+   ========================================== */
+
+.transition-all {
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.transition-fast {
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.transition-slow {
+  transition: all var(--duration-slow) var(--ease-out);
+}
+
+.transition-none {
+  transition: none;
+}
+
+/* ==========================================
+   ANIMATION CONTROL
+   ========================================== */
+
+/* Pause animation */
+.animation-paused {
+  animation-play-state: paused;
+}
+
+/* Remove animation (useful for after skip) */
+.animation-none {
+  animation: none !important;
+}

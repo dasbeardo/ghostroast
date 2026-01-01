@@ -1,0 +1,60 @@
+/**
+ * Roast Mortem - Main Stylesheet
+ *
+ * This file imports all CSS modules in the correct order.
+ * Include only this file in your HTML.
+ *
+ * Structure:
+ * 1. Variables (design tokens, fonts)
+ * 2. Base (reset, fundamentals, utilities)
+ * 3. Components (reusable UI pieces)
+ * 4. Animations (all keyframes)
+ * 5. Screens (page-specific styles) - loaded as needed
+ */
+
+/* ==========================================
+   FOUNDATION
+   ========================================== */
+
+@import 'variables.css';
+@import 'base.css';
+
+/* ==========================================
+   COMPONENTS
+   ========================================== */
+
+@import 'components/portraits.css';
+@import 'components/buttons.css';
+@import 'components/bubbles.css';
+@import 'components/cards.css';
+@import 'components/modals.css';
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+
+@import 'animations.css';
+
+/* ==========================================
+   SCREENS
+   Screen-specific styles are imported here.
+   Add new screen imports as they're created.
+   ========================================== */
+
+/* @import 'screens/menu.css'; */
+/* @import 'screens/judge-select.css'; */
+/* @import 'screens/ghost-intro.css'; */
+/* @import 'screens/drafting.css'; */
+/* @import 'screens/presentation.css'; */
+/* @import 'screens/results.css'; */
+
+/* ==========================================
+   GLOBAL OVERRIDES & FIXES
+   Any last-minute fixes go here.
+   ========================================== */
+
+/* Ensure game container is above vignette */
+.game-container > * {
+  position: relative;
+  z-index: 1;
+}

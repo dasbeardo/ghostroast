@@ -1,0 +1,214 @@
+/**
+ * Roast Mortem - Portrait Component
+ * Character portraits in various sizes and states.
+ */
+
+/* ==========================================
+   BASE PORTRAIT
+   ========================================== */
+
+.portrait {
+  /* Sizing */
+  width: var(--portrait-size-md);
+  height: var(--portrait-size-md);
+  flex-shrink: 0;
+
+  /* Appearance */
+  border-radius: var(--radius-md);
+  border: var(--border-medium) solid var(--color-score);
+  background: var(--color-bg-mid);
+  overflow: hidden;
+
+  /* Content centering (for emoji fallback) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+
+  /* Smooth transitions */
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+/* Image inside portrait */
+.portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================
+   SIZE VARIANTS
+   ========================================== */
+
+.portrait--sm {
+  width: var(--portrait-size-sm);
+  height: var(--portrait-size-sm);
+  font-size: 18px;
+  border-width: var(--border-thin);
+}
+
+.portrait--lg {
+  width: var(--portrait-size-lg);
+  height: var(--portrait-size-lg);
+  font-size: 40px;
+  border-width: var(--border-thick);
+}
+
+.portrait--xl {
+  width: var(--portrait-size-xl);
+  height: var(--portrait-size-xl);
+  font-size: 60px;
+  border-width: var(--border-chunky);
+}
+
+.portrait--featured {
+  width: var(--portrait-size-featured);
+  height: var(--portrait-size-featured);
+  font-size: 50px;
+  border-width: var(--border-thick);
+}
+
+/* ==========================================
+   COLOR VARIANTS
+   ========================================== */
+
+/* Ghost - teal themed */
+.portrait--ghost {
+  border-color: var(--color-ghost);
+}
+
+/* Host (Mort) - amber themed */
+.portrait--host {
+  border-color: var(--color-host);
+}
+
+/* Player - green themed */
+.portrait--player {
+  border-color: var(--color-interactive);
+}
+
+/* Opponent - neutral */
+.portrait--opponent {
+  border-color: var(--color-text-secondary);
+}
+
+/* ==========================================
+   STATE VARIANTS
+   ========================================== */
+
+/* Spotlight - currently active/speaking */
+.portrait--spotlight {
+  box-shadow: var(--glow-amber-strong);
+}
+
+/* Winner state */
+.portrait--winner {
+  border-color: var(--color-player-win);
+  box-shadow: var(--glow-teal);
+}
+
+/* Loser/dimmed state */
+.portrait--dimmed {
+  opacity: 0.5;
+  filter: grayscale(30%);
+}
+
+/* Selected state (for judge selection) */
+.portrait--selected {
+  border-color: var(--color-interactive);
+  box-shadow: var(--glow-green);
+}
+
+/* Interactive/tappable */
+.portrait--tappable {
+  cursor: pointer;
+}
+
+.portrait--tappable:hover {
+  transform: scale(1.05);
+}
+
+.portrait--tappable:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================
+   ANIMATION VARIANTS
+   ========================================== */
+
+/* Floating ghost animation */
+.portrait--floating {
+  animation: portrait-float 3s ease-in-out infinite;
+}
+
+@keyframes portrait-float {
+  0%, 100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+/* Subtle bob (less dramatic than float) */
+.portrait--bobbing {
+  animation: portrait-bob 2s ease-in-out infinite;
+}
+
+@keyframes portrait-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Pulse for emphasis */
+.portrait--pulsing {
+  animation: portrait-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes portrait-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: var(--glow-amber);
+  }
+}
+
+/* ==========================================
+   PORTRAIT WITH LABEL
+   ========================================== */
+
+.portrait-labeled {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.portrait-labeled__name {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  text-align: center;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portrait-labeled__name--amber {
+  color: var(--color-accent-amber);
+}
+
+.portrait-labeled__name--teal {
+  color: var(--color-accent-teal);
+}
+
+.portrait-labeled__name--green {
+  color: var(--color-accent-green);
+}

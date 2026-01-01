@@ -1,0 +1,292 @@
+/**
+ * Roast Mortem - Modal & Overlay Components
+ * Overlays, bottom sheets, and modal patterns.
+ */
+
+/* ==========================================
+   OVERLAY BACKDROP
+   ========================================== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-dim);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Animation */
+  animation: overlay-fade-in var(--duration-fast) var(--ease-out);
+}
+
+@keyframes overlay-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.overlay--light {
+  background: var(--overlay-light);
+}
+
+/* Dimmed but no centering (for presentation screens) */
+.overlay--dim-only {
+  pointer-events: none;
+}
+
+/* ==========================================
+   MODAL DIALOG
+   ========================================== */
+
+.modal {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  max-width: 90%;
+  max-width: min(90%, 360px);
+  max-height: 80vh;
+  overflow-y: auto;
+  border: var(--border-medium) solid var(--color-accent-amber);
+  box-shadow: var(--shadow-lg);
+
+  /* Animation */
+  animation: modal-slide-up var(--duration-normal) var(--ease-out);
+}
+
+@keyframes modal-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.modal__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-accent-amber);
+  text-transform: uppercase;
+}
+
+.modal__close {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: var(--border-thin) solid var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--text-lg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.modal__close:hover {
+  border-color: var(--color-text-primary);
+  color: var(--color-text-primary);
+}
+
+.modal__body {
+  margin-bottom: var(--space-lg);
+}
+
+.modal__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* ==========================================
+   BOTTOM SHEET
+   Mobile-friendly modal that slides up from bottom.
+   ========================================== */
+
+.bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: var(--viewport-max);
+  margin: 0 auto;
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: var(--space-lg);
+  max-height: 60vh;
+  overflow-y: auto;
+  z-index: var(--z-modal);
+  box-shadow: var(--shadow-up);
+
+  /* Animation */
+  animation: sheet-slide-up var(--duration-normal) var(--ease-out);
+}
+
+@keyframes sheet-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Drag handle */
+.bottom-sheet__handle {
+  width: 40px;
+  height: 4px;
+  background: var(--color-text-secondary);
+  border-radius: 2px;
+  margin: 0 auto var(--space-md);
+}
+
+.bottom-sheet__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.bottom-sheet__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-interactive);
+}
+
+.bottom-sheet__action {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-mid);
+  border: 1px solid var(--color-accent-amber);
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-accent-amber);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.bottom-sheet__action:hover {
+  background: var(--color-bg-surface);
+}
+
+.bottom-sheet__content {
+  /* Scrollable area for content */
+}
+
+.bottom-sheet__footer {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================
+   WORD PICKER (specialized bottom sheet)
+   ========================================== */
+
+.word-picker {
+  max-height: 55vh;
+}
+
+.word-picker__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  max-height: 280px;
+  overflow-y: auto;
+  padding-bottom: var(--space-md);
+}
+
+/* ==========================================
+   CONFIRM DIALOG
+   ========================================== */
+
+.confirm-dialog {
+  text-align: center;
+  max-width: 300px;
+}
+
+.confirm-dialog__message {
+  font-size: var(--text-md);
+  margin-bottom: var(--space-lg);
+  line-height: var(--leading-normal);
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.confirm-dialog__actions .btn {
+  flex: 1;
+}
+
+/* ==========================================
+   IN-GAME MENU
+   ========================================== */
+
+.game-menu {
+  min-width: 250px;
+}
+
+.game-menu__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.game-menu__divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: var(--space-sm) 0;
+}
+
+/* ==========================================
+   FEATURE MODAL (for focused content like Destiny)
+   ========================================== */
+
+.feature-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+  text-align: center;
+}
+
+.feature-modal__portrait {
+  /* Large centered portrait */
+}
+
+.feature-modal__content {
+  max-width: 300px;
+}
+
+/* ==========================================
+   TAP HINT (subtle instruction)
+   ========================================== */
+
+.tap-hint {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  text-align: center;
+  animation: tap-hint-pulse 2s ease-in-out infinite;
+}
+
+@keyframes tap-hint-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}

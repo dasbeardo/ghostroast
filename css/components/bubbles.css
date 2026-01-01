@@ -1,0 +1,252 @@
+/**
+ * Roast Mortem - Speech Bubble Component
+ * 80s/90s retro style speech bubbles for roasts and dialogue.
+ */
+
+/* ==========================================
+   BASE SPEECH BUBBLE
+   ========================================== */
+
+.bubble {
+  position: relative;
+  max-width: var(--bubble-max-width);
+  padding: var(--bubble-padding);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+  text-align: center;
+}
+
+/* ==========================================
+   ROAST BUBBLE
+   The main chunky 80s/90s style bubble for roasts.
+   ========================================== */
+
+.bubble--roast {
+  background: var(--color-accent-amber);
+  color: var(--color-bg-dark);
+  font-size: var(--text-lg);
+  font-weight: bold;
+  line-height: var(--leading-relaxed);
+  padding: var(--space-lg) var(--space-xl);
+
+  /* Chunky retro border */
+  border: var(--border-chunky) solid var(--color-bg-dark);
+
+  /* Layered shadow effect */
+  box-shadow:
+    6px 6px 0 var(--color-bg-dark),
+    10px 10px 0 var(--color-accent-red);
+}
+
+/* Tail pointing up to speaker */
+.bubble--roast::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 10px solid transparent;
+  border-bottom: 10px solid var(--color-bg-dark);
+  border-top: 0;
+}
+
+.bubble--roast::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom: 6px solid var(--color-accent-amber);
+  border-top: 0;
+}
+
+/* Highlighted words in roast */
+.bubble--roast strong,
+.bubble--roast .highlight {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 0 4px;
+}
+
+/* ==========================================
+   JUDGE BUBBLE
+   Reactions from judges - slightly different style.
+   ========================================== */
+
+.bubble--judge {
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  padding: var(--space-md) var(--space-lg);
+
+  border: var(--border-thick) solid var(--color-accent-amber);
+  box-shadow: var(--shadow-retro-md) rgba(233, 168, 32, 0.3);
+}
+
+/* Tail pointing up to judge */
+.bubble--judge::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 7px solid transparent;
+  border-bottom: 7px solid var(--color-accent-amber);
+  border-top: 0;
+}
+
+.bubble--judge::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-bottom: 4px solid var(--color-bg-surface);
+  border-top: 0;
+}
+
+/* ==========================================
+   DIALOGUE BUBBLE
+   For Mort's narration and general dialogue.
+   ========================================== */
+
+.bubble--dialogue {
+  background: var(--color-text-primary);
+  color: var(--color-bg-dark);
+  font-size: var(--text-md);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-sm);
+
+  border: var(--border-thick) solid var(--color-bg-dark);
+  box-shadow:
+    var(--shadow-retro-md) var(--color-bg-surface),
+    8px 8px 0 var(--color-interactive);
+}
+
+/* Tail pointing down to speaker (Mort usually below) */
+.bubble--dialogue::before {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 30px;
+  border: 10px solid transparent;
+  border-top: 10px solid var(--color-text-primary);
+  border-bottom: 0;
+}
+
+/* Tail on right side */
+.bubble--dialogue.bubble--tail-right::before {
+  left: auto;
+  right: 30px;
+}
+
+/* ==========================================
+   TAIL POSITIONS
+   ========================================== */
+
+/* Tail on top (speaker above) */
+.bubble--tail-top::before,
+.bubble--tail-top::after {
+  bottom: auto;
+  top: -20px;
+}
+
+/* Tail on bottom (speaker below) */
+.bubble--tail-bottom::before {
+  top: auto;
+  bottom: -20px;
+  border: 10px solid transparent;
+  border-top-color: inherit;
+  border-bottom: 0;
+}
+
+/* Tail on left */
+.bubble--tail-left::before {
+  left: 30px;
+  right: auto;
+}
+
+/* Tail on right */
+.bubble--tail-right::before {
+  left: auto;
+  right: 30px;
+}
+
+/* No tail */
+.bubble--no-tail::before,
+.bubble--no-tail::after {
+  display: none;
+}
+
+/* ==========================================
+   DIALOGUE BOX
+   For inline dialogue with speaker label.
+   ========================================== */
+
+.dialogue-box {
+  background: var(--color-bg-surface);
+  border: var(--border-medium) solid var(--color-accent-amber);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.dialogue-box__speaker {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-accent-amber);
+  margin-bottom: var(--space-xs);
+  text-transform: uppercase;
+}
+
+.dialogue-box__text {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+}
+
+/* Emphasis in dialogue */
+.dialogue-box__text em {
+  color: var(--color-ghost);
+  font-style: normal;
+}
+
+.dialogue-box__text .death-cause {
+  color: var(--color-danger);
+  font-weight: bold;
+}
+
+/* ==========================================
+   ANIMATION
+   ========================================== */
+
+/* Pop in animation for bubbles */
+.bubble--animate-in {
+  animation: bubble-pop-in var(--duration-normal) var(--ease-bounce);
+}
+
+@keyframes bubble-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Typewriter cursor for text being typed */
+.typing-cursor::after {
+  content: '▌';
+  animation: cursor-blink 0.7s step-end infinite;
+  color: inherit;
+  opacity: 0.7;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0; }
+}

@@ -1,0 +1,293 @@
+/**
+ * Roast Mortem - Card Components
+ * Bio cards, score cards, info cards, etc.
+ */
+
+/* ==========================================
+   BASE CARD
+   ========================================== */
+
+.card {
+  background: var(--color-bg-mid);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  border: var(--border-medium) solid rgba(255, 255, 255, 0.1);
+}
+
+.card--surface {
+  background: var(--color-bg-surface);
+}
+
+.card--selected {
+  border-color: var(--color-interactive);
+  box-shadow: var(--glow-green);
+}
+
+.card--tappable {
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.card--tappable:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.card--tappable:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================
+   GHOST BIO CARD
+   ========================================== */
+
+.bio-card {
+  background: var(--color-bg-mid);
+  border: var(--border-medium) solid var(--color-ghost);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  max-width: 280px;
+}
+
+.bio-card__header {
+  margin-bottom: var(--space-sm);
+}
+
+.bio-card__name {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-ghost);
+  margin-bottom: 2px;
+}
+
+.bio-card__cause {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bio-card__facts {
+  list-style: none;
+}
+
+.bio-card__fact {
+  font-size: var(--text-sm);
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  line-height: var(--leading-normal);
+}
+
+.bio-card__fact:last-child {
+  border-bottom: none;
+}
+
+.bio-card__fact::before {
+  content: '💀 ';
+  font-size: var(--text-xs);
+}
+
+/* Compact version for corner display */
+.bio-card--mini {
+  padding: var(--space-sm);
+  max-width: 200px;
+}
+
+.bio-card--mini .bio-card__name {
+  font-size: var(--text-base);
+}
+
+.bio-card--mini .bio-card__fact {
+  font-size: var(--text-xs);
+}
+
+/* ==========================================
+   GHOST PILL (minimal reference)
+   ========================================== */
+
+.ghost-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-mid);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-ghost);
+}
+
+.ghost-pill__portrait {
+  width: var(--portrait-size-sm);
+  height: var(--portrait-size-sm);
+}
+
+.ghost-pill__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.ghost-pill__label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+}
+
+.ghost-pill__name {
+  font-family: var(--font-ui);
+  font-size: 9px;
+  color: var(--color-ghost);
+}
+
+/* ==========================================
+   PLAYER CARD
+   ========================================== */
+
+.player-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-bg-mid);
+  border-radius: var(--radius-lg);
+  border: var(--border-medium) solid rgba(255, 255, 255, 0.1);
+}
+
+.player-card__info {
+  flex: 1;
+  min-width: 0; /* Allow text truncation */
+}
+
+.player-card__name {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.player-card__stats {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.player-card__stats strong {
+  color: var(--color-ghost);
+}
+
+/* ==========================================
+   SCORE CARD
+   ========================================== */
+
+.score-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-md);
+  background: var(--color-bg-mid);
+  border-radius: var(--radius-lg);
+  border: var(--border-medium) solid rgba(255, 255, 255, 0.1);
+  min-width: 120px;
+}
+
+.score-card__portrait {
+  margin-bottom: var(--space-sm);
+}
+
+.score-card__name {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.score-card__value {
+  font-family: var(--font-ui);
+  font-size: var(--text-xl);
+  color: var(--color-text-primary);
+}
+
+.score-card--winner {
+  border-color: var(--color-player-win);
+  box-shadow: var(--glow-teal);
+}
+
+.score-card--winner .score-card__value {
+  color: var(--color-player-win);
+}
+
+.score-card--loser {
+  opacity: 0.7;
+}
+
+/* ==========================================
+   SCORE BADGE (inline score display)
+   ========================================== */
+
+.score-badge {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-accent-amber);
+  color: var(--color-bg-dark);
+  box-shadow: var(--shadow-retro-md) var(--color-bg-dark);
+}
+
+.score-badge--sm {
+  font-size: var(--text-base);
+  padding: var(--space-xs) var(--space-sm);
+}
+
+/* Animate in */
+.score-badge--animate {
+  animation: score-pop var(--duration-normal) var(--ease-bounce);
+}
+
+@keyframes score-pop {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* ==========================================
+   INFO TOOLTIP
+   For tap-on-portrait info display.
+   ========================================== */
+
+.info-tooltip {
+  position: absolute;
+  background: var(--color-bg-surface);
+  border: var(--border-medium) solid var(--color-accent-amber);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  max-width: 250px;
+  box-shadow: var(--shadow-md);
+  z-index: var(--z-overlay);
+
+  animation: tooltip-fade-in var(--duration-fast) var(--ease-out);
+}
+
+@keyframes tooltip-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.info-tooltip__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-accent-amber);
+  margin-bottom: var(--space-xs);
+}
+
+.info-tooltip__content {
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  line-height: var(--leading-normal);
+}

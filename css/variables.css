@@ -1,0 +1,172 @@
+/**
+ * Roast Mortem - Design Tokens
+ * Single source of truth for colors, typography, spacing, and effects.
+ * Change values here to update the entire UI.
+ */
+
+:root {
+  /* ==========================================
+     COLORS
+     ========================================== */
+
+  /* Backgrounds - Dark moody base */
+  --color-bg-dark: #1a1a2e;      /* Main background */
+  --color-bg-mid: #16213e;       /* Cards, panels */
+  --color-bg-surface: #0f0f1a;   /* Modals, overlays, elevated surfaces */
+
+  /* Accents */
+  --color-accent-green: #7ec850;  /* Primary - buttons, highlights, interactive */
+  --color-accent-amber: #e9a820;  /* Secondary - warmth, scores, host */
+  --color-accent-red: #8b0000;    /* Danger - losses, forfeits, death */
+  --color-accent-teal: #20c997;   /* Success - wins, ghosts, positive */
+
+  /* Text */
+  --color-text-primary: #f0e6d3;   /* Main text - off-white/cream */
+  --color-text-secondary: #a0a0a0; /* Muted text - dusty gray */
+  --color-text-bright: #ffffff;    /* Emphasis - pure white */
+
+  /* Semantic aliases (use these in components) */
+  --color-interactive: var(--color-accent-green);
+  --color-score: var(--color-accent-amber);
+  --color-host: var(--color-accent-amber);
+  --color-ghost: var(--color-accent-teal);
+  --color-player-win: var(--color-accent-teal);
+  --color-danger: var(--color-accent-red);
+
+  /* ==========================================
+     TYPOGRAPHY
+     ========================================== */
+
+  /* Font families */
+  --font-display: 'Creepster', cursive;           /* Logo, major headings */
+  --font-ui: 'Press Start 2P', monospace;         /* Buttons, labels, scores */
+  --font-body: 'Courier Prime', monospace;        /* Dialogue, roasts, body text */
+  --font-retro: 'VT323', monospace;               /* Alternative retro option */
+
+  /* Font sizes - mobile first */
+  --text-xs: 8px;      /* Tiny labels, hints */
+  --text-sm: 10px;     /* Small UI text */
+  --text-base: 14px;   /* Body text */
+  --text-md: 16px;     /* Dialogue */
+  --text-lg: 18px;     /* Roast text */
+  --text-xl: 24px;     /* Section headers */
+  --text-2xl: 32px;    /* Screen titles */
+  --text-3xl: 48px;    /* Logo */
+
+  /* Line heights */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.8;
+
+  /* ==========================================
+     SPACING
+     ========================================== */
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* ==========================================
+     BORDERS & RADII
+     ========================================== */
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;  /* Pills, circles */
+
+  --border-thin: 1px;
+  --border-medium: 2px;
+  --border-thick: 3px;
+  --border-chunky: 4px;
+
+  /* ==========================================
+     EFFECTS
+     ========================================== */
+
+  /* Glows */
+  --glow-green: 0 0 20px rgba(126, 200, 80, 0.5);
+  --glow-amber: 0 0 20px rgba(233, 168, 32, 0.5);
+  --glow-teal: 0 0 20px rgba(32, 201, 151, 0.5);
+  --glow-green-strong: 0 0 30px rgba(126, 200, 80, 0.6), 0 0 60px rgba(126, 200, 80, 0.3);
+  --glow-amber-strong: 0 0 30px rgba(233, 168, 32, 0.6), 0 0 60px rgba(233, 168, 32, 0.3);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.6);
+  --shadow-up: 0 -10px 40px rgba(0, 0, 0, 0.5);  /* For bottom sheets */
+
+  /* Retro offset shadows (for chunky 80s/90s look) */
+  --shadow-retro-sm: 3px 3px 0;
+  --shadow-retro-md: 4px 4px 0;
+  --shadow-retro-lg: 6px 6px 0;
+
+  /* Overlays */
+  --overlay-dim: rgba(0, 0, 0, 0.7);
+  --overlay-light: rgba(0, 0, 0, 0.5);
+
+  /* ==========================================
+     ANIMATION
+     ========================================== */
+
+  /* Durations */
+  --duration-instant: 100ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-dramatic: 600ms;
+
+  /* Easings */
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0.0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ==========================================
+     LAYOUT
+     ========================================== */
+
+  /* Mobile viewport target */
+  --viewport-min: 320px;
+  --viewport-max: 428px;
+
+  /* Touch targets (accessibility) */
+  --touch-target-min: 44px;
+
+  /* Z-index scale */
+  --z-base: 0;
+  --z-above: 10;
+  --z-header: 100;
+  --z-modal: 200;
+  --z-overlay: 300;
+  --z-toast: 400;
+
+  /* ==========================================
+     COMPONENT-SPECIFIC TOKENS
+     ========================================== */
+
+  /* Portraits */
+  --portrait-size-sm: 36px;
+  --portrait-size-md: 48px;
+  --portrait-size-lg: 80px;
+  --portrait-size-xl: 120px;
+  --portrait-size-featured: 100px;
+
+  /* Buttons */
+  --btn-padding-x: var(--space-lg);
+  --btn-padding-y: var(--space-md);
+
+  /* Speech bubbles */
+  --bubble-padding: var(--space-md) var(--space-lg);
+  --bubble-max-width: 320px;
+}
+
+/* ==========================================
+   GOOGLE FONTS IMPORT
+   ========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Press+Start+2P&family=Courier+Prime:wght@400;700&family=VT323&display=swap');
