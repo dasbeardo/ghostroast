@@ -614,6 +614,134 @@ Introduces **Destiny**, the mystic fortune teller character. Mort has an Amazing
 
 ---
 
+### In-Game Menu Overlay
+
+**Purpose:** Pause menu accessible at any time during a match.
+
+**Accessed via:** Menu button in persistent UI shell (always visible)
+
+**Visual Style:**
+- Overlay that dims the playfield
+- Slides in from side or fades over center
+- Simple, quick to access and dismiss
+
+**Options:**
+| Button | Action |
+|--------|--------|
+| Resume | Close menu, return to game |
+| Settings | Opens Settings modal (same as main menu) |
+| Forfeit Match | Confirmation prompt → counts as loss → main menu |
+| Main Menu | If mid-match: "Save and Quit" prompt → saves checkpoint → main menu |
+
+**Forfeit Confirmation:**
+- "Are you sure? This will count as a loss."
+- "Forfeit" / "Cancel" buttons
+- No save - match ends as loss
+
+**Save and Quit:**
+- Only appears if mid-match
+- Saves current checkpoint (per save system rules)
+- Returns to main menu
+- "Continue Game" will be available next time
+
+**Animation:**
+- Slide in from right or fade overlay
+- Quick transitions
+- Tap outside to close (same as Resume)
+
+---
+
+### Stats Screen
+
+**Purpose:** Display comprehensive player statistics.
+
+**Accessed from:** Main Menu, Match End screen, In-Game Menu (via Settings?)
+
+**Layout:**
+- Scrollable content (exception to fixed viewport - stats can be long)
+- Organized sections
+- Close/back button
+
+**Stats Displayed:**
+
+*Overall Record*
+- Total matches: W-L
+- Win percentage
+- Current win streak
+- Longest win streak
+
+*Round Stats*
+- Total rounds: W-L
+- Average score per round
+- Highest single round score
+
+*Opponent Records*
+- Head-to-head vs each opponent
+- Displayed as list with W-L per opponent
+
+*Judge Stats*
+- Average score from each judge
+- Maybe: favorite judge (highest avg), harshest judge (lowest avg)
+
+*Ghost Stats*
+- Total unique ghosts roasted
+- Maybe: ghosts roasted count
+
+*History*
+- Last 10 matches (W/L, opponent, score)
+- Tappable for details?
+
+**Animation:**
+- Minimal - fade in sections
+- Smooth scroll
+
+**Notes:**
+- All stats persisted in localStorage
+- Same stats system already exists - this is just the UI
+
+---
+
+### Import/Export Screen
+
+**Purpose:** Backup and restore player save data.
+
+**Accessed from:** Main Menu
+
+**Layout:**
+- Simple modal or full screen
+- Two main sections: Export and Import
+
+**Export Section:**
+- "Export Save Data" button
+- Generates JSON string of all localStorage data
+- Copy to clipboard button
+- Maybe: shows preview of data being exported
+
+**Import Section:**
+- Text area to paste JSON data
+- "Import Save Data" button
+- Validation before import
+- Confirmation: "This will overwrite your current data. Continue?"
+- Success/error feedback
+
+**Data Included:**
+- Player name
+- API key (optional - security consideration)
+- All stats
+- Current save checkpoint (if exists)
+- Settings preferences
+
+**Animation:**
+- Standard modal transitions
+- Success/error state feedback (checkmark, shake, etc.)
+
+**Notes:**
+- Useful for moving between devices
+- Backup before risky operations
+- JSON format human-readable for debugging
+
+---
+
 ## Save System
 
 ### Checkpoint Approach (Fuller)
@@ -680,9 +808,9 @@ Save state at two points:
 - [x] Screen 7 & 8: Roast Presentation & Judging
 - [x] Screen 9: Results Screen
 - [x] Screen 10: Match End
-- [ ] In-Game Menu Overlay
-- [ ] Stats Screen
-- [ ] Import/Export Screen
+- [x] In-Game Menu Overlay
+- [x] Stats Screen
+- [x] Import/Export Screen
 
 ---
 
