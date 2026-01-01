@@ -1,0 +1,133 @@
+/**
+ * Roast Mortem - Match End Screen Styles
+ */
+
+.screen-match-end {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-xl) var(--space-lg);
+}
+
+/* Winner announcement */
+.match-end__winner {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.match-end__winner-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.match-end__winner-name {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--color-player-win);
+  text-shadow: 0 0 20px rgba(32, 201, 151, 0.5);
+}
+
+/* Final score */
+.match-end__score {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.match-end__score-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.match-end__score-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.match-end__score-value {
+  font-family: var(--font-ui);
+  font-size: var(--text-2xl);
+}
+
+.match-end__score-item--winner .match-end__score-value {
+  color: var(--color-player-win);
+}
+
+.match-end__score-item--loser .match-end__score-value {
+  color: var(--color-text-secondary);
+}
+
+.match-end__score-item--winner .portrait {
+  box-shadow: var(--glow-teal);
+}
+
+.match-end__score-item--loser .portrait {
+  opacity: 0.6;
+}
+
+/* Stats summary */
+.match-end__stats {
+  background: var(--color-bg-mid);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.match-end__stats-title {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.match-end__stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+
+.match-end__stat {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+}
+
+.match-end__stat-label {
+  color: var(--color-text-secondary);
+}
+
+.match-end__stat-value {
+  color: var(--color-text-primary);
+}
+
+/* Mort closing */
+.match-end__mort {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  border-left: 3px solid var(--color-host);
+  margin-bottom: var(--space-lg);
+}
+
+.match-end__mort-text {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+/* Actions */
+.match-end__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: auto;
+}

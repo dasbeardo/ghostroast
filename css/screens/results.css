@@ -1,0 +1,162 @@
+/**
+ * Roast Mortem - Results Screen Styles
+ */
+
+.screen-results {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-lg);
+}
+
+/* Match score */
+.results__match-score {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.results__match-score-value {
+  font-family: var(--font-ui);
+  font-size: var(--text-2xl);
+  color: var(--color-score);
+}
+
+.results__match-score-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+}
+
+/* Mort reaction */
+.results__mort {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  border-left: 3px solid var(--color-host);
+  margin-bottom: var(--space-lg);
+}
+
+.results__mort-text {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+/* Round scores side by side */
+.results__scores {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.results__score-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-md);
+  background: var(--color-bg-mid);
+  border-radius: var(--radius-lg);
+  border: var(--border-medium) solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.results__score-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.results__score-card--winner {
+  border-color: var(--color-player-win);
+  box-shadow: var(--glow-teal);
+}
+
+.results__score-card--loser {
+  opacity: 0.7;
+}
+
+.results__score-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-sm);
+}
+
+.results__score-value {
+  font-family: var(--font-ui);
+  font-size: var(--text-xl);
+  color: var(--color-text-primary);
+  margin-top: var(--space-xs);
+}
+
+.results__score-card--winner .results__score-value {
+  color: var(--color-player-win);
+}
+
+.results__tap-hint {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+}
+
+/* Actions */
+.results__actions {
+  margin-top: auto;
+}
+
+/* Detail modal */
+.results__detail {
+  max-height: 70vh;
+}
+
+.results__detail-roast {
+  padding: var(--space-md);
+  background: var(--color-bg-mid);
+  border-left: 3px solid var(--color-score);
+  margin-bottom: var(--space-lg);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+}
+
+.results__detail-judges {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.results__detail-judge {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-md);
+}
+
+.results__detail-judge-info {
+  flex: 1;
+}
+
+.results__detail-judge-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-score);
+  margin-bottom: var(--space-xs);
+}
+
+.results__detail-judge-reaction {
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  line-height: var(--leading-normal);
+}
+
+.results__detail-judge-score {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  color: var(--color-score);
+  align-self: center;
+}

@@ -1,0 +1,155 @@
+/**
+ * Roast Mortem - Drafting Screen Styles
+ */
+
+.screen-drafting {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Header */
+.drafting__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background: linear-gradient(to bottom, var(--color-bg-surface), transparent);
+}
+
+/* Ghost reference pill */
+.drafting__ghost-ref {
+  position: absolute;
+  top: 60px;
+  right: var(--space-md);
+  z-index: var(--z-above);
+}
+
+/* Main template area */
+.drafting__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg);
+  padding-top: 80px;
+}
+
+.drafting__template-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.drafting__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-interactive);
+}
+
+.drafting__reroll {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-mid);
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-score);
+}
+
+/* Template display */
+.drafting__template {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  border: var(--border-medium) solid rgba(255, 255, 255, 0.1);
+}
+
+.drafting__template-text {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: 2;
+  text-align: center;
+  color: var(--color-text-primary);
+}
+
+/* Blanks */
+.drafting__blank {
+  display: inline-block;
+  min-width: 90px;
+  padding: var(--space-xs) var(--space-sm);
+  margin: 0 4px;
+  background: var(--color-bg-mid);
+  border: var(--border-medium) dashed var(--color-text-secondary);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+  cursor: pointer;
+  vertical-align: middle;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.drafting__blank--active {
+  border-color: var(--color-interactive);
+  border-style: solid;
+  color: var(--color-interactive);
+  box-shadow: var(--glow-green);
+  animation: pulse var(--duration-slow) ease-in-out infinite;
+}
+
+.drafting__blank--filled {
+  background: var(--color-interactive);
+  border-style: solid;
+  border-color: var(--color-interactive);
+  color: var(--color-bg-dark);
+  font-weight: bold;
+}
+
+/* Slot indicators */
+.drafting__slots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.drafting__slot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-bg-mid);
+  border: var(--border-medium) solid var(--color-text-secondary);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.drafting__slot--active {
+  border-color: var(--color-interactive);
+  box-shadow: var(--glow-green);
+}
+
+.drafting__slot--filled {
+  background: var(--color-interactive);
+  border-color: var(--color-interactive);
+}
+
+/* Actions */
+.drafting__actions {
+  padding: var(--space-md);
+  background: linear-gradient(to top, var(--color-bg-dark), transparent);
+}
+
+/* Word picker */
+.drafting__word-picker {
+  max-height: 55vh;
+}
+
+.drafting__word-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  max-height: 280px;
+  overflow-y: auto;
+  padding-bottom: var(--space-md);
+}

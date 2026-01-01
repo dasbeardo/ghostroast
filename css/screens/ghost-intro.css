@@ -1,0 +1,105 @@
+/**
+ * Roast Mortem - Ghost Intro Screen Styles
+ */
+
+.screen-ghost-intro {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+/* Header bar */
+.ghost-intro__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background: linear-gradient(to bottom, var(--color-bg-surface), transparent);
+  z-index: var(--z-above);
+}
+
+.ghost-intro__score {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-score);
+  text-align: center;
+}
+
+.ghost-intro__round {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.ghost-intro__matchup {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.ghost-intro__vs {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  color: var(--color-interactive);
+}
+
+/* Main content area */
+.ghost-intro__content {
+  flex: 1;
+  position: relative;
+  padding: var(--space-md);
+}
+
+/* Mort narrator position */
+.ghost-intro__mort {
+  position: absolute;
+  top: var(--space-lg);
+  left: var(--space-md);
+  z-index: var(--z-above);
+}
+
+/* Dialogue area */
+.ghost-intro__dialogue {
+  position: absolute;
+  top: 100px;
+  left: var(--space-md);
+  right: var(--space-md);
+  max-width: 260px;
+  z-index: var(--z-above);
+}
+
+/* Ghost spotlight */
+.ghost-intro__ghost {
+  position: absolute;
+  bottom: 200px;
+  right: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  z-index: var(--z-above);
+}
+
+.ghost-intro__ghost-name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--color-ghost);
+  text-shadow: 0 0 20px rgba(32, 201, 151, 0.5);
+}
+
+/* Bio card */
+.ghost-intro__bio {
+  position: absolute;
+  bottom: 120px;
+  left: var(--space-md);
+  z-index: var(--z-above);
+}
+
+/* Actions */
+.ghost-intro__actions {
+  position: absolute;
+  bottom: var(--space-lg);
+  left: var(--space-md);
+  right: var(--space-md);
+  z-index: var(--z-above);
+}

@@ -1,0 +1,146 @@
+/**
+ * Roast Mortem - Presentation Screen Styles
+ */
+
+.screen-presentation {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-bg-dark);
+}
+
+/* Minimal header */
+.presentation__header {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.presentation__status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+}
+
+.presentation__round {
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+}
+
+.presentation__score {
+  color: var(--color-score);
+}
+
+/* Main stage */
+.presentation__stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  gap: var(--space-lg);
+}
+
+/* Ghost target pill */
+.presentation__target {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-mid);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-ghost);
+}
+
+.presentation__target-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.presentation__target-name {
+  font-family: var(--font-ui);
+  font-size: 9px;
+  color: var(--color-ghost);
+}
+
+/* Roaster */
+.presentation__roaster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.presentation__roaster-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-score);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Judge section */
+.presentation__judge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.presentation__judge-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-score);
+}
+
+/* Score display */
+.presentation__judge-score {
+  margin-top: var(--space-sm);
+}
+
+/* Running totals */
+.presentation__totals {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xl);
+  padding: var(--space-md);
+  margin-top: auto;
+}
+
+.presentation__total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.presentation__total-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.presentation__total-value {
+  font-family: var(--font-ui);
+  font-size: var(--text-xl);
+}
+
+.presentation__total--player .presentation__total-value {
+  color: var(--color-ghost);
+}
+
+.presentation__total--opponent .presentation__total-value {
+  color: var(--color-text-secondary);
+}
+
+/* Footer */
+.presentation__footer {
+  padding: var(--space-md);
+  text-align: center;
+}

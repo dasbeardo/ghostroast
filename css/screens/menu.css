@@ -1,0 +1,130 @@
+/**
+ * Roast Mortem - Menu Screen Styles
+ */
+
+.screen-menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-xl) var(--space-lg);
+  background:
+    radial-gradient(ellipse at top, rgba(126, 200, 80, 0.08) 0%, transparent 50%),
+    var(--color-bg-dark);
+}
+
+/* Logo */
+.menu__logo {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  color: var(--color-interactive);
+  text-align: center;
+  line-height: 1.1;
+  text-shadow:
+    3px 3px 0 var(--color-accent-red),
+    6px 6px 0 var(--color-bg-surface);
+  margin-bottom: var(--space-sm);
+}
+
+.menu__tagline {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  text-align: center;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-xl);
+}
+
+/* Mort welcome section */
+.menu__welcome {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  border-left: 3px solid var(--color-host);
+  margin-bottom: var(--space-lg);
+}
+
+.menu__welcome-text {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  line-height: var(--leading-normal);
+  flex: 1;
+}
+
+.menu__welcome-text em {
+  color: var(--color-host);
+  font-style: normal;
+}
+
+/* Player card */
+.menu__player {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-bg-mid);
+  border-radius: var(--radius-lg);
+  border: var(--border-medium) solid rgba(255, 255, 255, 0.1);
+  margin-bottom: var(--space-lg);
+}
+
+.menu__player-info {
+  flex: 1;
+}
+
+.menu__player-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.menu__player-stats {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.menu__player-stats strong {
+  color: var(--color-ghost);
+}
+
+/* Navigation buttons */
+.menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: auto;
+}
+
+/* Footer */
+.menu__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-lg);
+  margin-top: var(--space-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu__footer-link {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.menu__footer-link:hover {
+  color: var(--color-interactive);
+}
+
+.menu__version {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}

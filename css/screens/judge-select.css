@@ -1,0 +1,190 @@
+/**
+ * Roast Mortem - Judge Select Screen Styles
+ */
+
+.screen-judge-select {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Header */
+.judge-select__header {
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.judge-select__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-interactive);
+  margin-bottom: var(--space-xs);
+}
+
+.judge-select__opponent {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+/* Filter bar */
+.judge-select__filters {
+  display: flex;
+  gap: var(--space-xs);
+  padding: 0 var(--space-md) var(--space-md);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.judge-select__filter {
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-mid);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.judge-select__filter:hover {
+  border-color: var(--color-interactive);
+  color: var(--color-interactive);
+}
+
+.judge-select__filter--active {
+  background: var(--color-interactive);
+  border-color: var(--color-interactive);
+  color: var(--color-bg-dark);
+}
+
+/* Judge grid */
+.judge-select__grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  overflow-y: auto;
+  align-content: start;
+}
+
+.judge-select__judge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  background: var(--color-bg-mid);
+  border-radius: var(--radius-md);
+  border: var(--border-medium) solid transparent;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.judge-select__judge:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.judge-select__judge--selected {
+  border-color: var(--color-interactive);
+  box-shadow: var(--glow-green);
+}
+
+.judge-select__judge--disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.judge-select__judge-name {
+  font-family: var(--font-ui);
+  font-size: 7px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Selection slots */
+.judge-select__slots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-bg-surface);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.judge-select__slot {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-md);
+  border: var(--border-medium) dashed var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  font-size: var(--text-xl);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.judge-select__slot--filled {
+  border-style: solid;
+  border-color: var(--color-interactive);
+  background: var(--color-bg-mid);
+  cursor: pointer;
+}
+
+.judge-select__slot--filled:hover {
+  border-color: var(--color-danger);
+}
+
+/* Actions */
+.judge-select__actions {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-bg-surface);
+}
+
+.judge-select__actions .btn {
+  flex: 1;
+}
+
+/* Destiny modal */
+.destiny-modal {
+  text-align: center;
+}
+
+.destiny-modal__cards {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
+}
+
+.destiny-modal__card {
+  width: 70px;
+  height: 100px;
+  background: var(--color-bg-mid);
+  border: var(--border-medium) solid var(--color-score);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-2xl);
+  transition: transform var(--duration-slow) var(--ease-out);
+  transform-style: preserve-3d;
+}
+
+.destiny-modal__card--revealed {
+  animation: card-flip var(--duration-slow) var(--ease-out);
+}
+
+.destiny-modal__card--back {
+  background: linear-gradient(135deg, var(--color-bg-mid), var(--color-bg-surface));
+}
