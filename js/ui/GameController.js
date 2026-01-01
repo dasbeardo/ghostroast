@@ -16,12 +16,11 @@ import {
 } from './screens/index.js';
 
 import { state, VERSION } from '../state.js';
-import { ghosts } from '../../data/ghosts.js';
-import { judges } from '../../data/judges.js';
-import { templates } from '../../data/templates.js';
-import { wordPools } from '../../data/wordPools.js';
-import { opponents } from '../../data/opponents.js';
-import { callOpenAI } from '../api.js';
+import { GHOSTS } from '../../data/ghosts.js';
+import { JUDGES } from '../../data/judges.js';
+import { TEMPLATES } from '../../data/templates.js';
+import { WORD_POOLS } from '../../data/wordPools.js';
+import { OPPONENTS } from '../../data/opponents.js';
 import { shuffle } from '../utils.js';
 
 /**
@@ -94,7 +93,7 @@ export class GameController {
     this.opponentTotalPoints = 0;
 
     // Pick random opponent
-    this.opponent = opponents[Math.floor(Math.random() * opponents.length)];
+    this.opponent = OPPONENTS[Math.floor(Math.random() * OPPONENTS.length)];
 
     // Show judge selection
     this.showJudgeSelect();
@@ -112,7 +111,7 @@ export class GameController {
       },
       onDestiny: () => {
         // Random judge selection
-        const shuffled = shuffle([...judges]);
+        const shuffled = shuffle([...JUDGES]);
         const randomJudges = shuffled.slice(0, 3);
         screen.setSelectedJudges(randomJudges);
       }
@@ -125,12 +124,12 @@ export class GameController {
    */
   startRound() {
     // Pick ghost (no repeats)
-    const availableGhosts = ghosts.filter(g => !this.usedGhosts.includes(g.id));
+    const availableGhosts = GHOSTS.filter(g => !this.usedGhosts.includes(g.name));
     this.currentGhost = availableGhosts[Math.floor(Math.random() * availableGhosts.length)];
-    this.usedGhosts.push(this.currentGhost.id);
+    this.usedGhosts.push(this.currentGhost.name);
 
     // Pick templates
-    const shuffledTemplates = shuffle([...templates]);
+    const shuffledTemplates = shuffle([...TEMPLATES]);
     this.playerTemplate = shuffledTemplates[0];
     this.opponentTemplate = shuffledTemplates[1] || shuffledTemplates[0];
 
@@ -164,7 +163,7 @@ export class GameController {
     const screen = DraftingScreen({
       ghost: this.currentGhost,
       template: this.playerTemplate,
-      wordPools: wordPools,
+      wordPools: WORD_POOLS,
       rerolls: 1,
       playerScore: this.playerMatchScore,
       opponentScore: this.opponentMatchScore,
@@ -268,7 +267,7 @@ export class GameController {
    * Generate AI roast from template
    */
   generateAIRoast(template) {
-    const text = template?.text || "You're like [pathetic_things] — [it_shows]";
+    const text = template?.template || "You're like [pathetic_things] — [it_shows]";
     let roast = '"';
 
     const regex = /\[([^\]]+)\]/g;
@@ -278,7 +277,7 @@ export class GameController {
     while ((match = regex.exec(text)) !== null) {
       roast += text.slice(lastIndex, match.index);
       const poolName = match[1];
-      const pool = wordPools[poolName] || { base: ['something'] };
+      const pool = WORD_POOLS[poolName] || { base: ['something'] };
       const allWords = [...(pool.base || [])];
       const word = allWords[Math.floor(Math.random() * allWords.length)] || 'something';
       roast += word;

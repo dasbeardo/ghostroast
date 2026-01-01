@@ -165,8 +165,3 @@
   --bubble-padding: var(--space-md) var(--space-lg);
   --bubble-max-width: 320px;
 }
-
-/* ==========================================
-   GOOGLE FONTS IMPORT
-   ========================================== */
-@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Press+Start+2P&family=Courier+Prime:wght@400;700&family=VT323&display=swap');

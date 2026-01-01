@@ -4,7 +4,7 @@
 
 import { el, $, $$, clearElement } from '../dom.js';
 import { Portrait } from '../components/Portrait.js';
-import { judges } from '../../../data/judges.js';
+import { JUDGES } from '../../../data/judges.js';
 
 const JUDGE_TAGS = ['all', 'wrestling', 'politics', 'actors', 'tv', 'villains', 'sports', 'chaos'];
 
@@ -87,8 +87,8 @@ export function JudgeSelectScreen({ opponent, onConfirm, onDestiny }) {
   function renderGrid() {
     clearElement(gridContainer);
     const filteredJudges = activeFilter === 'all'
-      ? judges
-      : judges.filter(j => j.tags && j.tags.includes(activeFilter));
+      ? JUDGES
+      : JUDGES.filter(j => j.tags && j.tags.includes(activeFilter));
 
     filteredJudges.forEach(judge => {
       const isSelected = selectedJudges.some(j => j.id === judge.id);

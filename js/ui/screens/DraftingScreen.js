@@ -36,7 +36,7 @@ export function DraftingScreen({
   let pickerOpen = false;
 
   // Parse template - find blanks
-  const templateParts = parseTemplate(template?.text || "You're like [BLANK] — [BLANK]");
+  const templateParts = parseTemplate(template?.template || "You're like [BLANK] — [BLANK]");
   const totalSlots = templateParts.filter(p => p.isBlank).length;
   filledSlots = new Array(totalSlots).fill(null);
 
