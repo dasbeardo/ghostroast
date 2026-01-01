@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Roast Mortem - Roast Presentation Mockup</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Roast Presentation specific styles */
+
+    .presentation-screen {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+    }
+
+    /* Dim overlay for focus */
+    .dim-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 5;
+    }
+
+    /* Header stays visible but dimmed */
+    .game-header {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Current roaster indicator in header */
+    .roaster-indicator {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-ui);
+      font-size: 8px;
+      color: var(--accent-amber);
+      padding: var(--space-xs) var(--space-md);
+      background: var(--bg-surface);
+      border-radius: 20px;
+      border: 1px solid var(--accent-amber);
+      z-index: 20;
+    }
+
+    /* Main presentation area */
+    .presentation-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Roaster spotlight */
+    .roaster-spotlight {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .roaster-spotlight .portrait {
+      width: 100px;
+      height: 100px;
+      font-size: 50px;
+      border-color: var(--accent-amber);
+      box-shadow:
+        0 0 30px rgba(233, 168, 32, 0.4),
+        0 0 60px rgba(233, 168, 32, 0.2);
+    }
+
+    .roaster-spotlight .name {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      color: var(--accent-amber);
+      margin-top: var(--space-sm);
+      text-shadow: 0 0 10px rgba(233, 168, 32, 0.5);
+    }
+
+    /* 80s/90s Retro Speech Bubble */
+    .roast-bubble {
+      position: relative;
+      max-width: 320px;
+      background: var(--accent-amber);
+      color: var(--bg-dark);
+      padding: var(--space-lg) var(--space-xl);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1.4;
+      text-align: center;
+
+      /* Chunky retro shadow */
+      border: 4px solid var(--bg-dark);
+      box-shadow:
+        6px 6px 0 var(--bg-dark),
+        10px 10px 0 var(--accent-red);
+    }
+
+    .roast-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border: 12px solid transparent;
+      border-top-color: var(--bg-dark);
+      border-bottom: 0;
+    }
+
+    .roast-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border: 8px solid transparent;
+      border-top-color: var(--accent-amber);
+      border-bottom: 0;
+    }
+
+    /* Ghost mini in corner during presentation */
+    .ghost-corner {
+      position: absolute;
+      bottom: var(--space-lg);
+      right: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0.7;
+    }
+
+    .ghost-corner .portrait {
+      width: 50px;
+      height: 50px;
+      font-size: 25px;
+      animation: ghost-float 3s ease-in-out infinite;
+    }
+
+    .ghost-corner .name {
+      font-family: var(--font-ui);
+      font-size: 6px;
+      color: var(--accent-teal);
+      margin-top: var(--space-xs);
+    }
+
+    @keyframes ghost-float {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-6px) rotate(2deg); }
+    }
+
+    /* Tap hint */
+    .tap-hint {
+      position: absolute;
+      bottom: var(--space-xl);
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-ui);
+      font-size: 8px;
+      color: var(--text-secondary);
+      animation: fade-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes fade-pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ===============================
+       ALTERNATE VIEW: Judge Reaction
+       =============================== */
+
+    /* Judge reaction version of the presentation */
+    .judge-reaction {
+      display: none; /* Toggle this in a real implementation */
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+
+    .judge-spotlight {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .judge-spotlight .portrait {
+      width: 90px;
+      height: 90px;
+      font-size: 45px;
+      border-color: var(--accent-amber);
+      box-shadow: var(--glow-amber);
+    }
+
+    .judge-spotlight .name {
+      font-family: var(--font-ui);
+      font-size: 10px;
+      color: var(--accent-amber);
+      margin-top: var(--space-sm);
+    }
+
+    /* Judge speech bubble - different style */
+    .judge-bubble {
+      position: relative;
+      max-width: 300px;
+      background: var(--bg-mid);
+      color: var(--text-primary);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.5;
+
+      border: 3px solid var(--accent-amber);
+      box-shadow: 4px 4px 0 var(--accent-amber);
+    }
+
+    .judge-bubble::before {
+      content: '';
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border: 8px solid transparent;
+      border-bottom-color: var(--accent-amber);
+      border-top: 0;
+    }
+
+    .judge-bubble::after {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      border-bottom-color: var(--bg-mid);
+      border-top: 0;
+    }
+
+    /* Score badge */
+    .score-badge {
+      display: inline-block;
+      font-family: var(--font-ui);
+      font-size: 16px;
+      padding: var(--space-xs) var(--space-md);
+      background: var(--accent-amber);
+      color: var(--bg-dark);
+      border-radius: 6px;
+      margin-top: var(--space-sm);
+      box-shadow: 3px 3px 0 var(--bg-dark);
+      animation: pop-in 0.3s ease;
+    }
+
+    @keyframes pop-in {
+      0% { transform: scale(0); }
+      70% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* Running score display */
+    .running-score {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: var(--space-lg);
+      font-family: var(--font-ui);
+      font-size: 10px;
+    }
+
+    .running-score .player-score,
+    .running-score .opponent-score {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .running-score .label {
+      color: var(--text-secondary);
+      font-size: 8px;
+    }
+
+    .running-score .value {
+      font-size: 14px;
+    }
+
+    .running-score .player-score .value {
+      color: var(--accent-teal);
+    }
+
+    .running-score .opponent-score .value {
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <div class="presentation-screen">
+
+      <!-- Dim overlay -->
+      <div class="dim-overlay"></div>
+
+      <!-- Persistent Header -->
+      <header class="game-header">
+        <div class="score-display">
+          <div class="score">0 - 0</div>
+          <div>Round 1</div>
+        </div>
+
+        <div class="matchup">
+          <div class="portrait small spotlight">👤</div>
+          <span class="vs">VS</span>
+          <div class="portrait small" style="opacity: 0.5;">🤖</div>
+        </div>
+
+        <button class="menu-btn">☰</button>
+      </header>
+
+      <div class="roaster-indicator">NOW ROASTING</div>
+
+      <!-- Main Presentation Content -->
+      <div class="presentation-content">
+
+        <!-- Roaster in spotlight -->
+        <div class="roaster-spotlight">
+          <div class="portrait">👤</div>
+          <div class="name">DeathJester</div>
+        </div>
+
+        <!-- The Roast - 80s/90s Style Bubble -->
+        <div class="roast-bubble">
+          "You're the human equivalent of <strong>a wet sock</strong> — <strong>disappointing AND boring</strong>"
+        </div>
+
+      </div>
+
+      <!-- Ghost in corner -->
+      <div class="ghost-corner">
+        <div class="portrait ghost">🪙</div>
+        <span class="name">Chad Cryptobro</span>
+      </div>
+
+      <!-- Tap hint -->
+      <div class="tap-hint">Tap to continue</div>
+
+    </div>
+  </div>
+
+  <!--
+    ====================================
+    ALTERNATE LAYOUT: JUDGE REACTION
+    (Uncomment to see judge reaction view)
+    ====================================
+  -->
+  <!--
+  <div class="game-container">
+    <div class="presentation-screen">
+      <div class="dim-overlay"></div>
+
+      <header class="game-header">
+        <div class="score-display">
+          <div class="score">0 - 0</div>
+          <div>Round 1</div>
+        </div>
+        <div class="matchup">
+          <div class="portrait small">👤</div>
+          <span class="vs">VS</span>
+          <div class="portrait small">🤖</div>
+        </div>
+        <button class="menu-btn">☰</button>
+      </header>
+
+      <div class="presentation-content">
+        <div class="judge-spotlight">
+          <div class="portrait">🎬</div>
+          <div class="name">Tommy Wiseau</div>
+        </div>
+
+        <div class="judge-bubble">
+          "Oh hi roast! This is tearing me apart, like Lisa tore apart my heart. I give it... what I give it. You know?"
+        </div>
+
+        <div class="score-badge">7/10</div>
+      </div>
+
+      <div class="running-score">
+        <div class="player-score">
+          <span class="label">YOU</span>
+          <span class="value">7</span>
+        </div>
+        <div class="opponent-score">
+          <span class="label">AI</span>
+          <span class="value">—</span>
+        </div>
+      </div>
+
+      <div class="tap-hint">Tap to continue</div>
+    </div>
+  </div>
+  -->
+</body>
+</html>

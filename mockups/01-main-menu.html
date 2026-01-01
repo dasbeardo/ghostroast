@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Roast Mortem - Main Menu Mockup</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Page-specific overrides */
+    .menu-screen {
+      background:
+        radial-gradient(ellipse at top, rgba(126, 200, 80, 0.1) 0%, transparent 50%),
+        var(--bg-dark);
+    }
+
+    .title-logo {
+      margin-top: var(--space-xl);
+    }
+
+    .mort-welcome {
+      display: flex;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+      background: var(--bg-surface);
+      border-radius: 12px;
+      margin: var(--space-lg) 0;
+      border-left: 3px solid var(--accent-amber);
+    }
+
+    .mort-welcome .portrait {
+      flex-shrink: 0;
+    }
+
+    .mort-welcome .dialogue {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .mort-welcome .dialogue em {
+      color: var(--accent-amber);
+    }
+
+    .player-card {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md);
+      background: var(--bg-mid);
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .player-card .info h3 {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      color: var(--text-primary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .player-card .info .record {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .player-card .info .record span {
+      color: var(--accent-teal);
+    }
+
+    .menu-nav {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-top: auto;
+      padding-top: var(--space-lg);
+    }
+
+    .menu-nav .btn {
+      width: 100%;
+    }
+
+    .menu-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: var(--space-lg);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: var(--space-lg);
+    }
+
+    .menu-footer a {
+      font-family: var(--font-ui);
+      font-size: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .menu-footer a:hover {
+      color: var(--accent-green);
+    }
+
+    .version {
+      font-family: var(--font-ui);
+      font-size: 8px;
+      color: var(--text-secondary);
+    }
+
+    .continue-btn {
+      position: relative;
+    }
+
+    .continue-btn::after {
+      content: 'SAVED';
+      position: absolute;
+      right: var(--space-md);
+      font-size: 8px;
+      color: var(--accent-teal);
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <div class="menu-screen">
+
+      <!-- Logo -->
+      <div class="title-logo">
+        ROAST<br>MORTEM
+        <div class="subtitle">A Comedy of Errors... And Death</div>
+      </div>
+
+      <!-- Mort Welcome -->
+      <div class="mort-welcome">
+        <div class="portrait large">🎩</div>
+        <div class="dialogue">
+          "Goooood evening, <em>DeathJester</em>... Back for more punishment, I see. The network loves a glutton."
+        </div>
+      </div>
+
+      <!-- Player Card -->
+      <div class="player-card">
+        <div class="portrait">👤</div>
+        <div class="info">
+          <h3>DeathJester</h3>
+          <div class="record">Record: <span>12-7</span> • 🔥 3 Win Streak</div>
+        </div>
+      </div>
+
+      <!-- Menu Navigation -->
+      <nav class="menu-nav">
+        <button class="btn btn-primary btn-large">New Game</button>
+        <button class="btn btn-secondary btn-large continue-btn">Continue Game</button>
+        <button class="btn btn-ghost btn-large">View Stats</button>
+        <button class="btn btn-ghost btn-large">Settings</button>
+      </nav>
+
+      <!-- Footer -->
+      <footer class="menu-footer">
+        <a href="#">Import / Export</a>
+        <span class="version">v0.7.0</span>
+        <a href="#">Credits</a>
+      </footer>
+
+    </div>
+  </div>
+</body>
+</html>
