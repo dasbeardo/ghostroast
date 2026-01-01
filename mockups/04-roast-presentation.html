@@ -6,84 +6,77 @@
   <title>Roast Mortem - Roast Presentation Mockup</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Roast Presentation specific styles */
+    /* Roast Presentation - Full Modal Takeover */
 
     .presentation-screen {
       display: flex;
       flex-direction: column;
       height: 100%;
+      background: var(--bg-dark);
       position: relative;
     }
 
-    /* Dim overlay for focus */
-    .dim-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 5;
-    }
-
-    /* Header stays visible but dimmed */
-    .game-header {
-      position: relative;
-      z-index: 10;
-    }
-
-    /* Current roaster indicator in header */
-    .roaster-indicator {
-      position: absolute;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: var(--font-ui);
-      font-size: 8px;
-      color: var(--accent-amber);
-      padding: var(--space-xs) var(--space-md);
+    /* Minimal top bar - just score, very subtle */
+    .minimal-header {
+      display: flex;
+      justify-content: center;
+      padding: var(--space-sm) var(--space-md);
       background: var(--bg-surface);
-      border-radius: 20px;
-      border: 1px solid var(--accent-amber);
-      z-index: 20;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    /* Main presentation area */
-    .presentation-content {
+    .match-status {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      font-family: var(--font-ui);
+      font-size: 10px;
+    }
+
+    .match-status .round {
+      color: var(--text-secondary);
+    }
+
+    .match-status .score {
+      color: var(--accent-amber);
+      font-size: 14px;
+    }
+
+    /* Main stage area */
+    .stage {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: var(--space-xl);
-      position: relative;
-      z-index: 10;
+      gap: var(--space-xl);
     }
 
-    /* Roaster spotlight */
-    .roaster-spotlight {
+    /* Roaster display */
+    .roaster {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: var(--space-lg);
+      gap: var(--space-sm);
     }
 
-    .roaster-spotlight .portrait {
+    .roaster .portrait {
       width: 100px;
       height: 100px;
       font-size: 50px;
       border-color: var(--accent-amber);
       box-shadow:
-        0 0 30px rgba(233, 168, 32, 0.4),
+        0 0 30px rgba(233, 168, 32, 0.5),
         0 0 60px rgba(233, 168, 32, 0.2);
     }
 
-    .roaster-spotlight .name {
+    .roaster .name {
       font-family: var(--font-ui);
       font-size: 12px;
       color: var(--accent-amber);
-      margin-top: var(--space-sm);
-      text-shadow: 0 0 10px rgba(233, 168, 32, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     /* 80s/90s Retro Speech Bubble */
@@ -93,112 +86,144 @@
       background: var(--accent-amber);
       color: var(--bg-dark);
       padding: var(--space-lg) var(--space-xl);
-      border-radius: 8px;
       font-family: var(--font-body);
       font-size: 18px;
       font-weight: bold;
       line-height: 1.4;
       text-align: center;
 
-      /* Chunky retro shadow */
+      /* Chunky retro look */
       border: 4px solid var(--bg-dark);
       box-shadow:
         6px 6px 0 var(--bg-dark),
         10px 10px 0 var(--accent-red);
     }
 
+    /* Speech tail pointing up to speaker */
     .roast-bubble::before {
       content: '';
       position: absolute;
-      bottom: -24px;
+      top: -20px;
       left: 50%;
       transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border: 12px solid transparent;
-      border-top-color: var(--bg-dark);
-      border-bottom: 0;
+      border: 10px solid transparent;
+      border-bottom: 10px solid var(--bg-dark);
+      border-top: 0;
     }
 
     .roast-bubble::after {
       content: '';
       position: absolute;
-      bottom: -16px;
+      top: -12px;
       left: 50%;
       transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border: 8px solid transparent;
-      border-top-color: var(--accent-amber);
-      border-bottom: 0;
+      border: 6px solid transparent;
+      border-bottom: 6px solid var(--accent-amber);
+      border-top: 0;
     }
 
-    /* Ghost mini in corner during presentation */
-    .ghost-corner {
-      position: absolute;
-      bottom: var(--space-lg);
-      right: var(--space-lg);
+    .roast-bubble strong {
+      color: var(--bg-dark);
+      background: rgba(255, 255, 255, 0.3);
+      padding: 0 4px;
+    }
+
+    /* Ghost target - who's being roasted */
+    .ghost-target {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      opacity: 0.7;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--bg-mid);
+      border-radius: 24px;
+      border: 1px solid var(--accent-teal);
     }
 
-    .ghost-corner .portrait {
-      width: 50px;
-      height: 50px;
-      font-size: 25px;
-      animation: ghost-float 3s ease-in-out infinite;
+    .ghost-target .portrait {
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+      border-width: 2px;
+      animation: ghost-bob 2s ease-in-out infinite;
     }
 
-    .ghost-corner .name {
-      font-family: var(--font-ui);
-      font-size: 6px;
-      color: var(--accent-teal);
-      margin-top: var(--space-xs);
-    }
-
-    @keyframes ghost-float {
-      0%, 100% { transform: translateY(0) rotate(-2deg); }
-      50% { transform: translateY(-6px) rotate(2deg); }
-    }
-
-    /* Tap hint */
-    .tap-hint {
-      position: absolute;
-      bottom: var(--space-xl);
-      left: 50%;
-      transform: translateX(-50%);
+    .ghost-target .label {
       font-family: var(--font-ui);
       font-size: 8px;
       color: var(--text-secondary);
-      animation: fade-pulse 2s ease-in-out infinite;
     }
 
-    @keyframes fade-pulse {
+    .ghost-target .name {
+      font-family: var(--font-ui);
+      font-size: 9px;
+      color: var(--accent-teal);
+    }
+
+    @keyframes ghost-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    /* Bottom area */
+    .stage-footer {
+      padding: var(--space-md);
+      text-align: center;
+    }
+
+    .tap-hint {
+      font-family: var(--font-ui);
+      font-size: 8px;
+      color: var(--text-secondary);
+      animation: pulse-opacity 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-opacity {
       0%, 100% { opacity: 0.4; }
       50% { opacity: 1; }
     }
 
-    /* ===============================
-       ALTERNATE VIEW: Judge Reaction
-       =============================== */
+    /* ===========================================
+       JUDGE REACTION VARIANT
+       =========================================== */
 
-    /* Judge reaction version of the presentation */
-    .judge-reaction {
-      display: none; /* Toggle this in a real implementation */
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-lg);
-    }
-
-    .judge-spotlight {
+    .judge-stage {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: var(--space-lg);
+      gap: var(--space-md);
     }
 
-    .judge-spotlight .portrait {
+    /* Small roast reference at top */
+    .roast-reference {
+      max-width: 280px;
+      padding: var(--space-sm) var(--space-md);
+      background: var(--bg-mid);
+      border-left: 3px solid var(--accent-amber);
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .roast-reference .by {
+      font-family: var(--font-ui);
+      font-size: 8px;
+      color: var(--accent-amber);
+      margin-bottom: var(--space-xs);
+    }
+
+    /* Judge display */
+    .judge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+
+    .judge .portrait {
       width: 90px;
       height: 90px;
       font-size: 45px;
@@ -206,52 +231,46 @@
       box-shadow: var(--glow-amber);
     }
 
-    .judge-spotlight .name {
+    .judge .name {
       font-family: var(--font-ui);
       font-size: 10px;
       color: var(--accent-amber);
-      margin-top: var(--space-sm);
     }
 
-    /* Judge speech bubble - different style */
+    /* Judge reaction bubble - different style */
     .judge-bubble {
       position: relative;
       max-width: 300px;
-      background: var(--bg-mid);
+      background: var(--bg-surface);
       color: var(--text-primary);
       padding: var(--space-md) var(--space-lg);
-      border-radius: 8px;
       font-family: var(--font-body);
       font-size: 15px;
       line-height: 1.5;
-
+      text-align: center;
       border: 3px solid var(--accent-amber);
-      box-shadow: 4px 4px 0 var(--accent-amber);
+      box-shadow: 4px 4px 0 rgba(233, 168, 32, 0.3);
     }
 
     .judge-bubble::before {
       content: '';
       position: absolute;
-      top: -16px;
+      top: -14px;
       left: 50%;
       transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border: 8px solid transparent;
-      border-bottom-color: var(--accent-amber);
+      border: 7px solid transparent;
+      border-bottom: 7px solid var(--accent-amber);
       border-top: 0;
     }
 
     .judge-bubble::after {
       content: '';
       position: absolute;
-      top: -10px;
+      top: -8px;
       left: 50%;
       transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border: 5px solid transparent;
-      border-bottom-color: var(--bg-mid);
+      border: 4px solid transparent;
+      border-bottom: 4px solid var(--bg-surface);
       border-top: 0;
     }
 
@@ -259,164 +278,100 @@
     .score-badge {
       display: inline-block;
       font-family: var(--font-ui);
-      font-size: 16px;
-      padding: var(--space-xs) var(--space-md);
+      font-size: 18px;
+      padding: var(--space-sm) var(--space-md);
       background: var(--accent-amber);
       color: var(--bg-dark);
-      border-radius: 6px;
-      margin-top: var(--space-sm);
-      box-shadow: 3px 3px 0 var(--bg-dark);
-      animation: pop-in 0.3s ease;
+      margin-top: var(--space-md);
+      box-shadow: 4px 4px 0 var(--bg-dark);
     }
 
-    @keyframes pop-in {
-      0% { transform: scale(0); }
-      70% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-
-    /* Running score display */
-    .running-score {
-      position: absolute;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
+    /* Running totals at bottom */
+    .score-totals {
       display: flex;
-      gap: var(--space-lg);
-      font-family: var(--font-ui);
-      font-size: 10px;
+      justify-content: center;
+      gap: var(--space-xl);
+      padding: var(--space-md);
+      margin-top: auto;
     }
 
-    .running-score .player-score,
-    .running-score .opponent-score {
+    .score-total {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: var(--space-xs);
     }
 
-    .running-score .label {
-      color: var(--text-secondary);
+    .score-total .label {
+      font-family: var(--font-ui);
       font-size: 8px;
+      color: var(--text-secondary);
     }
 
-    .running-score .value {
-      font-size: 14px;
+    .score-total .value {
+      font-family: var(--font-ui);
+      font-size: 20px;
     }
 
-    .running-score .player-score .value {
+    .score-total.player .value {
       color: var(--accent-teal);
     }
 
-    .running-score .opponent-score .value {
+    .score-total.opponent .value {
       color: var(--text-secondary);
+    }
+
+    .score-total .pending {
+      color: var(--text-secondary);
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
+
+  <!-- ====== VIEW 1: ROAST DELIVERY ====== -->
   <div class="game-container">
     <div class="presentation-screen">
 
-      <!-- Dim overlay -->
-      <div class="dim-overlay"></div>
+      <!-- Minimal header - just the essentials -->
+      <div class="minimal-header">
+        <div class="match-status">
+          <span class="round">Round 1</span>
+          <span class="score">0 - 0</span>
+        </div>
+      </div>
 
-      <!-- Persistent Header -->
-      <header class="game-header">
-        <div class="score-display">
-          <div class="score">0 - 0</div>
-          <div>Round 1</div>
+      <!-- Main stage -->
+      <div class="stage">
+
+        <!-- Who's being roasted -->
+        <div class="ghost-target">
+          <div class="portrait ghost">🪙</div>
+          <div>
+            <div class="label">ROASTING</div>
+            <div class="name">Chad Cryptobro</div>
+          </div>
         </div>
 
-        <div class="matchup">
-          <div class="portrait small spotlight">👤</div>
-          <span class="vs">VS</span>
-          <div class="portrait small" style="opacity: 0.5;">🤖</div>
-        </div>
-
-        <button class="menu-btn">☰</button>
-      </header>
-
-      <div class="roaster-indicator">NOW ROASTING</div>
-
-      <!-- Main Presentation Content -->
-      <div class="presentation-content">
-
-        <!-- Roaster in spotlight -->
-        <div class="roaster-spotlight">
+        <!-- The roaster -->
+        <div class="roaster">
           <div class="portrait">👤</div>
           <div class="name">DeathJester</div>
         </div>
 
-        <!-- The Roast - 80s/90s Style Bubble -->
+        <!-- The roast itself -->
         <div class="roast-bubble">
           "You're the human equivalent of <strong>a wet sock</strong> — <strong>disappointing AND boring</strong>"
         </div>
 
       </div>
 
-      <!-- Ghost in corner -->
-      <div class="ghost-corner">
-        <div class="portrait ghost">🪙</div>
-        <span class="name">Chad Cryptobro</span>
+      <div class="stage-footer">
+        <div class="tap-hint">Tap to continue</div>
       </div>
-
-      <!-- Tap hint -->
-      <div class="tap-hint">Tap to continue</div>
 
     </div>
   </div>
 
-  <!--
-    ====================================
-    ALTERNATE LAYOUT: JUDGE REACTION
-    (Uncomment to see judge reaction view)
-    ====================================
-  -->
-  <!--
-  <div class="game-container">
-    <div class="presentation-screen">
-      <div class="dim-overlay"></div>
-
-      <header class="game-header">
-        <div class="score-display">
-          <div class="score">0 - 0</div>
-          <div>Round 1</div>
-        </div>
-        <div class="matchup">
-          <div class="portrait small">👤</div>
-          <span class="vs">VS</span>
-          <div class="portrait small">🤖</div>
-        </div>
-        <button class="menu-btn">☰</button>
-      </header>
-
-      <div class="presentation-content">
-        <div class="judge-spotlight">
-          <div class="portrait">🎬</div>
-          <div class="name">Tommy Wiseau</div>
-        </div>
-
-        <div class="judge-bubble">
-          "Oh hi roast! This is tearing me apart, like Lisa tore apart my heart. I give it... what I give it. You know?"
-        </div>
-
-        <div class="score-badge">7/10</div>
-      </div>
-
-      <div class="running-score">
-        <div class="player-score">
-          <span class="label">YOU</span>
-          <span class="value">7</span>
-        </div>
-        <div class="opponent-score">
-          <span class="label">AI</span>
-          <span class="value">—</span>
-        </div>
-      </div>
-
-      <div class="tap-hint">Tap to continue</div>
-    </div>
-  </div>
-  -->
 </body>
 </html>
