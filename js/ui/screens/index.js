@@ -11,3 +11,4 @@ export { DraftingScreen } from './DraftingScreen.js';
 export { PresentationScreen } from './PresentationScreen.js';
 export { ResultsScreen } from './ResultsScreen.js';
 export { MatchEndScreen } from './MatchEndScreen.js';
+export { StatsScreen } from './StatsScreen.js';

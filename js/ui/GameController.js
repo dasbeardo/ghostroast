@@ -13,7 +13,8 @@ import {
   DraftingScreen,
   PresentationScreen,
   ResultsScreen,
-  MatchEndScreen
+  MatchEndScreen,
+  StatsScreen
 } from './screens/index.js';
 
 import { state, VERSION, savePlayerStats } from '../state.js';
@@ -241,6 +242,15 @@ export class GameController {
         this.playerTotalPoints += results.playerTotal;
         this.opponentTotalPoints += results.opponentTotal;
 
+        // Track round stats (ghosts, judge scores, etc.)
+        this.updateRoundStats(
+          results.playerTotal,
+          results.opponentTotal,
+          results.playerTotal > results.opponentTotal,
+          this.selectedJudges,
+          results.playerScores
+        );
+
         // Determine round winner
         if (results.playerTotal > results.opponentTotal) {
           this.playerMatchScore++;
@@ -407,38 +417,110 @@ export class GameController {
   }
 
   /**
-   * Update player stats
+   * Update player stats - matches original game.js implementation
    */
   updateStats() {
+    // Initialize stats if needed (match original structure)
     if (!state.stats) {
       state.stats = {
-        matchWins: 0,
-        matchLosses: 0,
-        roundWins: 0,
-        roundLosses: 0,
-        currentStreak: 0,
-        longestStreak: 0
+        playerName: state.playerName || '',
+        totalWins: 0,
+        totalLosses: 0,
+        totalRoundsWon: 0,
+        totalRoundsLost: 0,
+        totalRoundsTied: 0,
+        matchHistory: [],
+        opponentRecords: {},
+        judgeScores: {},
+        ghostsRoasted: [],
+        highestSingleScore: 0,
+        longestWinStreak: 0,
+        currentWinStreak: 0
       };
     }
 
     const playerWon = this.playerMatchScore > this.opponentMatchScore;
 
+    // Update win/loss totals
     if (playerWon) {
-      state.stats.matchWins++;
-      state.stats.currentStreak++;
-      if (state.stats.currentStreak > state.stats.longestStreak) {
-        state.stats.longestStreak = state.stats.currentStreak;
+      state.stats.totalWins++;
+      state.stats.currentWinStreak++;
+      if (state.stats.currentWinStreak > state.stats.longestWinStreak) {
+        state.stats.longestWinStreak = state.stats.currentWinStreak;
       }
     } else {
-      state.stats.matchLosses++;
-      state.stats.currentStreak = 0;
+      state.stats.totalLosses++;
+      state.stats.currentWinStreak = 0;
     }
 
-    state.stats.roundWins += this.playerMatchScore;
-    state.stats.roundLosses += this.opponentMatchScore;
+    // Update opponent record
+    const oppName = this.opponent?.name;
+    if (oppName) {
+      if (!state.stats.opponentRecords[oppName]) {
+        state.stats.opponentRecords[oppName] = { wins: 0, losses: 0 };
+      }
+      if (playerWon) {
+        state.stats.opponentRecords[oppName].wins++;
+      } else {
+        state.stats.opponentRecords[oppName].losses++;
+      }
+    }
 
-    // Save to localStorage
-    localStorage.setItem('roastmortem_stats', JSON.stringify(state.stats));
+    // Add to match history (keep last 10)
+    state.stats.matchHistory.unshift({
+      opponent: oppName,
+      won: playerWon,
+      playerScore: this.playerMatchScore,
+      aiScore: this.opponentMatchScore,
+      date: new Date().toISOString()
+    });
+    if (state.stats.matchHistory.length > 10) {
+      state.stats.matchHistory = state.stats.matchHistory.slice(0, 10);
+    }
+
+    // Save using the proper function
+    savePlayerStats();
+  }
+
+  /**
+   * Track round stats after each round
+   */
+  updateRoundStats(playerTotal, opponentTotal, playerWonRound, judges, playerScores) {
+    if (!state.stats) return;
+
+    // Track round wins/losses/ties
+    if (playerTotal > opponentTotal) {
+      state.stats.totalRoundsWon++;
+    } else if (opponentTotal > playerTotal) {
+      state.stats.totalRoundsLost++;
+    } else {
+      state.stats.totalRoundsTied++;
+    }
+
+    // Track highest single round score
+    if (playerTotal > (state.stats.highestSingleScore || 0)) {
+      state.stats.highestSingleScore = playerTotal;
+    }
+
+    // Track judge scores
+    if (judges && playerScores) {
+      judges.forEach((judge, i) => {
+        const judgeName = judge.name;
+        if (!state.stats.judgeScores[judgeName]) {
+          state.stats.judgeScores[judgeName] = { totalScore: 0, timesJudged: 0 };
+        }
+        state.stats.judgeScores[judgeName].totalScore += playerScores[i] || 0;
+        state.stats.judgeScores[judgeName].timesJudged++;
+      });
+    }
+
+    // Track ghosts roasted
+    if (this.currentGhost && !state.stats.ghostsRoasted.includes(this.currentGhost.name)) {
+      state.stats.ghostsRoasted.push(this.currentGhost.name);
+    }
+
+    // Save incrementally
+    savePlayerStats();
   }
 
   /**
@@ -453,8 +535,10 @@ export class GameController {
    * Show stats screen
    */
   showStats() {
-    // TODO: Implement stats screen
-    alert('Stats coming soon!');
+    const screen = StatsScreen({
+      onBack: () => this.showMenu()
+    });
+    this.showScreen(screen);
   }
 
   /**
