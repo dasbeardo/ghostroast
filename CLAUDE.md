@@ -1,71 +1,135 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.6.2
+**Version**: 0.6.3
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three AI judges (player-selected or random) score the final jokes.
 
 ## Current State
-**Working prototype** - Playable at `http://localhost:3000` (run `python3 -m http.server 3000`)
+**Working prototype** - Two UI versions available:
+- `index.html` - Original UI (legacy)
+- `index-new.html` - **New modular UI** (recommended, actively developed)
+
+Run with: `python3 -m http.server 3000` then open `http://localhost:3000/index-new.html`
 
 ## Tech Stack
 - **Frontend**: Vanilla JS, no framework, no build step
-- **Styling**: Plain CSS
+- **Styling**: Plain CSS (new UI uses modular CSS architecture)
 - **API**: OpenAI GPT-5.2 (user provides their own API key)
 - **Server**: None needed for local dev (just static file serving)
-- **Git**: Repo in `ghostroast/` subfolder (connected to GitHub Desktop)
+- **Git**: Connected to GitHub
 
 ---
 
 ## File Structure
 ```
-roastaghost/
-├── index.html          # Entry point
-├── style.css           # All styles
+ghostroast/
+├── index.html              # Legacy UI entry point
+├── index-new.html          # NEW modular UI entry point (recommended)
+├── style.css               # Legacy styles
+├── css/                    # NEW modular CSS architecture
+│   ├── styles.css          # Main CSS import file
+│   ├── variables.css       # Design tokens (colors, spacing, fonts)
+│   ├── base.css            # Reset and base styles
+│   ├── animations.css      # Keyframe animations
+│   ├── components/         # Reusable components
+│   │   ├── buttons.css
+│   │   ├── portraits.css
+│   │   ├── bubbles.css
+│   │   ├── cards.css
+│   │   └── modals.css
+│   └── screens/            # Screen-specific styles
+│       ├── menu.css
+│       ├── judge-select.css
+│       ├── ghost-intro.css
+│       ├── drafting.css
+│       ├── presentation.css
+│       ├── results.css
+│       ├── match-opening.css
+│       ├── match-end.css
+│       └── stats.css
 ├── js/
-│   ├── main.js         # Entry point, imports and initializes
-│   ├── state.js        # Game state object + VERSION constant
-│   ├── render.js       # All render functions
-│   ├── game.js         # Game logic (startGame, startRound, selectWord, etc)
-│   ├── api.js          # OpenAI API calls (GPT-5.2)
-│   └── utils.js        # shuffle, $, typeText, delay
+│   ├── main.js             # Legacy entry point
+│   ├── state.js            # Game state + VERSION + localStorage
+│   ├── render.js           # Legacy render functions
+│   ├── game.js             # Legacy game logic
+│   ├── api.js              # OpenAI API calls (V3 Panel Judging)
+│   ├── utils.js            # shuffle, $, typeText, delay
+│   └── ui/                 # NEW modular UI system
+│       ├── index.js        # UI initialization
+│       ├── dom.js          # DOM utilities (el, $, $$, clearElement)
+│       ├── GameController.js   # Main game controller class
+│       ├── components/     # Reusable UI components
+│       │   ├── index.js
+│       │   ├── Portrait.js
+│       │   └── Dialogue.js # TypeWriter effect
+│       └── screens/        # Screen components
+│           ├── index.js
+│           ├── MenuScreen.js
+│           ├── JudgeSelectScreen.js
+│           ├── MatchOpeningScreen.js
+│           ├── GhostIntroScreen.js
+│           ├── DraftingScreen.js
+│           ├── PresentationScreen.js
+│           ├── ResultsScreen.js
+│           ├── MatchEndScreen.js
+│           └── StatsScreen.js
 ├── data/
-│   ├── index.js        # Re-exports all data
-│   ├── ghosts.js       # 132 ghost characters (with theme tags)
-│   ├── judges.js       # 36 V4 method-acting judges (with tags for filtering)
-│   ├── templates.js    # 16 roast templates (2 slots each)
-│   ├── wordPools.js    # Themed word pools (500+ words)
-│   ├── opponents.js    # 10 AI opponents
-│   └── host.js         # Mort Holloway host character + dialogue templates
-├── ghostroast/         # Git repo (sync files here before committing)
-├── worker/             # Cloudflare Worker for API proxy (optional sharing feature)
-│   ├── worker.js       # The Worker code
-│   ├── wrangler.toml   # Deployment config
-│   └── DEPLOY.md       # Step-by-step deployment instructions
-├── server.js           # Express server (NOT USED - for future deployment)
-├── package.json        # Node deps (NOT USED locally)
-├── .gitignore
-├── CLAUDE.md           # This file
-└── docs/
-    ├── roast-a-ghost-spec.md      # Original conversion spec
-    └── claude_artifact_version.txt # Original React prototype
+│   ├── index.js            # Re-exports all data
+│   ├── ghosts.js           # 132 ghost characters (with theme tags)
+│   ├── judges.js           # 36 judges (with tags for filtering)
+│   ├── templates.js        # 16 roast templates (2 slots each)
+│   ├── wordPools.js        # Themed word pools (500+ words)
+│   ├── opponents.js        # 10 AI opponents
+│   └── host.js             # Mort Holloway host character
+├── worker/                 # Cloudflare Worker for API proxy
+│   ├── worker.js
+│   ├── wrangler.toml
+│   └── DEPLOY.md
+├── docs/
+│   └── ui-redesign-spec.md # New UI specification
+├── mockups/                # HTML mockups for new UI
+├── CLAUDE.md               # This file
+└── .gitignore
 ```
 
 ---
 
 ## Architecture Decisions
 
-### Separate Templates
-- Player and AI get DIFFERENT random templates each round
-- AI picks all its words immediately (random from pools)
-- Player sees AI's template structure during drafting
-- More RNG/luck-based, opens up roguelike unlock possibilities
+### Two UI Systems
+- **Legacy UI** (`index.html`): Single render.js file, all HTML as template strings
+- **New Modular UI** (`index-new.html`): Component-based, GameController class, modular CSS
+- Both share: `js/api.js`, `js/state.js`, `js/utils.js`, `data/*`
 
-### Themed Word Pools (NEW)
+### V3 Panel Judging (Current)
+- **2 API calls per round** (not 6)
+- Each call returns all 3 judges' reactions + banter in single JSON response
+- Second roast call includes first roast context for comparison
+- Judges react in character with 3-5 sentences each
+
+### API Prefetching Optimization
+- First reactions fetch starts **immediately** when presentation screen loads
+- Second reactions fetch starts **as soon as first reactions arrive**
+- User reads content while API loads in background
+- Loading screen only shows if API hasn't finished yet
+
+### Tap-to-Advance Flow (New UI)
+- Judge reactions require user tap to advance (not auto-advance)
+- "Tap to continue" hint appears when user can proceed
+- Gives players time to read and enjoy reactions
+- Banter displays after all judge reactions
+
+### Judge Selection with Destiny
+- **Pick Judges mode**: Manual selection from grid, filter by tag
+- **Ask Destiny mode**: Mystical character reveals random judges
+- Destiny has animated portrait, typewriter dialogue, card reveal animation
+- Mode toggle tabs at top of screen
+
+### Themed Word Pools
 - Word pools have `base` entries (always available) and `themed` entries
 - Each ghost has theme tags (e.g., `["crypto"]`, `["boomer", "mlm"]`)
 - Themed words appear 3x more often when matching ghost is active
-- Creates ghost-relevant roast options without guaranteeing them
 - Themes: `crypto`, `influencer`, `boomer`, `mlm`, `corporate`, `fitness`, `bro`, `wealth`
 
 ### API Key Handling (Two Modes)
@@ -73,127 +137,53 @@ roastaghost/
 - User inputs their own OpenAI API key on first launch
 - Key stored in localStorage (`roastmortem_apikey`)
 - Never hardcoded, never sent anywhere except OpenAI
-- **URL sharing (v0.6.2)**: Share `roastmortem.com/#YOUR_API_KEY` to auto-fill the key (hash cleared from URL after reading)
 
 **Proxy Mode** (for sharing with friends):
 - Set `PROXY_URL` in `js/state.js` to your Cloudflare Worker URL
 - User enters a password instead of API key
 - Worker validates password and proxies requests to OpenAI
-- Your real API key stays secret on Cloudflare
 - See `worker/DEPLOY.md` for setup instructions
-
-### Judge System (v0.2.0 - One-at-a-Time Flow)
-- Roasts are presented and judged ONE AT A TIME
-- Who goes first ALTERNATES each round (playerGoesFirst toggles)
-- Each judge gives 2 reactions per round (one per roast)
-- 6 API calls per round total (3 judges × 2 roasts)
-- On second roast, judges have context of their first reaction (but scores are LOCKED)
-- Judges within each roast phase see prior judges' reactions
-- Judge order shuffled each round
-- Judges evaluate COMPLETE jokes holistically with 3-5 sentence reactions
-- Results screen shows both reactions per judge side-by-side
-
-### Judge Selection (v0.6.0)
-- Before match starts, player chooses 3 judges from the full roster
-- Tap judges to select/deselect, 3 slots show current picks
-- "Surprise Me" button for random selection
-- **Filter by tag**: wrestling, politics, actors, tv, villains, sports, chaos
-- Prevents unfamiliar judge confusion while keeping discovery possible
-
-### Card Stack UI (v0.6.0)
-- Judge reactions display as stacked cards instead of scrolling list
-- Cards animate in one at a time as reactions complete
-- Banter card appears on top after all judges react
-- Swipe or use dots/arrows to navigate between cards
-- Scores pop in after each reaction finishes typing
-
-### Host System
-- Mort Holloway hosts the show with typewriter dialogue
-- Dialogue templates for every moment (openings, intros, reactions, closings)
-- Adds personality and pacing between game phases
-- **Player-aware dialogue (v0.3.0)**: Host references player stats, win streaks, opponent history
-
-### Player Profile & Stats System (v0.3.0)
-- Player enters their stage name on first play
-- Stats persisted in localStorage (`roastmortem_stats`)
-- Tracks:
-  - Total wins/losses and round wins/losses
-  - Win/loss record vs each opponent
-  - Average score from each judge
-  - Ghosts roasted (unique)
-  - Highest single round score
-  - Win streaks (current and longest)
-  - Last 10 match history
-- Host references stats in opening dialogue:
-  - New player intros
-  - Hot streak callouts (3+ wins)
-  - Underdog encouragement
-  - Rematch rivalries
 
 ---
 
-## Game Flow
+## Game Flow (New UI)
 ```
 API KEY SCREEN
   User enters OpenAI API key (stored in localStorage)
   ↓
-PLAYER NAME SCREEN (v0.3.0)
+PLAYER NAME SCREEN
   Enter stage name (persisted with stats)
   ↓
-MENU → START GAME (or VIEW STATS)
+MENU
+  New Game | View Stats | Settings
+  Footer: Import/Export | Credits
   ↓
-Pick random opponent (from 10)
+JUDGE SELECTION
+  Pick Judges tab: Select 3 from grid, filter by category
+  Ask Destiny tab: Tap Destiny for random reveal with animation
   ↓
-JUDGE SELECTION (v0.6.0)
-  Player picks 3 judges OR clicks "Surprise Me" for random
-  ↓
-Set scores to 0-0, round to 1
-  ↓
-MATCH OPENING (HOST)
-  Mort welcomes player BY NAME with stat-aware intro
-  Shows matchup: [PlayerName] vs Opponent
-  Shows judges panel
+MATCH OPENING
+  Mort welcomes player with stat-aware intro
+  Shows matchup and judges panel
   ↓
 ROUND LOOP (best of 3):
   ↓
-  Pick random ghost (no repeats)
-  Pick SEPARATE templates for player and AI
-  AI picks all its words immediately
-  ↓
-  GHOST INTRO (HOST)
-  Mort introduces ghost (typewriter) → ghost reveals
-  Mort reacts to bio → "Start Roasting" button
+  GHOST INTRO
+  Mort introduces ghost → ghost bio reveals
   ↓
   DRAFTING PHASE
-  Player sees their template + AI's template structure
-  Player clicks blanks, picks words from WEIGHTED pools
-  (Ghost-themed words appear more often)
+  Player taps blanks, picks words from weighted pools
+  Menu button (☰) opens pause menu
   ↓
-  === ONE-AT-A-TIME JUDGING (v0.2.0) ===
-  ↓
-  FIRST ROAST PRESENTATION
-  Host introduces first roaster (alternates each round)
-  First roast types out dramatically
-  ↓
-  FIRST ROAST JUDGING
-  Host transitions → Each judge scores (25-50 word reactions)
-  Scores locked immediately
-  ↓
-  SECOND ROAST PRESENTATION
-  Host introduces second roaster
-  Second roast types out dramatically
-  ↓
-  SECOND ROAST JUDGING
-  Host transitions → Each judge scores with context of first
-  (They remember what they said about first roast, can compare)
+  PRESENTATION (tap-to-advance)
+  First roast types out → tap → judge reactions (tap after each)
+  → banter → tap → second roast → tap → judge reactions → banter
+  API prefetches in background during user reading time
   ↓
   RESULTS SCREEN
-  Shows both roasts with total scores
-  Each judge shows BOTH reactions side-by-side
-  Mort announces round winner
+  Both roasts with scores, judge reactions side-by-side
   ↓
-  If someone has 2 wins → MATCH END (host closing)
-  Else → Next round (toggle who goes first)
+  If 2 wins → MATCH END | Else → Next round
 ```
 
 ---
@@ -203,137 +193,67 @@ ROUND LOOP (best of 3):
 ### Ghosts (132)
 Fictional deceased people with:
 - Name, emoji, cause of death
-- 3 bio lines (humorous facts about them)
-- **Theme tags** (e.g., `["crypto"]`, `["boomer", "corporate"]`)
+- 3 bio lines (humorous facts)
+- Theme tags for word pool weighting
 
 ### Judges (36)
-V4 "Method Acting" format with celebrity personas. Each judge has:
-- id, name, emoji, scoreRange
-- tags (for filtering: `wrestling`, `politics`, `actors`, `tv`, `villains`, `sports`, `chaos`)
-- personality (second-person immersive description)
-
-Current roster (36 judges):
-- **Original 12**: Tommy Wiseau, Donald Trump, Kanye West, Macho Man Randy Savage, Borat, Christopher Walken, Samuel L. Jackson, Owen Wilson, Gordon Ramsay, Jeff Goldblum, Morgan Freeman, Gilbert Gottfried
-- **Wrestling (5)**: Ric Flair, Vince McMahon, The Iron Sheik, Ultimate Warrior, Jesse Ventura
-- **Actors/Characters (7)**: Moira Rose, Werner Herzog, Nicolas Cage, David Attenborough, Gary Busey, Jennifer Coolidge, William Shatner
-- **Villains/TV (6)**: GLaDOS, Darth Vader, Simon Cowell, Judge Judy, Dr. Phil, Chris Hansen
-- **Politics (3)**: Sarah Palin, Barack Obama, George W. Bush
-- **Media/Chaos (3)**: Alex Jones, Joe Rogan, John Madden
-
-**V3 Panel Judging**: Single API call returns all 3 judges' reactions + banter between them.
+Celebrity personas with method-acting prompts:
+- id, name, emoji, scoreRange, tags, personality
+- Tags: `wrestling`, `politics`, `actors`, `tv`, `villains`, `sports`, `chaos`
 
 ### Templates (16)
-2-slot templates with tighter punchline structure:
-- "You're the human equivalent of [X] — [Y]"
-- "I'd call you [X], but even that has [Y]"
-- "You [X] like someone who [Y]"
-- "[X] called — they want [Y] back"
-- "You peaked [X] — and honestly, [Y]"
-- etc.
+2-slot templates with punchline structure
 
-### Word Pools (500+ words across 30+ categories)
-Structure: `{ base: [...], themed: { crypto: [...], boomer: [...], ... } }`
-
-**Pool categories**:
-- pathetic_things, it_shows
-- mild_insults, at_least
-- verbs, tragic_backstories
-- energy_types, specifically
-- what_you_think, what_you_are
-- bad_things, good_by_comparison
-- has_a_point, just_what
-- who_called, what_they_want
-- best_sarcastic, worst_real
-- peaked_when, peaked_commentary
-- specific_energies, energy_consequences
-- abstract_concepts, be_you_how
-- things_that_fail, bad_outcomes
-- disappointed_people, disappointed_actions
-- types_of_failure, failure_elaboration
-- they_say, youre_proof
+### Word Pools (500+ words)
+Categorized with base + themed entries
 
 ### Opponents (10)
-AI opponent names/emojis (cosmetic only, same random word selection for all).
+AI opponent names/emojis (cosmetic only)
 
-### Host: Mortimer "Mort" Holloway 🎩
-The eternal host of Roast Mortem. Key traits:
-- Former 1970s Vegas MC who died in 1987 ("a gentleman's exit")
-- Smooth baritone, draws out words: "Goooood evening"
-- Death puns constantly, winks at no one, holds martini that's never empty/full
-- References "the network" (afterlife corporate structure)
-- Dialogue templates in `data/host.js` for every moment
+### Host: Mort Holloway 🎩
+Eternal host with typewriter dialogue templates
 
 ---
 
-## Known Issues / TODO
+## New UI Features (v0.6.3)
 
-### Needs Work
-- [ ] Mobile responsiveness could be better
-- [ ] No sound effects or animations beyond basic transitions
-- [ ] Could add more ghost themes (nerd, spiritual, etc.)
+### In-Game Menu
+- Pause menu accessible via ☰ button during drafting
+- Options: Resume, View Stats, Quit to Menu
 
-### Completed Recently
-- [x] **Card stack UI (v0.6.0)** - Judge reactions as swipeable cards, scores pop in after typing
-- [x] **Judge selection screen (v0.6.0)** - Pick your 3 judges, filter by category, or use "Surprise Me"
-- [x] **Expanded judge roster (v0.6.0)** - 36 judges with tags for filtering (wrestling, politics, actors, tv, villains, sports, chaos)
-- [x] **Cloudflare Worker proxy (v0.4.2)** - Share game with friends using password, hides API key
-- [x] **GPT prompt optimization (v0.4.2)** - Comedy Priority Ladder, forbidden behaviors, scoring calibration
-- [x] **Expanded to 132 ghosts** - Massive content expansion
-- [x] **Save data export/import (v0.4.1)** - Backup and restore player progress
-- [x] **Rebrand to Roast Mortem (v0.4.0)** - New name, updated localStorage keys, all branding
-- [x] **Player profile system** - Name input screen, stats displayed on menu/end screens
-- [x] **Comprehensive stats tracking** - Wins, losses, streaks, judge averages, opponent records
-- [x] **Stats display screen** - Accessible from menu, shows all player stats
-- [x] **Player-aware host dialogue** - Mort references stats, rematches, hot streaks
-- [x] **Player name throughout UI** - Shows player name instead of "YOU" everywhere
-- [x] Templates rewritten for better joke structure (2 slots, punchier)
-- [x] Word pools massively expanded (500+ words)
-- [x] Ghost-themed word weighting system
-- [x] Judge prompts improved for holistic joke evaluation
-- [x] Removed confusing bonus scoring system
-- [x] Upgraded to GPT-5.2
-- [x] Added version number display
-- [x] Git repo setup
+### Credits Modal
+- Created & Designed by Corey Bricker
+- Engineered by Corey Bricker with LLM assistance (Claude, ChatGPT, Gemini)
+- AI Judges powered by OpenAI (with disclaimer)
+- Special Thanks to The Network (Afterlife Division)
 
-### Future Ideas
-- Roguelike progression (unlock templates, ghosts, judges)
-- Template rarities/power levels
-- Multiplayer (real-time PvP)
-- More ghosts / ghost packs (themed collections)
-- Sound effects / crowd reactions
-- Daily ghost mode
-- Tournament mode
+### Import/Export
+- Export save data to clipboard
+- Import save data from text
+- Accessible from main menu footer
+
+### Stats Screen
+- Full stats display: wins, losses, streaks
+- Opponent records, judge averages
+- Ghosts roasted count
+- Export/import functionality
 
 ---
 
-## Module Structure
+## Module Structure (New UI)
 
 ```
-js/main.js          → imports render.js, game.js → calls render()
-js/render.js        → imports state.js, utils.js, game.js (bindEvents), data/host
-js/game.js          → imports state.js, utils.js, api.js, data/*
-                    → has buildWeightedPool() for themed word selection
-js/api.js           → imports state.js, PROXY_URL; callOpenAI() helper handles both modes
-js/state.js         → game state, VERSION, PROXY_URL config, API key + player stats (localStorage)
-js/utils.js         → standalone (shuffle, $, typeText, delay)
-data/index.js       → re-exports all data files
-```
+js/ui/index.js          → initUI(), transitionScreen()
+js/ui/dom.js            → el(), $(), $$(), clearElement()
+js/ui/GameController.js → Main controller class
+                        → showMenu(), startNewGame(), showPresentation(), etc.
+                        → getJudgeReactions(), updateStats()
+                        → showInGameMenu(), showCredits(), showImportExport()
+js/ui/components/       → Portrait, TypeWriter, delay
+js/ui/screens/          → All screen components (MenuScreen, etc.)
 
-Note: Circular dependency between render.js and game.js is solved by injecting render function via `setRenderFunction()` in main.js.
-
----
-
-## Git Workflow
-
-The actual git repo is in `ghostroast/` subfolder. To commit changes:
-
-```bash
-# From roastaghost/ directory:
-rsync -av --exclude='.git' --exclude='ghostroast' --exclude='.DS_Store' . ghostroast/
-cd ghostroast
-git add -A
-git commit -m "Your message"
-# Push via GitHub Desktop or: git push
+js/api.js               → getJudgePanelResponse() - V3 panel judging
+js/state.js             → Game state, VERSION, localStorage helpers
 ```
 
 ---
@@ -341,24 +261,49 @@ git commit -m "Your message"
 ## How to Resume Work
 
 1. Read this doc for context
-2. Run `python3 -m http.server 3000` in project directory
-3. Open `http://localhost:3000`
+2. Run `python3 -m http.server 3000`
+3. Open `http://localhost:3000/index-new.html` (new UI)
 4. Enter OpenAI API key when prompted
-5. Key files:
-   - `js/game.js` - Game logic and flow (includes weighted pool selection)
-   - `js/render.js` - UI rendering
-   - `js/api.js` - Judge prompts and GPT-5.2 calls
-   - `data/*.js` - All content (ghosts with themes, templates, word pools)
-   - `style.css` - Styling
+5. Key files for new UI:
+   - `js/ui/GameController.js` - Main game logic
+   - `js/ui/screens/*.js` - Screen components
+   - `css/screens/*.css` - Screen styles
+   - `js/api.js` - Judge API calls
+   - `data/*.js` - Content
+
+---
+
+## Known Issues / TODO
+
+### Needs Work
+- [ ] Mobile responsiveness improvements
+- [ ] Sound effects / animations
+- [ ] More ghost themes
+
+### Completed Recently
+- [x] **Tap-to-advance flow** - User controls pacing of judge reactions
+- [x] **Destiny character** - Mystical random judge selection with animations
+- [x] **API prefetching** - Eliminates loading waits by fetching ahead
+- [x] **In-game menu** - Pause, view stats, quit during gameplay
+- [x] **Credits modal** - Proper attribution with OpenAI disclaimer
+- [x] **Import/Export modal** - Save data backup/restore from menu
+- [x] **Modular UI architecture** - Component-based screens and CSS
+- [x] **Stats screen** - Full stats display with export
+
+### Future Ideas
+- Roguelike progression (unlock templates, ghosts, judges)
+- Multiplayer (real-time PvP)
+- Sound effects / crowd reactions
+- Daily ghost mode
+- Tournament mode
 
 ---
 
 ## Design Principles
 
-1. **Keep it simple** - No framework, no build step, easy to hack on
-2. **Modular data** - Word pools are reusable, templates reference pools
-3. **Distinct judges** - Each has unique voice, never bleed into each other
-4. **Show-like presentation** - Host adds personality, typewriter adds drama
-5. **Fun first** - Prioritize funny combinations over technical elegance
-6. **RNG creates moments** - Different templates = unexpected matchups
-7. **Ghost-relevant options** - Themed words make roasts feel specific without forcing it
+1. **Keep it simple** - No framework, no build step
+2. **Modular architecture** - Components, screens, CSS modules
+3. **User controls pacing** - Tap-to-advance, never auto-skip
+4. **Distinct judges** - Each has unique voice via method-acting prompts
+5. **Smart prefetching** - Hide API latency behind user reading time
+6. **Fun first** - Prioritize funny combinations over technical elegance
