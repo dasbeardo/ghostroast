@@ -372,6 +372,34 @@ Fake sponsor ads for ad breaks during API loading
 - [x] **Import/Export modal** - Save data backup/restore from menu
 - [x] **Modular UI architecture** - Component-based screens and CSS
 - [x] **Stats screen** - Full stats display with export
+- [x] **Safe area handling** - Added env() insets for notched devices
+- [x] **Responsive width** - Container expands on larger screens (500px → 540px → 600px)
+
+---
+
+## Technical Debt
+
+### Ghost Intro Screen Layout
+**File:** `css/screens/ghost-intro.css`
+
+**Problem:** Uses absolute positioning with hardcoded pixel values (`bottom: 200px`, `top: 100px`, etc.). This causes content overlap and cutoff on different screen sizes.
+
+**Current Workaround:** Added `overflow-y: auto` and `min-height: 500px` to allow scrolling on short screens.
+
+**Proper Fix:** Refactor to flexbox layout:
+```
+.screen-ghost-intro
+  ├── header (flex-shrink: 0)      - score, matchup
+  ├── content (flex: 1, scrollable) - mort, dialogue, ghost portrait
+  └── actions (flex-shrink: 0)      - "Start Drafting" button
+```
+
+This would make the middle section scroll when content is too tall while keeping header and button fixed.
+
+### Other Screens to Audit
+- `match-opening.css` - Check for similar absolute positioning issues
+- `results.css` - Ensure long reactions can scroll
+- `presentation.css` - Already uses `overflow-y: auto` (good)
 
 ---
 
