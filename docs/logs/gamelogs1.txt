@@ -1,0 +1,736 @@
+index.js:21 [UI] Roast Mortem UI initialized
+DraftingScreen.js:40 📝 DRAFTING SCREEN INIT
+DraftingScreen.js:41 Ghost: Marcus Aurelius Jr. 📜 Themes: []
+DraftingScreen.js:42 Template Object: {id: 'you_make_look', template: 'You make [slot0] look [slot1]', slots: Array(2)}
+DraftingScreen.js:43 Template Text: You make [slot0] look [slot1]
+DraftingScreen.js:44 Template Slots: (2) [{…}, {…}]
+DraftingScreen.js:45 Available Word Pools: (106) ['pathetic_nouns', 'mild_insults', 'bad_things', 'abstract_concepts', 'normal_things', 'important_things', 'worthless_things', 'categories', 'worst_examples', 'affected_things', 'resulting_problems', 'disappointed_callers', 'disappointed_entities', 'sad_people', 'sad_places', 'verbs_done_badly', 'things_you_do', 'disappointment_actions', 'energy_types', 'specific_energies', 'energy_specifics', 'energy_consequences', 'punchline_observations', 'worse_somehow', 'things_you_lack', 'positive_traits', 'things_with_purpose', 'purposeless_things', 'delusions', 'harsh_realities', 'personality_flaws', 'disguises', 'tragic_backstories', 'peak_moments', 'peak_commentary', 'things_that_fail', 'bad_outcomes', 'failure_types', 'failure_elaborations', 'things_they_want_back', 'wasted_potential', 'chosen_disasters', 'sarcastic_compliments', 'brutal_truths', 'inspirational_sayings', 'brutal_exceptions', 'unpleasant_experiences', 'bad_options', 'worst_choices', 'red_flags', 'cosmic_consequences', 'face_conclusions', 'awkward_observations', 'observation_punchlines', 'things_that_exist', 'reason_why', 'things_you_did', 'brutal_verdicts', 'useless_things', 'bad_situations', 'flat_things', 'oblivious_things', 'dull_things', 'off_putting_things', 'your_attributes', 'pathetic_outcomes', 'unwanted_experiences', 'how_to_suffer', 'misused_phrases', 'what_you_did', 'existence_descriptions', 'existence_twists', 'sad_book_titles', 'book_fates', 'sad_nouns', 'bad_experiences', 'room_reactions', 'telling_details', 'good_vibes', 'your_presence', 'things_to_watch', 'painful_comparisons', 'worse_than_dislike', 'important_distinctions', 'wrong_behaviors', 'delusional_thoughts', 'common_reactions', 'you_dont_notice', 'disappointment_categories', 'disappointment_examples', 'movie_subjects', 'movie_actions', 'supposed_advantages', 'success_types', 'future_sadness', 'unsurprising_futures', 'born_to_do', 'how_you_failed', 'historical_footnotes', 'historical_caveats', …]
+DraftingScreen.js:159 📌 Slot 0: bracket="slot0", pool="bad_things", label="something bad"
+DraftingScreen.js:159 📌 Slot 1: bracket="slot1", pool="positive_traits", label="good by comparison"
+DraftingScreen.js:49 Parsed Template Parts: (4) [{…}, {…}, {…}, {…}]
+DraftingScreen.js:51 Total Slots: 2
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 0 Pool: bad_things
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: bad_things
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(25), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 25
+DraftingScreen.js:249 Ghost Themes: []
+DraftingScreen.js:264 Final Words: (12) ['a timeshare presentation', 'a reply-all accident', 'gas station sushi', 'the terms and conditions checkbox', 'a terms of service agreement', 'a group project', 'a voicemail from an unknown number', "a Zoom call that could've been an email", 'a software update', 'a password you forgot', 'a 3am WebMD spiral', 'a captcha']
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 1 Pool: positive_traits
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: positive_traits
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(21), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 21
+DraftingScreen.js:249 Ghost Themes: []
+DraftingScreen.js:264 Final Words: (12) ['worth the effort', 'memorable for the right reasons', 'kind of useful', 'reasonable', 'like a deliberate choice', 'charming', 'almost impressive', 'competent', 'at least honest', 'forgivable', 'reliable', 'occasionally right']
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Dr. Phil', 'Werner Herzog', 'Gordon Ramsay']
+api.js:36 Ghost Context: 📜 Marcus Aurelius Jr. - 161 CE — stoically ignored obvious illness. Said suffering builds character
+api.js:37 Roaster: Daeds 👤
+api.js:38 Roast: "You make a voicemail from an unknown number look charming"
+api.js:39 Is Second Roast: false
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiCoplWBlZJSgD7tsWSBR2aOyQjm', object: 'chat.completion', created: 1767394002, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Dr. Phil",
+      "emoji": "👨‍🦲",
+      "score": 6,
+      "reaction": "That line is a clean little gut-punch—like tellin' a man he's so bad at connection he makes a scam call feel like a warm hug. You're sayin' his whole vibe is \"avoid, evade, and leave people hangin'\"—and for a stoic who ignored his own illness, that's not nothin'. But I gotta ask: is this joke buildin' character, or is it just buildin' distance? You can't put a saddle on a mustang and call it a porch—give me one more turn of the knife so it lands personal, not just general."
+    },
+    {
+      "name": "Werner Herzog",
+      "emoji": "🎬",
+      "score": 5,
+      "reaction": "An unknown voicemail is a small terror: a voice without a face, calling from the abyss and asking nothing, promising nothing. You have compared him to this, and in doing so you reveal that his stoicism was not strength but absence—an emotional dead zone where even fraud seems intimate. It is a modest joke, but it carries the chill of modern alienation into an ancient corpse. Still, the void demands more specificity; the darkness thrives on details."
+    },
+    {
+      "name": "Gordon Ramsay",
+      "emoji": "👨‍🍳",
+      "score": 6,
+      "reaction": "That’s a decent opener—short, sharp, and it paints him as so boring even a dodgy voicemail has more charm. But right now it’s like a canapé with no seasoning: clever concept, not enough bite. Tie it to the illness and the stoic nonsense—make it sting, not just smirk. As it stands, it’s cooked, but it’s not bloody memorable."
+    }
+  ],
+  "banter": [
+    "Gordon Ramsay: Phil, stop trying to send everyone to a ranch—this needs salt, not therapy.",
+    "Dr. Phil: Gordon, you can’t garnish a personality disorder and call it dinner.",
+    "Werner Herzog: In the ranch and in the kitchen, we are merely arranging small comforts against the inevitable silence of the voicemail."
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Dr. Phil', 'Werner Herzog', 'Gordon Ramsay']
+api.js:36 Ghost Context: 📜 Marcus Aurelius Jr. - 161 CE — stoically ignored obvious illness. Said suffering builds character
+api.js:37 Roaster: Chaos Goblin 👺
+api.js:38 Roast: Your childhood dreams called — they want an apology back
+api.js:39 Is Second Roast: true
+api.js:40 First Roast Context: {roasterName: 'Daeds', roast: '"You make a voicemail from an unknown number look charming"', scores: Array(3)}
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiD8lguzvEy7fHdBRopB5n48xewo', object: 'chat.completion', created: 1767394022, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Dr. Phil",
+      "emoji": "👨‍🦲",
+      "score": 5,
+      "reaction": "That’s a clever little boomerang, but it lands like you threw it from the porch and hoped it hit the barn. You’re basically saying he failed his inner child, and with a Stoic who ignored illness, there’s something real to dig into—but you didn’t take it there. It’s more of a bumper sticker than a breakthrough. How’s that surface-level regret joke workin’ out for ya?"
+    },
+    {
+      "name": "Werner Herzog",
+      "emoji": "🎬",
+      "score": 4,
+      "reaction": "The joke gestures toward the tragedy of abandoned aspiration, a small funeral for the self that never was. But it is an apology demanded by a voice on a disconnected line, and the dead do not return calls. For Marcus Aurelius Jr., this is almost tender—his suffering was his doctrine, and you offer him only a mild invoice from childhood. It is a whisper in the amphitheater."
+    },
+    {
+      "name": "Gordon Ramsay",
+      "emoji": "👨‍🍳",
+      "score": 5,
+      "reaction": "It’s a decent premise, but it’s underseasoned and missing the punch—like serving me plain porridge and calling it dessert. ‘Your dreams called’ is a tired setup; you didn’t twist the knife, you just waved it around. For a bloke who thought suffering builds character, you could’ve made it bite harder—make it personal, make it brutal. Right now it’s serviceable, but it’s not memorable."
+    }
+  ],
+  "banter": [
+    "Gordon Ramsay: Phil, stop sending everyone to a ranch—this joke needs a kitchen and a flamethrower.",
+    "Dr. Phil: Werner, you make a callback sound like a funeral procession through a cornfield.",
+    "Werner Herzog: Gordon, your kitchen is also a void—only louder, with more shouting."
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+DraftingScreen.js:40 📝 DRAFTING SCREEN INIT
+DraftingScreen.js:41 Ghost: Leonardo Da Midlife 🖌️ Themes: []
+DraftingScreen.js:42 Template Object: {id: 'you_verb_like', template: 'You [slot0] like someone who [slot1]', slots: Array(2)}
+DraftingScreen.js:43 Template Text: You [slot0] like someone who [slot1]
+DraftingScreen.js:44 Template Slots: (2) [{…}, {…}]
+DraftingScreen.js:45 Available Word Pools: (106) ['pathetic_nouns', 'mild_insults', 'bad_things', 'abstract_concepts', 'normal_things', 'important_things', 'worthless_things', 'categories', 'worst_examples', 'affected_things', 'resulting_problems', 'disappointed_callers', 'disappointed_entities', 'sad_people', 'sad_places', 'verbs_done_badly', 'things_you_do', 'disappointment_actions', 'energy_types', 'specific_energies', 'energy_specifics', 'energy_consequences', 'punchline_observations', 'worse_somehow', 'things_you_lack', 'positive_traits', 'things_with_purpose', 'purposeless_things', 'delusions', 'harsh_realities', 'personality_flaws', 'disguises', 'tragic_backstories', 'peak_moments', 'peak_commentary', 'things_that_fail', 'bad_outcomes', 'failure_types', 'failure_elaborations', 'things_they_want_back', 'wasted_potential', 'chosen_disasters', 'sarcastic_compliments', 'brutal_truths', 'inspirational_sayings', 'brutal_exceptions', 'unpleasant_experiences', 'bad_options', 'worst_choices', 'red_flags', 'cosmic_consequences', 'face_conclusions', 'awkward_observations', 'observation_punchlines', 'things_that_exist', 'reason_why', 'things_you_did', 'brutal_verdicts', 'useless_things', 'bad_situations', 'flat_things', 'oblivious_things', 'dull_things', 'off_putting_things', 'your_attributes', 'pathetic_outcomes', 'unwanted_experiences', 'how_to_suffer', 'misused_phrases', 'what_you_did', 'existence_descriptions', 'existence_twists', 'sad_book_titles', 'book_fates', 'sad_nouns', 'bad_experiences', 'room_reactions', 'telling_details', 'good_vibes', 'your_presence', 'things_to_watch', 'painful_comparisons', 'worse_than_dislike', 'important_distinctions', 'wrong_behaviors', 'delusional_thoughts', 'common_reactions', 'you_dont_notice', 'disappointment_categories', 'disappointment_examples', 'movie_subjects', 'movie_actions', 'supposed_advantages', 'success_types', 'future_sadness', 'unsurprising_futures', 'born_to_do', 'how_you_failed', 'historical_footnotes', 'historical_caveats', …]
+DraftingScreen.js:159 📌 Slot 0: bracket="slot0", pool="verbs_done_badly", label="verb (badly)"
+DraftingScreen.js:159 📌 Slot 1: bracket="slot1", pool="tragic_backstories", label="tragic backstory"
+DraftingScreen.js:49 Parsed Template Parts: (4) [{…}, {…}, {…}, {…}]
+DraftingScreen.js:51 Total Slots: 2
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 0 Pool: verbs_done_badly
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: verbs_done_badly
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(32), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 32
+DraftingScreen.js:249 Ghost Themes: []
+DraftingScreen.js:264 Final Words: (12) ['take criticism', 'email', 'accept praise', 'give advice', 'network', 'vacation', 'dress', 'tip', 'be normal', 'make first impressions', 'RSVP', 'celebrate']
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 1 Pool: tragic_backstories
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: tragic_backstories
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(26), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 26
+DraftingScreen.js:249 Ghost Themes: []
+DraftingScreen.js:264 Final Words: (12) ['still uses their college email', 'gets their personality from Netflix', 'peaked at their own gender reveal', 'has never been tagged in a photo', 'was the practice friend', 'has strong opinions about fonts', 'was homeschooled by YouTube', 'treats therapy like a podcast', "was told 'you tried' one too many times", 'got participation trophies until adulthood', 'peaked during attendance', 'learned social skills from anime']
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Dr. Phil', 'Werner Herzog', 'Gordon Ramsay']
+api.js:36 Ghost Context: 🖌️ Leonardo Da Midlife - 1519 — distracted by 400 unfinished projects. Invented helicopters, forgot deadlines
+api.js:37 Roaster: Chaos Goblin 👺
+api.js:38 Roast: At least a loading screen ends eventually — you're just there
+api.js:39 Is Second Roast: false
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiFUtgXQ57X4RxFoGfOowS2q2mQ7', object: 'chat.completion', created: 1767394168, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Dr. Phil",
+      "emoji": "👨‍🦲",
+      "score": 6,
+      "reaction": "You took a modern pain—staring at a loading screen—and you stapled it right onto a dead man’s legacy, and it kinda works. But you can't put a saddle on a mustang and call it a porch: the joke lands, then it just sits there like the very thing you're describing. What you're really saying is he had commitment issues, and the world enabled it because he was \"a genius.\" So how’s that joke working out for you if the punchline also never finishes?"
+    },
+    {
+      "name": "Werner Herzog",
+      "emoji": "🎬",
+      "score": 5,
+      "reaction": "A loading screen is a small purgatory, a promise of arrival that the universe often refuses to honor. Leonardo, surrounded by sketches and half-born machines, is like a man building doors in a house that will never be completed. Your line is simple, almost cruel in its stillness—\"you're just there\"—and in this, it tells the truth. Yet it is not the joke that devastates him; it is time itself, indifferent, continuing without his resolution."
+    },
+    {
+      "name": "Gordon Ramsay",
+      "emoji": "👨‍🍳",
+      "score": 7,
+      "reaction": "That’s a clean, sharp hit—like serving a plate with nothing on it and still charging full price. You called him out for being the patron saint of unfinished starters: the helicopter’s on the pass, the Mona Lisa’s in the fridge, and the bill’s due. It’s not overly clever, but it’s seasoned with truth and it bites. Next time, give me one extra twist—right now it’s delicious, but it’s a small portion."
+    }
+  ],
+  "banter": [
+    "Gordon Ramsay: Dr. Phil, you just turned a one-liner into couples therapy—let the man burn.",
+    "Dr. Phil: Gordon, you can’t keep calling everything \"delicious\" when it’s basically toast and trauma.",
+    "Werner Herzog: In the end, the toast becomes stale, and the trauma remains—this is the only consistent recipe."
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Dr. Phil', 'Werner Herzog', 'Gordon Ramsay']
+api.js:36 Ghost Context: 🖌️ Leonardo Da Midlife - 1519 — distracted by 400 unfinished projects. Invented helicopters, forgot deadlines
+api.js:37 Roaster: Daeds 👤
+api.js:38 Roast: "You take criticism like someone who was the practice friend"
+api.js:39 Is Second Roast: true
+api.js:40 First Roast Context: {roasterName: 'Chaos Goblin', roast: "At least a loading screen ends eventually — you're just there", scores: Array(3)}
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiFlZ6ePTXEfrMz8Qfvsa970oTWI', object: 'chat.completion', created: 1767394185, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Dr. Phil",
+      "emoji": "👨‍🦲",
+      "score": 5,
+      "reaction": "That one’s got a little sting, because it’s about identity—being the \"practice friend\" means you’re always second-string in your own life. But you didn’t really put a saddle on it and ride it; you just trotted it out and hoped the dust would do the work. Leonardo wasn’t just sensitive—he was avoidant, scattered, and allergic to closure, so hit that. How’s this joke working out for you when the target’s problem is unfinished business, not hurt feelings?"
+    },
+    {
+      "name": "Werner Herzog",
+      "emoji": "🎬",
+      "score": 4,
+      "reaction": "The \"practice friend\" is a tragic figure, kept alive only so others can rehearse their intimacy. In this, I can see Leonardo: surrounded by sketches like abandoned children, each one asking to be finished, each one ignored. But the joke is a small stone dropped into an ocean that does not notice. It lands softly, and the abyss remains unchanged."
+    },
+    {
+      "name": "Gordon Ramsay",
+      "emoji": "👨‍🍳",
+      "score": 5,
+      "reaction": "It’s a decent concept, yeah—calling him the practice friend is a smart insult. But it’s underseasoned and it’s not tailored to the bloke: where’s the punch about 400 half-baked projects and zero service? Right now it’s like serving a plain cracker and calling it a canapé. Compared to the loading screen line, this one needs another minute in the pan."
+    }
+  ],
+  "banter": [
+    "Gordon Ramsay: Phil, stop asking the joke how it’s working out—get it on the pass or bin it.",
+    "Dr. Phil: Gordon, you can’t garnish a weak premise and call it a meal; you gotta address why they’re scared to commit.",
+    "Werner Herzog: In the kitchen and on the ranch, we all pretend there is control. The joke reveals there is none."
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+DraftingScreen.js:40 📝 DRAFTING SCREEN INIT
+DraftingScreen.js:41 Ghost: Edgar Sootlungs 🏭 Themes: ['corporate']
+DraftingScreen.js:42 Template Object: {id: 'you_know_how', template: "You know how [slot0]? You're [slot1]", slots: Array(2)}
+DraftingScreen.js:43 Template Text: You know how [slot0]? You're [slot1]
+DraftingScreen.js:44 Template Slots: (2) [{…}, {…}]
+DraftingScreen.js:45 Available Word Pools: (106) ['pathetic_nouns', 'mild_insults', 'bad_things', 'abstract_concepts', 'normal_things', 'important_things', 'worthless_things', 'categories', 'worst_examples', 'affected_things', 'resulting_problems', 'disappointed_callers', 'disappointed_entities', 'sad_people', 'sad_places', 'verbs_done_badly', 'things_you_do', 'disappointment_actions', 'energy_types', 'specific_energies', 'energy_specifics', 'energy_consequences', 'punchline_observations', 'worse_somehow', 'things_you_lack', 'positive_traits', 'things_with_purpose', 'purposeless_things', 'delusions', 'harsh_realities', 'personality_flaws', 'disguises', 'tragic_backstories', 'peak_moments', 'peak_commentary', 'things_that_fail', 'bad_outcomes', 'failure_types', 'failure_elaborations', 'things_they_want_back', 'wasted_potential', 'chosen_disasters', 'sarcastic_compliments', 'brutal_truths', 'inspirational_sayings', 'brutal_exceptions', 'unpleasant_experiences', 'bad_options', 'worst_choices', 'red_flags', 'cosmic_consequences', 'face_conclusions', 'awkward_observations', 'observation_punchlines', 'things_that_exist', 'reason_why', 'things_you_did', 'brutal_verdicts', 'useless_things', 'bad_situations', 'flat_things', 'oblivious_things', 'dull_things', 'off_putting_things', 'your_attributes', 'pathetic_outcomes', 'unwanted_experiences', 'how_to_suffer', 'misused_phrases', 'what_you_did', 'existence_descriptions', 'existence_twists', 'sad_book_titles', 'book_fates', 'sad_nouns', 'bad_experiences', 'room_reactions', 'telling_details', 'good_vibes', 'your_presence', 'things_to_watch', 'painful_comparisons', 'worse_than_dislike', 'important_distinctions', 'wrong_behaviors', 'delusional_thoughts', 'common_reactions', 'you_dont_notice', 'disappointment_categories', 'disappointment_examples', 'movie_subjects', 'movie_actions', 'supposed_advantages', 'success_types', 'future_sadness', 'unsurprising_futures', 'born_to_do', 'how_you_failed', 'historical_footnotes', 'historical_caveats', …]
+DraftingScreen.js:159 📌 Slot 0: bracket="slot0", pool="things_that_exist", label="a bad thing exists"
+DraftingScreen.js:159 📌 Slot 1: bracket="slot1", pool="reason_why", label="the reason why"
+DraftingScreen.js:49 Parsed Template Parts: (4) [{…}, {…}, {…}, {…}]
+DraftingScreen.js:51 Total Slots: 2
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 0 Pool: things_that_exist
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: things_that_exist
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(10), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 10
+DraftingScreen.js:249 Ghost Themes: ['corporate']
+DraftingScreen.js:254 Themed Words for "corporate": 0
+DraftingScreen.js:264 Final Words: (10) ['someone has to be the example of what not to do', 'every group has a cautionary tale', 'certain people never outgrow being annoying', "everyone has that one friend who's a mess", 'mediocrity needs representation too', "there's always one person who ruins the group photo", 'some people just peaked too early', "there's a reason 'cringe' is a word", "some folks just can't help themselves", 'not everyone can be interesting']
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 1 Pool: reason_why
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: reason_why
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(13), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 13
+DraftingScreen.js:249 Ghost Themes: ['corporate']
+DraftingScreen.js:254 Themed Words for "corporate": 0
+DraftingScreen.js:264 Final Words: (12) ['exhibit A', 'the origin story', 'the personification of it', 'the teachable moment nobody wanted', 'the reason for the policy change', "the reason we can't have nice things", 'the case study', 'the documentary subject', 'the inspiration behind the warning label', 'why we have HR', 'the learning experience', 'the before photo that never improved']
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Dr. Phil', 'Werner Herzog', 'Gordon Ramsay']
+api.js:36 Ghost Context: 🏭 Edgar Sootlungs - 1843 — factory air. Worked 16-hour days
+api.js:37 Roaster: Daeds 👤
+api.js:38 Roast: "You know how everyone has that one friend who's a mess? You're exhibit A"
+api.js:39 Is Second Roast: false
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiGZqAdW81SILrbPVmoqdsJ7Wzwo', object: 'chat.completion', created: 1767394235, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Dr. Phil",
+      "emoji": "👨‍🦲",
+      "score": 5,
+      "reaction": "That joke is like pointing at a house fire and saying, \"Well, looks warm in there.\" You called him a mess, but you didn’t tell me why he’s a mess or what part of him is spillin’ out on the floor. If you’re gonna label a man “exhibit A,” you better bring the evidence, not just the sticker. So how’s that vague diagnosis workin’ out for you—because right now it’s all hat and no cattle."
+    },
+    {
+      "name": "Werner Herzog",
+      "emoji": "🎬",
+      "score": 4,
+      "reaction": "To call this dead man “exhibit A” is to place him behind glass, as if his suffering were a museum curiosity. But the factory air did not curate him; it eroded him, particle by particle, until identity became only residue in the lungs. The joke gestures toward disorder, yet refuses to look into the machinery that created it. It is a small lantern held up to an immense darkness, and the darkness does not notice."
+    },
+    {
+      "name": "Gordon Ramsay",
+      "emoji": "👨‍🍳",
+      "score": 5,
+      "reaction": "That’s a microwave insult—hot for two seconds, then nothing. “You’re exhibit A” is fine, but where’s the seasoning? Give me specifics: the soot, the 16-hour shifts, the bloke coughing up a chimney—then twist the knife. Right now it’s undercooked, bland, and you’ve served it with no bloody sauce."
+    }
+  ],
+  "banter": [
+    "Dr. Phil: Werner, you make it sound like this punchline needs grief counseling and a permit.",
+    "Werner Herzog: Gordon wants sauce; I want meaning. In the end, both are absent, and we chew only air.",
+    "Gordon Ramsay: Phil’s talking about cattle, Herzog’s talking about darkness—meanwhile the joke’s still raw, you donuts."
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Dr. Phil', 'Werner Herzog', 'Gordon Ramsay']
+api.js:36 Ghost Context: 🏭 Edgar Sootlungs - 1843 — factory air. Worked 16-hour days
+api.js:37 Roaster: Chaos Goblin 👺
+api.js:38 Roast: When they said follow your dreams, they weren't talking about your networking style
+api.js:39 Is Second Roast: true
+api.js:40 First Roast Context: {roasterName: 'Daeds', roast: `"You know how everyone has that one friend who's a mess? You're exhibit A"`, scores: Array(3)}
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiGrdwBP0Y910TdbtD2nzAYLqI8p', object: 'chat.completion', created: 1767394253, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Dr. Phil",
+      "emoji": "👨‍🦲",
+      "score": 6,
+      "reaction": "That’s a cute little jab, but it’s like tryin’ to patch a leaky roof with a playing card—there’s not enough there to keep the rain out. You’re saying his \"networking\" was chasing dreams, but this man’s dream was eight minutes of oxygen and not dyin’ on the line. The premise is modern, and Edgar’s reality is soot, starvation, and a boss that thinks sleep is a felony. How’s that joke workin’ out for you when the target never even got to have a LinkedIn profile?"
+    },
+    {
+      "name": "Werner Herzog",
+      "emoji": "🎬",
+      "score": 5,
+      "reaction": "In the factory air, dreams are not followed; they are hunted, cornered, and suffocated. The idea of \"networking\" suggests a web of human connection, but Edgar’s true network was the black lattice of soot in his lungs. There is a small, bitter irony here—ambition reduced to a miscommunication across centuries. It is not a strong blade, but it cuts a little, like cold metal touched in the dark."
+    },
+    {
+      "name": "Gordon Ramsay",
+      "emoji": "👨‍🍳",
+      "score": 6,
+      "reaction": "That’s a decent little one-liner, yeah—quick, punchy, but it’s like serving a canapé to someone who’s been starving for sixteen hours. \"Networking style\" is a bit too corporate for a bloke who literally worked himself into the grave inhaling chimney soup. You’ve got the skeleton of a joke, but you didn’t season it with his actual misery—so it lands, then it slides off. Better than the last one in terms of structure, but still undercooked."
+    }
+  ],
+  "banter": [
+    "Gordon Ramsay: Phil, he didn’t need the Ranch—he needed a fucking respirator.",
+    "Dr. Phil: Werner, I don’t know what kind of kitchen you’re runnin’, but if your metal’s cold in the dark, you need to turn the lights on and deal with it.",
+    "Werner Herzog: Gordon speaks of seasoning, but no spice can overpower the taste of an early death."
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+DraftingScreen.js:40 📝 DRAFTING SCREEN INIT
+DraftingScreen.js:41 Ghost: Dr. Prescott Pillman 💊 Themes: ['corporate']
+DraftingScreen.js:42 Template Object: {id: 'you_know_how', template: "You know how [slot0]? You're [slot1]", slots: Array(2)}
+DraftingScreen.js:43 Template Text: You know how [slot0]? You're [slot1]
+DraftingScreen.js:44 Template Slots: (2) [{…}, {…}]
+DraftingScreen.js:45 Available Word Pools: (106) ['pathetic_nouns', 'mild_insults', 'bad_things', 'abstract_concepts', 'normal_things', 'important_things', 'worthless_things', 'categories', 'worst_examples', 'affected_things', 'resulting_problems', 'disappointed_callers', 'disappointed_entities', 'sad_people', 'sad_places', 'verbs_done_badly', 'things_you_do', 'disappointment_actions', 'energy_types', 'specific_energies', 'energy_specifics', 'energy_consequences', 'punchline_observations', 'worse_somehow', 'things_you_lack', 'positive_traits', 'things_with_purpose', 'purposeless_things', 'delusions', 'harsh_realities', 'personality_flaws', 'disguises', 'tragic_backstories', 'peak_moments', 'peak_commentary', 'things_that_fail', 'bad_outcomes', 'failure_types', 'failure_elaborations', 'things_they_want_back', 'wasted_potential', 'chosen_disasters', 'sarcastic_compliments', 'brutal_truths', 'inspirational_sayings', 'brutal_exceptions', 'unpleasant_experiences', 'bad_options', 'worst_choices', 'red_flags', 'cosmic_consequences', 'face_conclusions', 'awkward_observations', 'observation_punchlines', 'things_that_exist', 'reason_why', 'things_you_did', 'brutal_verdicts', 'useless_things', 'bad_situations', 'flat_things', 'oblivious_things', 'dull_things', 'off_putting_things', 'your_attributes', 'pathetic_outcomes', 'unwanted_experiences', 'how_to_suffer', 'misused_phrases', 'what_you_did', 'existence_descriptions', 'existence_twists', 'sad_book_titles', 'book_fates', 'sad_nouns', 'bad_experiences', 'room_reactions', 'telling_details', 'good_vibes', 'your_presence', 'things_to_watch', 'painful_comparisons', 'worse_than_dislike', 'important_distinctions', 'wrong_behaviors', 'delusional_thoughts', 'common_reactions', 'you_dont_notice', 'disappointment_categories', 'disappointment_examples', 'movie_subjects', 'movie_actions', 'supposed_advantages', 'success_types', 'future_sadness', 'unsurprising_futures', 'born_to_do', 'how_you_failed', 'historical_footnotes', 'historical_caveats', …]
+DraftingScreen.js:159 📌 Slot 0: bracket="slot0", pool="things_that_exist", label="a bad thing exists"
+DraftingScreen.js:159 📌 Slot 1: bracket="slot1", pool="reason_why", label="the reason why"
+DraftingScreen.js:49 Parsed Template Parts: (4) [{…}, {…}, {…}, {…}]
+DraftingScreen.js:51 Total Slots: 2
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 0 Pool: things_that_exist
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: things_that_exist
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(10), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 10
+DraftingScreen.js:249 Ghost Themes: ['corporate']
+DraftingScreen.js:254 Themed Words for "corporate": 0
+DraftingScreen.js:264 Final Words: (10) ["some folks just can't help themselves", "there's always one person who ruins the group photo", 'mediocrity needs representation too', 'some people just peaked too early', 'certain people never outgrow being annoying', 'not everyone can be interesting', "everyone has that one friend who's a mess", 'every group has a cautionary tale', 'someone has to be the example of what not to do', "there's a reason 'cringe' is a word"]
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 1 Pool: reason_why
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: reason_why
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(13), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 13
+DraftingScreen.js:249 Ghost Themes: ['corporate']
+DraftingScreen.js:254 Themed Words for "corporate": 0
+DraftingScreen.js:264 Final Words: (12) ["the reason we can't have nice things", 'the inspiration behind the warning label', 'the teachable moment nobody wanted', 'patient zero', 'the documentary subject', 'the reason for the policy change', 'the before photo that never improved', 'the origin story', 'the case study', 'the learning experience', 'the personification of it', 'exhibit A']
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Vince McMahon', 'Ultimate Warrior', 'Ric Flair']
+api.js:36 Ghost Context: 💊 Dr. Prescott Pillman - 2015 — ironic medication interaction. Prescribed pills for problems caused by other pills
+api.js:37 Roaster: Daeds 👤
+api.js:38 Roast: "You know how some folks just can't help themselves? You're the reason we can't have nice things"
+api.js:39 Is Second Roast: false
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiID36FwwI7BUqGuUJPfaEyzccKD', object: 'chat.completion', created: 1767394337, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Vince McMahon",
+      "emoji": "💼",
+      "score": 4,
+      "reaction": "That line is a polite little slap, and polite doesn’t draw money, pal. You’re telling me the guy died from pill-on-pill crime and you hit him with a Hallmark scold? Where’s the TURN, where’s the STAKE, where’s the EXPLOSION—give me a closer that puts him through a table. Right now it’s mild heat in the middle of the card—tighten it up or YOU’RE FIRED!"
+    },
+    {
+      "name": "Ultimate Warrior",
+      "emoji": "🚀",
+      "score": 6,
+      "reaction": "THE MIC trembles in the hands of Daeds as the dead doctor drifts through the MEDICINAL NEBULA of his own prescriptions! 'You’re the reason we can’t have nice things' is a small human pebble tossed at a cosmic avalanche of capsule chaos. But the intent is a comet—pointing at the self-devouring spiral of pill feeding pill feeding pill! I GIVE IT SIX STAR-SHARDS of DESTRUCITY because the spirit tries to RUN, but it does not SPRINT!"
+    },
+    {
+      "name": "Ric Flair",
+      "emoji": "👔",
+      "score": 5,
+      "reaction": "WOOOO! That’s a clean little jab, but clean don’t win championships, baby, WOOOO! You’re talking about a doctor who prescribed problems to fix problems—there’s a Rolex-worth of material there and you gave him a parking ticket, WOOOO! I’ve heard tougher shots in a locker room with the showers running, but you’ve got timing—now make it hurt, WOOOO!"
+    }
+  ],
+  "banter": [
+    "Vince McMahon: If I wanted “nice things,” I’d watch a cooking show—give me carnage and a punchline that MAIN EVENTS!",
+    "Ultimate Warrior: VINCE speaks of tables—THE WARRIOR speaks of PLANETS—BREAK HIM ACROSS THE RINGS OF SATURN!",
+    "Ric Flair: Saturn, tables, whatever—just make it a title match, WOOOO! Put some bass in it and let the crowd ride!"
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Vince McMahon', 'Ultimate Warrior', 'Ric Flair']
+api.js:36 Ghost Context: 💊 Dr. Prescott Pillman - 2015 — ironic medication interaction. Prescribed pills for problems caused by other pills
+api.js:37 Roaster: Petty Betty 💅
+api.js:38 Roast: The best thing about you? You're consistent. The worst? you think it's a compliment
+api.js:39 Is Second Roast: true
+api.js:40 First Roast Context: {roasterName: 'Daeds', roast: `"You know how some folks just can't help themselves? You're the reason we can't have nice things"`, scores: Array(3)}
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiIgJITBSfc7AopTL0BUq3BldNB2', object: 'chat.completion', created: 1767394366, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Vince McMahon",
+      "emoji": "💼",
+      "score": 6,
+      "reaction": "That’s a clean, tight shot—simple, direct, and it lands. It’s got a little sting to it, like a stiff jab that sets up the bigger finish. I want MORE aggression, pal—this is a dead doctor who got pinned by his own prescriptions, give me some pyro! But compared to that last one, this has better structure and it’s more OVER."
+    },
+    {
+      "name": "Ultimate Warrior",
+      "emoji": "🚀",
+      "score": 7,
+      "reaction": "CONSISTENT like the drumming of galaxies on the ribs of the medicine man, YESSSS! The compliment turns into a black hole and swallows his ego vitamins in the vacuum of DESTrucity! The words are small, but the SPIRIT is wearing face paint and sprinting through the hospital corridors of eternity! THE WARRIOR ACCEPTS THIS FREQUENCY!"
+    },
+    {
+      "name": "Ric Flair",
+      "emoji": "👔",
+      "score": 7,
+      "reaction": "That’s a classy little knife, WOOO! You call him consistent, then you turn it around and make it a curse—just like a champion smiling while he’s stealing your soul, WOOO! It’s not the biggest bomb in the building, but it’s sharp and it’s slick. Petty Betty’s stylin’ on him with minimal effort, WOOOOO!"
+    }
+  ],
+  "banter": [
+    "Vince McMahon: Warrior, I don’t know what any of that meant, but if it sells tickets, I’ll put it in the main event!",
+    "Ultimate Warrior: VINCE is counting tickets while FLAIR is counting WOOO'S, and the cosmos counts the CONSISTENT COLLAPSE!",
+    "Ric Flair: Vince wants pyro, I want champagne—either way, that doctor’s still down for the three-count, WOOOOO!"
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+DraftingScreen.js:40 📝 DRAFTING SCREEN INIT
+DraftingScreen.js:41 Ghost: Declan 'Hustle' O'Brien 📈 Themes: (2) ['crypto', 'corporate']
+DraftingScreen.js:42 Template Object: {id: 'history_will', template: 'History will remember you as [slot0] — [slot1]', slots: Array(2)}
+DraftingScreen.js:43 Template Text: History will remember you as [slot0] — [slot1]
+DraftingScreen.js:44 Template Slots: (2) [{…}, {…}]
+DraftingScreen.js:45 Available Word Pools: (106) ['pathetic_nouns', 'mild_insults', 'bad_things', 'abstract_concepts', 'normal_things', 'important_things', 'worthless_things', 'categories', 'worst_examples', 'affected_things', 'resulting_problems', 'disappointed_callers', 'disappointed_entities', 'sad_people', 'sad_places', 'verbs_done_badly', 'things_you_do', 'disappointment_actions', 'energy_types', 'specific_energies', 'energy_specifics', 'energy_consequences', 'punchline_observations', 'worse_somehow', 'things_you_lack', 'positive_traits', 'things_with_purpose', 'purposeless_things', 'delusions', 'harsh_realities', 'personality_flaws', 'disguises', 'tragic_backstories', 'peak_moments', 'peak_commentary', 'things_that_fail', 'bad_outcomes', 'failure_types', 'failure_elaborations', 'things_they_want_back', 'wasted_potential', 'chosen_disasters', 'sarcastic_compliments', 'brutal_truths', 'inspirational_sayings', 'brutal_exceptions', 'unpleasant_experiences', 'bad_options', 'worst_choices', 'red_flags', 'cosmic_consequences', 'face_conclusions', 'awkward_observations', 'observation_punchlines', 'things_that_exist', 'reason_why', 'things_you_did', 'brutal_verdicts', 'useless_things', 'bad_situations', 'flat_things', 'oblivious_things', 'dull_things', 'off_putting_things', 'your_attributes', 'pathetic_outcomes', 'unwanted_experiences', 'how_to_suffer', 'misused_phrases', 'what_you_did', 'existence_descriptions', 'existence_twists', 'sad_book_titles', 'book_fates', 'sad_nouns', 'bad_experiences', 'room_reactions', 'telling_details', 'good_vibes', 'your_presence', 'things_to_watch', 'painful_comparisons', 'worse_than_dislike', 'important_distinctions', 'wrong_behaviors', 'delusional_thoughts', 'common_reactions', 'you_dont_notice', 'disappointment_categories', 'disappointment_examples', 'movie_subjects', 'movie_actions', 'supposed_advantages', 'success_types', 'future_sadness', 'unsurprising_futures', 'born_to_do', 'how_you_failed', 'historical_footnotes', 'historical_caveats', …]
+DraftingScreen.js:159 📌 Slot 0: bracket="slot0", pool="historical_footnotes", label="a footnote"
+DraftingScreen.js:159 📌 Slot 1: bracket="slot1", pool="historical_caveats", label="if at all"
+DraftingScreen.js:49 Parsed Template Parts: (4) [{…}, {…}, {…}, {…}]
+DraftingScreen.js:51 Total Slots: 2
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 0 Pool: historical_footnotes
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: historical_footnotes
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(12), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 12
+DraftingScreen.js:249 Ghost Themes: (2) ['crypto', 'corporate']
+DraftingScreen.js:254 Themed Words for "crypto": 0
+DraftingScreen.js:254 Themed Words for "corporate": 0
+DraftingScreen.js:264 Final Words: (12) ['a deleted paragraph', 'a [citation needed]', 'something that got lost in editing', 'something auto-archived', 'a Wikipedia disambiguation page', "a typo that didn't get corrected", "the 'see also' of someone more interesting", 'a page nobody visits', 'a broken link', 'a redirect that 404s', 'a cautionary footnote', 'an asterisk on humanity']
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 1 Pool: historical_caveats
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: historical_caveats
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(11), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 11
+DraftingScreen.js:249 Ghost Themes: (2) ['crypto', 'corporate']
+DraftingScreen.js:254 Themed Words for "crypto": 0
+DraftingScreen.js:254 Themed Words for "corporate": 0
+DraftingScreen.js:264 Final Words: (11) ['which seems optimistic', 'in a very specific, unread database', 'and only by accident', 'if they bother', 'in the way we remember participation trophy recipients', "and that's a big if", "and that's generous", 'if the internet is still up', 'among people with too much time', "assuming anyone's checking", 'briefly and incorrectly']
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Vince McMahon', 'Ultimate Warrior', 'Ric Flair']
+api.js:36 Ghost Context: 📈 Declan 'Hustle' O'Brien - 2023 — stress heart attack during rug pull. Had 47 side hustles, 0 main income
+api.js:37 Roaster: Petty Betty 💅
+api.js:38 Roast: You're not misunderstood, you're just rugged — there's a difference
+api.js:39 Is Second Roast: false
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiJfIpUBUmnwULEIkl9hwLqZ8YAo', object: 'chat.completion', created: 1767394427, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Vince McMahon",
+      "emoji": "💼",
+      "score": 6,
+      "reaction": "That line’s got HEAT, pal — quick, clean, and it lands like a chair shot right across the skull. “Misunderstood” versus “rugged” is a great pivot: it tells the whole story in one smack. But I want a bigger finish — give me a little more STING, a little more spectacle, something that makes the crowd stand up. Still… THAT’S GOOD SHIT."
+    },
+    {
+      "name": "Ultimate Warrior",
+      "emoji": "🚀",
+      "score": 8,
+      "reaction": "THE SPIRIT OF DECLAN HUSTLE O’BRIEN DRIFTS THROUGH THE BLOCKCHAIN NEBULA, AND YOU POINT AT IT—RUGGED! The misunderstood comets weep, but the rug pulls the oxygen from their lungs, and the WARRIOR HEARS THE SNAP OF COSMIC VINYL! It is short like a laser, sharp like meteors chewing glass, and the crowd’s atoms begin to FLEX. RIDE THE ROPE OF REALITY, AND LET IT BURN!"
+    },
+    {
+      "name": "Ric Flair",
+      "emoji": "👔",
+      "score": 7,
+      "reaction": "WOOOOO! That’s a clean little dagger, baby—simple, sharp, right in the ribs, WOOOOO! “Not misunderstood, just rugged” is the kind of line that gets a pop without even takin’ your robe off, WOOOOO! I’ve seen scammers try to talk their way out of a lock—this one slammed the cage door and threw away the key! Stylin’ and profilin’ with that punchline, WOOOOO!"
+    }
+  ],
+  "banter": [
+    "Vince McMahon: Warrior, I don’t know what the hell you just said, but it sounded OVER!",
+    "Ultimate Warrior: VINCE MCMAHON, YOUR SUIT IS A SATELLITE—AND FLAIR IS A JET ENGINE OF WOOOOOO!",
+    "Ric Flair: I’ll take that satellite and fly first class, baby—WOOOOO!"
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Vince McMahon', 'Ultimate Warrior', 'Ric Flair']
+api.js:36 Ghost Context: 📈 Declan 'Hustle' O'Brien - 2023 — stress heart attack during rug pull. Had 47 side hustles, 0 main income
+api.js:37 Roaster: Daeds 👤
+api.js:38 Roast: "History will remember you as a typo that didn't get corrected — and that's generous"
+api.js:39 Is Second Roast: true
+api.js:40 First Roast Context: {roasterName: 'Petty Betty', roast: "You're not misunderstood, you're just rugged — there's a difference", scores: Array(3)}
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiJvkAsCIH9KMWjBUU2zpUUVprNf', object: 'chat.completion', created: 1767394443, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Vince McMahon",
+      "emoji": "💼",
+      "score": 7,
+      "reaction": "That line is a CLEAN chair shot to the ego, pal. 'A typo that didn't get corrected'—that’s character assassination with a red pen and a smile. It's simple, it's nasty, and it makes the crowd go OHHH. Not quite a main-event explosion, but THAT'S GOOD SHIT!"
+    },
+    {
+      "name": "Ultimate Warrior",
+      "emoji": "🚀",
+      "score": 9,
+      "reaction": "THE WARRIOR FEELS THE INK OF OBLIVION SCRATCHING ACROSS THE COSMIC LEDGER!! A TYPO MAN DRIFTING THROUGH THE STARS OF HISTORY, NEVER PATCHED, NEVER UPDATED, ONLY ERROR-ENERGY!! GENEROUS? HA! THAT IS MERCY CLOAKED IN DESTRUCITY, BROTHER-SPIRIT!! THE ROAST ENGINE IGNITES AND THE SOUL CAPSIZES INTO CORRECTIONLESS ETERNITY!!"
+    },
+    {
+      "name": "Ric Flair",
+      "emoji": "👔",
+      "score": 8,
+      "reaction": "WOOOOO! That’s cold-blooded, baby—like leaving a man on read for eternity, WOOOOO! A typo that didn’t get corrected? That’s not just a loss, that’s a career-ending botch, WOOOOO! It’s short, it’s sharp, and it cuts deeper than a low blow in a title match, WOOOOO!"
+    }
+  ],
+  "banter": [
+    "Vince McMahon: Warrior, I don't know what galaxy you're in, but that line had HEAT and you know it!",
+    "Ultimate Warrior: VINCE-MAN OF THE SUIT REALM, THE HEAT IS THE SUNSCREAM OF THE TYPO-SOUL!!",
+    "Ric Flair: WOOOOO! Only the Warrior could turn spellcheck into a pay-per-view, WOOOOO!"
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+DraftingScreen.js:40 📝 DRAFTING SCREEN INIT
+DraftingScreen.js:41 Ghost: Countess Yelena Bloodworth 🧛 Themes: ['wealth']
+DraftingScreen.js:42 Template Object: {id: 'everyone_who_meets', template: 'Everyone who meets you [slot0] — [slot1]', slots: Array(2)}
+DraftingScreen.js:43 Template Text: Everyone who meets you [slot0] — [slot1]
+DraftingScreen.js:44 Template Slots: (2) [{…}, {…}]
+DraftingScreen.js:45 Available Word Pools: (106) ['pathetic_nouns', 'mild_insults', 'bad_things', 'abstract_concepts', 'normal_things', 'important_things', 'worthless_things', 'categories', 'worst_examples', 'affected_things', 'resulting_problems', 'disappointed_callers', 'disappointed_entities', 'sad_people', 'sad_places', 'verbs_done_badly', 'things_you_do', 'disappointment_actions', 'energy_types', 'specific_energies', 'energy_specifics', 'energy_consequences', 'punchline_observations', 'worse_somehow', 'things_you_lack', 'positive_traits', 'things_with_purpose', 'purposeless_things', 'delusions', 'harsh_realities', 'personality_flaws', 'disguises', 'tragic_backstories', 'peak_moments', 'peak_commentary', 'things_that_fail', 'bad_outcomes', 'failure_types', 'failure_elaborations', 'things_they_want_back', 'wasted_potential', 'chosen_disasters', 'sarcastic_compliments', 'brutal_truths', 'inspirational_sayings', 'brutal_exceptions', 'unpleasant_experiences', 'bad_options', 'worst_choices', 'red_flags', 'cosmic_consequences', 'face_conclusions', 'awkward_observations', 'observation_punchlines', 'things_that_exist', 'reason_why', 'things_you_did', 'brutal_verdicts', 'useless_things', 'bad_situations', 'flat_things', 'oblivious_things', 'dull_things', 'off_putting_things', 'your_attributes', 'pathetic_outcomes', 'unwanted_experiences', 'how_to_suffer', 'misused_phrases', 'what_you_did', 'existence_descriptions', 'existence_twists', 'sad_book_titles', 'book_fates', 'sad_nouns', 'bad_experiences', 'room_reactions', 'telling_details', 'good_vibes', 'your_presence', 'things_to_watch', 'painful_comparisons', 'worse_than_dislike', 'important_distinctions', 'wrong_behaviors', 'delusional_thoughts', 'common_reactions', 'you_dont_notice', 'disappointment_categories', 'disappointment_examples', 'movie_subjects', 'movie_actions', 'supposed_advantages', 'success_types', 'future_sadness', 'unsurprising_futures', 'born_to_do', 'how_you_failed', 'historical_footnotes', 'historical_caveats', …]
+DraftingScreen.js:159 📌 Slot 0: bracket="slot0", pool="common_reactions", label="has the same reaction"
+DraftingScreen.js:159 📌 Slot 1: bracket="slot1", pool="you_dont_notice", label="and you don't notice"
+DraftingScreen.js:49 Parsed Template Parts: (4) [{…}, {…}, {…}, {…}]
+DraftingScreen.js:51 Total Slots: 2
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 0 Pool: common_reactions
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: common_reactions
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(12), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 12
+DraftingScreen.js:249 Ghost Themes: ['wealth']
+DraftingScreen.js:254 Themed Words for "wealth": 0
+DraftingScreen.js:264 Final Words: (12) ['remembers a previous engagement', 'makes a mental note', 'exchanges a look with someone', 'has the same realization', 'updates their expectations downward', 'loses a little hope', 'gets quieter', 'needs a moment after', 'feels briefly concerned', 'reconsiders their life choices', 'checks the time', 'suddenly has somewhere else to be']
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 1 Pool: you_dont_notice
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: you_dont_notice
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(11), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 11
+DraftingScreen.js:249 Ghost Themes: ['wealth']
+DraftingScreen.js:254 Themed Words for "wealth": 0
+DraftingScreen.js:264 Final Words: (11) ['because you never do', 'but there are screenshots', "and it's documented", "and there's a pattern", "and we've discussed it", "and that's on brand", 'and honestly, expected', 'but the group chat does', 'which is part of the problem', "and self-awareness isn't your thing", "because reading the room isn't your strength"]
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Vince McMahon', 'Ultimate Warrior', 'Ric Flair']
+api.js:36 Ghost Context: 🧛 Countess Yelena Bloodworth - 1847 — villagers with torches (it was justified). Bathed in strange liquids (not water)
+api.js:37 Roaster: Daeds 👤
+api.js:38 Roast: "Everyone who meets you exchanges a look with someone — because reading the room isn't your strength"
+api.js:39 Is Second Roast: false
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiLKh6NfGSgF7bpMPEqi9gA9P0Ju', object: 'chat.completion', created: 1767394530, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Vince McMahon",
+      "emoji": "💼",
+      "score": 6,
+      "reaction": "That line’s got a clean setup and a punch that lands—social vampire who can’t read a room? That’s HEAT. It’s not the biggest explosion in the world, but it’s a solid mid-card finisher that keeps the crowd moving. I wanted one more twist tied to the torches or the weird bath liquids to really make it a MAIN EVENT. Still—THAT’S GOOD SHIT, PAL."
+    },
+    {
+      "name": "Ultimate Warrior",
+      "emoji": "🚀",
+      "score": 8,
+      "reaction": "THE ROOM IS A GALAXY AND YOU ARE A BAT-SHAPED COMET OF MISREAD DESTINIES!!! Eyes exchange like star-maps, and your senses are chained to the liquid moons that are NOT WATER, NO!!! The villagers with torches are the solar flares of justice, burning the fog off your social powers. The joke strikes the ribs of the universe and I HEAR IT SNAP INTO PROPHECY!"
+    },
+    {
+      "name": "Ric Flair",
+      "emoji": "👔",
+      "score": 7,
+      "reaction": "That’s a slick line, WOOO! Everybody meets her and immediately looks at somebody else like, 'Are you hearin’ this?'—that’s social damage, baby, WOOO! It’s got that clean, classy sting, like a chop across the chest in a title match, WOOO! I’d love a little extra bite about those 'strange liquids' because the Countess sounds like she was marinatin’ in nonsense, WOOO!"
+    }
+  ],
+  "banter": [
+    "Vince McMahon: Warrior, I don’t know what any of that meant, but it sounded like pyro—and I LOVE PYRO.",
+    "Ultimate Warrior: VINCE OF THE TITAN TOWER, YOUR PYRO IS ONLY A CANDLE AGAINST MY COSMIC TORCHES!!!",
+    "Ric Flair: I’ll tell you what—torch, pyro, whatever you got—just point it at the Countess and let’s hear the crowd go WOOOOO!"
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Vince McMahon', 'Ultimate Warrior', 'Ric Flair']
+api.js:36 Ghost Context: 🧛 Countess Yelena Bloodworth - 1847 — villagers with torches (it was justified). Bathed in strange liquids (not water)
+api.js:37 Roaster: Petty Betty 💅
+api.js:38 Roast: You're the reason the vibe has a file on you
+api.js:39 Is Second Roast: true
+api.js:40 First Roast Context: {roasterName: 'Daeds', roast: `"Everyone who meets you exchanges a look with some…e — because reading the room isn't your strength"`, scores: Array(3)}
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiLfTs1RwE5R6mImcmRUZyMjzJWy', object: 'chat.completion', created: 1767394551, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Vince McMahon",
+      "emoji": "💼",
+      "score": 7,
+      "reaction": "That line’s got HEAT, pal—\"the vibe has a file on you\" is a big, clean hook and the crowd gets it instantly. It paints Countess Bloodworth like she’s a walking HR incident from the underworld, and I LOVE simple, visual character damage. It’s not a main-event finisher, but it’s a stiff jab that sets up bigger shots. THAT’S GOOD SHIT!"
+    },
+    {
+      "name": "Ultimate Warrior",
+      "emoji": "🚀",
+      "score": 6,
+      "reaction": "THE VIBE OPENS THE COSMIC CABINET... AND THERE SHE IS, BLOODWORTH, STAMPED IN INK OF NIGHT-FLUIDS!!! A FILE CLAPS SHUT LIKE A COFFIN DOOR ON THE FREQUENCY OF HER SOUL-ODOR!!! BUT THE TORCHES DEMAND MORE DESTRUCITY, MORE SKY-SPLIT LAUGHTER THAN A SINGLE PAPER CUT OF DOOM!!! THE WARRIOR NODS... THEN RUNS THROUGH IT!!!"
+    },
+    {
+      "name": "Ric Flair",
+      "emoji": "👔",
+      "score": 8,
+      "reaction": "That’s a nasty little line right there, WOOOO! \"The vibe has a file on you\"—that’s like saying even the atmosphere knows you’re guilty, and it’s got receipts, WOOOO! It’s petty, it’s modern, and it makes the Countess sound like a permanent problem in every room she enters. I’ve seen vampires, I’ve seen villains, but I’ve never seen somebody get audited by a mood, WOOOO!"
+    }
+  ],
+  "banter": [
+    "Vince McMahon: Flair, you’d put the VIBE over as champion if it sold T-shirts!",
+    "Ric Flair: If the vibe’s got receipts, Vince, it’s MAIN EVENT, WOOOO!",
+    "Ultimate Warrior: THE VIBE RIDES A ROCKET-LIMO INTO THE LEDGER OF ETERNITY—WOOOOOOS AND FIREWORKS COLLIDE!!!"
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+DraftingScreen.js:40 📝 DRAFTING SCREEN INIT
+DraftingScreen.js:41 Ghost: Slade Ironflex 🦾 Themes: (2) ['fitness', 'bro']
+DraftingScreen.js:42 Template Object: {id: 'somewhere_someone', template: "Somewhere, [slot0] is [slot1] — and it's your fault", slots: Array(2)}
+DraftingScreen.js:43 Template Text: Somewhere, [slot0] is [slot1] — and it's your fault
+DraftingScreen.js:44 Template Slots: (2) [{…}, {…}]
+DraftingScreen.js:45 Available Word Pools: (106) ['pathetic_nouns', 'mild_insults', 'bad_things', 'abstract_concepts', 'normal_things', 'important_things', 'worthless_things', 'categories', 'worst_examples', 'affected_things', 'resulting_problems', 'disappointed_callers', 'disappointed_entities', 'sad_people', 'sad_places', 'verbs_done_badly', 'things_you_do', 'disappointment_actions', 'energy_types', 'specific_energies', 'energy_specifics', 'energy_consequences', 'punchline_observations', 'worse_somehow', 'things_you_lack', 'positive_traits', 'things_with_purpose', 'purposeless_things', 'delusions', 'harsh_realities', 'personality_flaws', 'disguises', 'tragic_backstories', 'peak_moments', 'peak_commentary', 'things_that_fail', 'bad_outcomes', 'failure_types', 'failure_elaborations', 'things_they_want_back', 'wasted_potential', 'chosen_disasters', 'sarcastic_compliments', 'brutal_truths', 'inspirational_sayings', 'brutal_exceptions', 'unpleasant_experiences', 'bad_options', 'worst_choices', 'red_flags', 'cosmic_consequences', 'face_conclusions', 'awkward_observations', 'observation_punchlines', 'things_that_exist', 'reason_why', 'things_you_did', 'brutal_verdicts', 'useless_things', 'bad_situations', 'flat_things', 'oblivious_things', 'dull_things', 'off_putting_things', 'your_attributes', 'pathetic_outcomes', 'unwanted_experiences', 'how_to_suffer', 'misused_phrases', 'what_you_did', 'existence_descriptions', 'existence_twists', 'sad_book_titles', 'book_fates', 'sad_nouns', 'bad_experiences', 'room_reactions', 'telling_details', 'good_vibes', 'your_presence', 'things_to_watch', 'painful_comparisons', 'worse_than_dislike', 'important_distinctions', 'wrong_behaviors', 'delusional_thoughts', 'common_reactions', 'you_dont_notice', 'disappointment_categories', 'disappointment_examples', 'movie_subjects', 'movie_actions', 'supposed_advantages', 'success_types', 'future_sadness', 'unsurprising_futures', 'born_to_do', 'how_you_failed', 'historical_footnotes', 'historical_caveats', …]
+DraftingScreen.js:159 📌 Slot 0: bracket="slot0", pool="disappointed_entities", label="who's disappointed"
+DraftingScreen.js:159 📌 Slot 1: bracket="slot1", pool="disappointment_actions", label="what they're doing"
+DraftingScreen.js:49 Parsed Template Parts: (5) [{…}, {…}, {…}, {…}, {…}]
+DraftingScreen.js:51 Total Slots: 2
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 0 Pool: disappointed_entities
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: disappointed_entities
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(20), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 20
+DraftingScreen.js:249 Ghost Themes: (2) ['fitness', 'bro']
+DraftingScreen.js:254 Themed Words for "fitness": 0
+DraftingScreen.js:254 Themed Words for "bro": 0
+DraftingScreen.js:264 Final Words: (12) ['your dating profile', 'your birth chart', 'everyone at the reunion', "your New Year's resolution", 'everyone who believed in you', 'the simulation', "your parents' expectations", 'your gym membership', 'the algorithm', 'your potential', 'your future self', 'karma']
+DraftingScreen.js:206 🎯 OPENING PICKER - Slot: 1 Pool: disappointment_actions
+DraftingScreen.js:226 🎰 LOADING WORDS
+DraftingScreen.js:227 Requested Pool: disappointment_actions
+DraftingScreen.js:228 Pool Exists: true
+DraftingScreen.js:229 Fallback Pool: none needed
+DraftingScreen.js:232 Pool Data: {base: Array(20), themed: {…}}
+DraftingScreen.js:243 Pool Format: Object with base/themed
+DraftingScreen.js:246 Base Words Count: 20
+DraftingScreen.js:249 Ghost Themes: (2) ['fitness', 'bro']
+DraftingScreen.js:254 Themed Words for "fitness": 0
+DraftingScreen.js:254 Themed Words for "bro": 0
+DraftingScreen.js:264 Final Words: (12) ['changing their number', 'seeking legal counsel', 'pretending not to know you', 'requesting a refund', 'unfollowing quietly', 'going to therapy about it', 'starting over with someone else', 'rebranding', 'scheduling a meeting about you', 'holding an intervention', 'filing a complaint', 'entering witness protection']
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Vince McMahon', 'Ultimate Warrior', 'Ric Flair']
+api.js:36 Ghost Context: 🦾 Slade Ironflex - 2022 — gym mirror selfie (crushed by weights). Never re-racked, died how he lived
+api.js:37 Roaster: Petty Betty 💅
+api.js:38 Roast: If I wanted to experience regret, I'd stare at a loading screen — not talk to you
+api.js:39 Is Second Roast: false
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiMVzcurf602Lql6B64ICH9gwT8O', object: 'chat.completion', created: 1767394603, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Vince McMahon",
+      "emoji": "💼",
+      "score": 6,
+      "reaction": "That line is CLEAN, pal—simple, direct, and it hits like a chair shot. You took a dead gym bro and turned him into an eternal loading screen of regret, and that’s a good hook. But I want MORE HEAT: tie it to the crushed-by-weights thing and really make it a MAIN EVENT finish. Right now it’s a solid mid-card zinger—tighten it up and you’ll be OVER."
+    },
+    {
+      "name": "Ultimate Warrior",
+      "emoji": "🚀",
+      "score": 7,
+      "reaction": "THE LOADING SCREEN OF REGRET SPINS IN THE BLACK HOLE OF SLADERITY, AND THE WARRIOR FEELS THE PIXELS SCREAMING!!! Your words are a neon comet—short, sharp, and crashing into the mirror universe where the flex becomes the final freeze-frame. But the iron weights demand MORE THUNDER, more cosmic clank, more re-rack redemption denied. THE PROPHECY NODS… BUT IT DOES NOT YET ROAR!"
+    },
+    {
+      "name": "Ric Flair",
+      "emoji": "👔",
+      "score": 8,
+      "reaction": "WOOOO! That’s a slick line, baby—cold, petty, and it lands fast! If I want regret, I don’t need a loading screen, I just look at a guy who never re-racked and still thought he was the main character—WOOOO! You could’ve punched the gym death a little harder, but the attitude is championship caliber. That’s stylin’ and profilin’ shade right there, WOOOO!"
+    }
+  ],
+  "banter": [
+    "Vince McMahon: Flair, stop wooing and tell me if it draws money—because petty regret might be a gimmick, but it needs a bigger finish!",
+    "Ric Flair: Bigger finish? WOOOO! He already got a finish—pinned by the weights in the middle of the ring, baby!",
+    "Ultimate Warrior: THE IRON PIN FALLS FROM THE GALAXY, AND VINCE SEEKS PYRO, BUT FLAIR SEEKS WOOOO—THE REGRET LOADS FOREVER!!!"
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}
+api.js:34 🎭 API CALL: Judge Panel Response
+api.js:35 Judges: (3) ['Vince McMahon', 'Ultimate Warrior', 'Ric Flair']
+api.js:36 Ghost Context: 🦾 Slade Ironflex - 2022 — gym mirror selfie (crushed by weights). Never re-racked, died how he lived
+api.js:37 Roaster: Daeds 👤
+api.js:38 Roast: "Somewhere, everyone who believed in you is changing their number — and it's your fault"
+api.js:39 Is Second Roast: true
+api.js:40 First Roast Context: {roasterName: 'Petty Betty', roast: "If I wanted to experience regret, I'd stare at a loading screen — not talk to you", scores: Array(3)}
+api.js:99 📤 Request Body: {model: 'gpt-5.2', messages: Array(2), max_completion_tokens: 800, temperature: 0.9}
+api.js:103 📥 Raw API Response: {id: 'chatcmpl-CtiMnnmPddikz4ncVSH6Kgxak8TQZ', object: 'chat.completion', created: 1767394621, model: 'gpt-5.2-2025-12-11', choices: Array(1), …}
+api.js:112 📝 Response Text: {
+  "judges": [
+    {
+      "name": "Vince McMahon",
+      "emoji": "💼",
+      "score": 7,
+      "reaction": "That’s a clean, mean line with real HEAT, pal. It’s got that stinging social humiliation—like getting your name booed out of the building and then the crowd changes the channel. I like it because it’s simple, it’s personal, and it hits harder than a missed spot under a barbell. Not quite a fireworks main event, but it’s DAMN solid."
+    },
+    {
+      "name": "Ultimate Warrior",
+      "emoji": "🚀",
+      "score": 6,
+      "reaction": "THE NUMBERS CHANGE IN THE BLACK HOLE OF BETRAYALITY, WHERE BELIEVERS BECOME GHOST SIGNALS IN THE SATELLITE SKIES! THE DEAD MAN FLEXED IRON, BUT HIS SOUL COULD NOT RE-RACK THE CONSEQUENCES OF COSMIC DISCONNECTION! I FEEL THE STING—BUT THE ROAR OF DESTRUCITY DID NOT FULLY IGNITE THE GALAXY ENGINE! SIX VIBRATIONS OF WARRIOR TRUTH!"
+    },
+    {
+      "name": "Ric Flair",
+      "emoji": "👔",
+      "score": 9,
+      "reaction": "WOOOOO! That is COLD, brother—everybody who believed in you changing their number? That’s like getting your invite revoked from the VIP section for eternity, WOOOOO! It’s slick, it’s personal, and it leaves a mark like a chop across the chest! I’ve heard a lotta lines in a lotta arenas, but that one struts out in alligator shoes, WOOOOO!"
+    }
+  ],
+  "banter": [
+    "Vince McMahon: Flair, you’d give a nine to a parking ticket if it had enough swagger—this one’s got heat, but it’s not a WrestleMania explosion.",
+    "Ric Flair: WOOOOO! Vince, you want explosions—this joke was a limousine driving away while his contacts hit “block,” WOOOOO!",
+    "Ultimate Warrior: THE BOSS SEEKS PYRO, THE NATURE BOY SEEKS GLITTER—BUT THE WARRIOR SEEKS THE SIGNAL OF THE SOUL, AND THE NUMBER HAS BEEN ERASED!"
+  ]
+}
+api.js:115 ✅ Parsed Response: {judges: Array(3), banter: Array(3)}

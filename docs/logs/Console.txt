@@ -1,0 +1,207 @@
+[Warning] 50 console messages are not shown.
+[Log] ✅ Parsed Response: (api.js, line 115)
+Object
+
+banter: ["The Iron Sheik: VINCE, YOU TALK ABOUT MAIN EVENT, I PUT YOUR SUIT IN CAMEL CLUTCH TOO, FUCK YOU.", "Vince McMahon: SHEIK, IF YOU CAN DRAW A HOUSE, YOU…E NO IDEA WHAT YOU SAID BUT IT SOUNDED EXPENSIVE.", "Ultimate Warrior: THE SUIT-MAN AND THE CAMEL-GENER…D THE LIKE-BUTTON BECOMES A METEOR OF DESTRUCITY!"] (3)
+
+judges: [Object, Object, Object] (3)
+
+Object Prototype
+[Log] 🎭 API CALL: Judge Panel Response (api.js, line 34)
+[Log] Judges: – Array (3) (api.js, line 35)
+Array (3)
+[Log] Ghost Context: – "⛽ Darlene Petroleum - 2011 — climate denial conference (venue collapsed). Rolled coal recreationally" (api.js, line 36)
+[Log] Roaster: – "Grandma Savage" – "👵" (api.js, line 37)
+[Log] Roast: – "Your face looks like a participation trophy going through a terms of service update" (api.js, line 38)
+[Log] Is Second Roast: – true (api.js, line 39)
+[Log] First Roast Context: – Object (api.js, line 40)
+Object
+[Log] 📤 Request Body: – Object (api.js, line 99)
+Object
+[Log] 📥 Raw API Response: – Object (api.js, line 103)
+Object
+[Log] 📝 Response Text: – "{↵  \"judges\": [↵    {↵      \"name\": \"Ultimate Warrior\",↵      \"emoji\": \"🚀\",↵      \"score\": 6,↵      \"reaction\": \"THE GRANDMOTHER COME…" (api.js, line 112)
+"{
+  \"judges\": [
+    {
+      \"name\": \"Ultimate Warrior\",
+      \"emoji\": \"🚀\",
+      \"score\": 6,
+      \"reaction\": \"THE GRANDMOTHER COMET CLASHES WITH THE PARTICIPATION METEOR, AND THE TERMS OF SERVICE BECOME A BLACK HOLE OF FACE-FLESH DESTINIES! I SEE THE TROPHY MELTING IN DIGITAL ACID, BUT THE COSMOS DEMANDS ONE MORE THUNDERBOLT OF DESTRUCITY TO SPLIT THE SKY! THE JOKE SPINS TRUE IN THE GALACTIC VEINS, YET IT DOESN'T FULLY SUPLEX THE CONSTELLATIONS INTO OBLIVION! WARRIORS HOWL, AND THE UPDATE PASSES, BUT THE ROAR COULD BE LOUDER!\"
+    },
+    {
+      \"name\": \"The Iron Sheik\",
+      \"emoji\": \"🇮🇷\",
+      \"score\": 7,
+      \"reaction\": \"I POP FOR THIS, YOU OLD SCHOOL GRANDMA, YOU GOT GOOD BITE. PARTICIPATION TROPHY FACE WITH TERMS OF SERVICE UPDATE, THIS IS LIKE CORPORATE BULLSHIT STAMPED ON A JABRONI FOREHEAD. BUT LISTEN, I WANT MORE PAIN, MORE BLOOD, MORE HUMBLE—MAKE IT PERSONAL, MAKE IT FILTHY, THEN I BREAK THEIR BACK. HULK HOGAN STILL JABRONI, IRAN NUMBER ONE.\"
+    },
+    {
+      \"name\": \"Vince McMahon\",
+      \"emoji\": \"💼\",
+      \"score\": 6,
+      \"reaction\": \"That’s a clever, modern line—clean, corporate, and it lands. But I’m looking for a bigger hook: I want the audience to FEEL the collapse of that venue, the coal smoke, the heat! This is a solid mid-card jab, not a main event finish. Tighten it, punch it harder, then we’re talking—otherwise it’s just… fine.\"
+    }
+  ],
+  \"banter\": [
+    \"The Iron Sheik: VINCE, YOU TALK ABOUT MID-CARD, I PUT YOUR MID-CARD IN CAMEL CLUTCH AND MAKE IT MAIN EVENT, YOU JABRONI!\",
+    \"Vince McMahon: Sheik, you couldn’t draw money with a map—BUT I’ll admit, you’ve got HEAT.\",
+    \"Ultimate Warrior: HEAT BECOMES STARFIRE, JABRONI MAPS BURN IN ROCKET-FURY, AND THE GRANDMOTHER TROPHY ASCENDS!\"
+  ]
+}"
+[Log] ✅ Parsed Response: – Object (api.js, line 115)
+Object
+[Log] 📝 DRAFTING SCREEN INIT (DraftingScreen.js, line 40)
+[Log] Ghost: – "Edgar Sootlungs" – "🏭" – "Themes:" – Array (1) (DraftingScreen.js, line 41)
+Array (1)
+[Log] Template Object: – Object (DraftingScreen.js, line 42)
+Object
+[Log] Template Text: – "You could be [slot0], but instead you chose [slot1]" (DraftingScreen.js, line 43)
+[Log] Template Slots: – Array (2) (DraftingScreen.js, line 44)
+Array (2)
+[Log] Available Word Pools: – Array (106) (DraftingScreen.js, line 45)
+Array (106)
+[Log] 📌 Slot 0: bracket="slot0", pool="wasted_potential", label="something good" (DraftingScreen.js, line 159)
+[Log] 📌 Slot 1: bracket="slot1", pool="chosen_disasters", label="this disaster" (DraftingScreen.js, line 159)
+[Log] Parsed Template Parts: – Array (4) (DraftingScreen.js, line 49)
+Array (4)
+[Log] Total Slots: – 2 (DraftingScreen.js, line 51)
+[Log] 🎯 OPENING PICKER - Slot: – 0 – "Pool:" – "wasted_potential" (DraftingScreen.js, line 206)
+[Log] 🎰 LOADING WORDS (DraftingScreen.js, line 226)
+[Log] Requested Pool: – "wasted_potential" (DraftingScreen.js, line 227)
+[Log] Pool Exists: – true (DraftingScreen.js, line 228)
+[Log] Fallback Pool: – "none needed" (DraftingScreen.js, line 229)
+[Log] Pool Data: – Object (DraftingScreen.js, line 232)
+Object
+[Log] Pool Format: Object with base/themed (DraftingScreen.js, line 243)
+[Log] Base Words Count: – 11 (DraftingScreen.js, line 246)
+[Log] Ghost Themes: – Array (1) (DraftingScreen.js, line 249)
+Array (1)
+[Log] Themed Words for "corporate": – 0 (DraftingScreen.js, line 254)
+[Log] Final Words: – Array (11) (DraftingScreen.js, line 264)
+Array (11)
+[Log] 🎯 OPENING PICKER - Slot: – 1 – "Pool:" – "chosen_disasters" (DraftingScreen.js, line 206)
+[Log] 🎰 LOADING WORDS (DraftingScreen.js, line 226)
+[Log] Requested Pool: – "chosen_disasters" (DraftingScreen.js, line 227)
+[Log] Pool Exists: – true (DraftingScreen.js, line 228)
+[Log] Fallback Pool: – "none needed" (DraftingScreen.js, line 229)
+[Log] Pool Data: – Object (DraftingScreen.js, line 232)
+Object
+[Log] Pool Format: Object with base/themed (DraftingScreen.js, line 243)
+[Log] Base Words Count: – 10 (DraftingScreen.js, line 246)
+[Log] Ghost Themes: – Array (1) (DraftingScreen.js, line 249)
+Array (1)
+[Log] Themed Words for "corporate": – 0 (DraftingScreen.js, line 254)
+[Log] Final Words: – Array (10) (DraftingScreen.js, line 264)
+Array (10)
+[Log] 🎯 OPENING PICKER - Slot: – 0 – "Pool:" – "wasted_potential" (DraftingScreen.js, line 206)
+[Log] 🎰 LOADING WORDS (DraftingScreen.js, line 226)
+[Log] Requested Pool: – "wasted_potential" (DraftingScreen.js, line 227)
+[Log] Pool Exists: – true (DraftingScreen.js, line 228)
+[Log] Fallback Pool: – "none needed" (DraftingScreen.js, line 229)
+[Log] Pool Data: – Object (DraftingScreen.js, line 232)
+Object
+[Log] Pool Format: Object with base/themed (DraftingScreen.js, line 243)
+[Log] Base Words Count: – 11 (DraftingScreen.js, line 246)
+[Log] Ghost Themes: – Array (1) (DraftingScreen.js, line 249)
+Array (1)
+[Log] Themed Words for "corporate": – 0 (DraftingScreen.js, line 254)
+[Log] Final Words: – Array (11) (DraftingScreen.js, line 264)
+Array (11)
+[Log] 🎯 OPENING PICKER - Slot: – 1 – "Pool:" – "chosen_disasters" (DraftingScreen.js, line 206)
+[Log] 🎰 LOADING WORDS (DraftingScreen.js, line 226)
+[Log] Requested Pool: – "chosen_disasters" (DraftingScreen.js, line 227)
+[Log] Pool Exists: – true (DraftingScreen.js, line 228)
+[Log] Fallback Pool: – "none needed" (DraftingScreen.js, line 229)
+[Log] Pool Data: – Object (DraftingScreen.js, line 232)
+Object
+[Log] Pool Format: Object with base/themed (DraftingScreen.js, line 243)
+[Log] Base Words Count: – 10 (DraftingScreen.js, line 246)
+[Log] Ghost Themes: – Array (1) (DraftingScreen.js, line 249)
+Array (1)
+[Log] Themed Words for "corporate": – 0 (DraftingScreen.js, line 254)
+[Log] Final Words: – Array (10) (DraftingScreen.js, line 264)
+Array (10)
+[Log] 🎭 API CALL: Judge Panel Response (api.js, line 34)
+[Log] Judges: – Array (3) (api.js, line 35)
+Array (3)
+[Log] Ghost Context: – "🏭 Edgar Sootlungs - 1843 — factory air. Worked 16-hour days" (api.js, line 36)
+[Log] Roaster: – "Grandma Savage" – "👵" (api.js, line 37)
+[Log] Roast: – "When they said embrace your uniqueness, they weren't talking about your dating history" (api.js, line 38)
+[Log] Is Second Roast: – false (api.js, line 39)
+[Log] 📤 Request Body: – Object (api.js, line 99)
+Object
+[Log] 📥 Raw API Response: – Object (api.js, line 103)
+Object
+[Log] 📝 Response Text: – "{↵  \"judges\": [↵    {↵      \"name\": \"Ultimate Warrior\",↵      \"emoji\": \"🚀\",↵      \"score\": 7,↵      \"reaction\": \"GRANDMA SAVAGE FIRES TH…" (api.js, line 112)
+"{
+  \"judges\": [
+    {
+      \"name\": \"Ultimate Warrior\",
+      \"emoji\": \"🚀\",
+      \"score\": 7,
+      \"reaction\": \"GRANDMA SAVAGE FIRES THE MIC INTO THE SMOKE-FACTORY NEBULA, AND THE SOOTLUNGS SPIRAL SHAKES THE CONSTELLATIONS OF ROMANCE!!! DATING HISTORY LIKE RUSTED CHAIN-LINK AROUND THE GALACTIC HEART, CLANKING THROUGH 16-HOUR DIMENSIONS OF REGRET!!! I SEE THE UNIQUENESS PROPHECY—NOT A HUG, BUT A COMET KNEE DROP TO THE EGO OF THE DEAD MAN!!! THE CROWD BREATHES IN DESTRUCITY AND COUGHS OUT LAUGHTER FUEL!!!\"
+    },
+    {
+      \"name\": \"The Iron Sheik\",
+      \"emoji\": \"🇮🇷\",
+      \"score\": 8,
+      \"reaction\": \"LISTEN YOU OLD FACTORY GHOST, THIS GRANDMA SAVAGE SHE MAKE YOU HUMBLE WITH ONE LINE, YOU UNDERSTAND? WHEN THEY SAY EMBRACE YOUR UNIQUENESS, NOT YOUR LOSER DATING HISTORY, THAT IS BEAUTIFUL INSULT, I POP BIG. I PUT YOUR WHOLE LOVE LIFE IN CAMEL CLUTCH, BREAK IT LIKE DRY BREAD, AND IRAN NUMBER ONE. ALSO HULK HOGAN IS A JABRONI, ALWAYS.\"
+    },
+    {
+      \"name\": \"Vince McMahon\",
+      \"emoji\": \"💼\",
+      \"score\": 6,
+      \"reaction\": \"Grandma Savage walks in and immediately establishes character—good. The line is clean, direct, and it gets a reaction without needing a paragraph of setup. But I want more punch on the target: the factory, the soot lungs, the misery—tie it into the dating history and make it EXPLODE. Still, it’s got heat... not main event, but it’s solid TV.\"
+    }
+  ],
+  \"banter\": [
+    \"The Iron Sheik: WARRIOR YOU TALK LIKE YOU FALL IN THE SMOKE STACK, BUT I LIKE YOUR ENERGY, I STILL MAKE YOU HUMBLE.\",
+    \"Ultimate Warrior: SHEIK OF THE CAMEL CLUTCH QUASAR—YOUR BACK-BREAKING WINDS POWER THE ROCKETS OF ROAST MORTEM!!!\",
+    \"Vince McMahon: I don’t know what either of you just said, but if it sells tickets, I’LL PRINT IT!\"
+  ]
+}"
+[Log] ✅ Parsed Response: – Object (api.js, line 115)
+Object
+[Log] 🎭 API CALL: Judge Panel Response (api.js, line 34)
+[Log] Judges: – Array (3) (api.js, line 35)
+Array (3)
+[Log] Ghost Context: – "🏭 Edgar Sootlungs - 1843 — factory air. Worked 16-hour days" (api.js, line 36)
+[Log] Roaster: – "Daeds" – "👤" (api.js, line 37)
+[Log] Roast: – "\"You could be genuinely interesting, but instead you chose whatever this is\"" (api.js, line 38)
+[Log] Is Second Roast: – true (api.js, line 39)
+[Log] First Roast Context: – Object (api.js, line 40)
+Object
+[Log] 📤 Request Body: – Object (api.js, line 99)
+Object
+[Log] 📥 Raw API Response: – Object (api.js, line 103)
+Object
+[Log] 📝 Response Text: – "{↵  \"judges\": [↵    {↵      \"name\": \"Ultimate Warrior\",↵      \"emoji\": \"🚀\",↵      \"score\": 5,↵      \"reaction\": \"THE MIC CRACKS OPEN AN…" (api.js, line 112)
+"{
+  \"judges\": [
+    {
+      \"name\": \"Ultimate Warrior\",
+      \"emoji\": \"🚀\",
+      \"score\": 5,
+      \"reaction\": \"THE MIC CRACKS OPEN AND THE COSMOS SNEEZES FACTORY DUST INTO THE NEBULA OF DESTINYYYY. YOU SAY INTERESTING, BUT YOU FOLD IT INTO A PAPER COMET AND THROW IT AT THE MOON OF WHATEVER-THIS-ISSSS. IT HAS A PULSE, BUT NOT THE THUNDERVEIN PROPHECY OF THE WARRIORS RUNNING WILD IN THE BLAST FURNACE OF ETERNITY. FIVE STARS OF DESTRUCITY, BUT THE SPACESHIP DID NOT FULLY IGNITE.\"
+    },
+    {
+      \"name\": \"The Iron Sheik\",
+      \"emoji\": \"🇮🇷\",
+      \"score\": 6,
+      \"reaction\": \"LISTEN YOU SON OF A BITCH, THIS JOKE IS LIKE YOU SHOW UP TO THE FACTORY FOR 16 HOURS AND YOU DO 2 HOURS WORK. IT IS TRUE, IT IS SIMPLE, IT IS A LITTLE LAZY, BUT I STILL LAUGH BECAUSE IT INSULT THE DEAD JABRONI WITH NO MERCY. IF YOU WANT BIG SCORE YOU GOTTA TWIST THE KNIFE, NOT JUST SAY 'WHATEVER THIS IS' LIKE YOU DON'T KNOW, YOU KNOW DAMN WELL. I GIVE YOU 6, NOW GET IN THE CAMEL CLUTCH BEFORE I HUMBLE YOU AND HULK HOGAN TOO.\"
+    },
+    {
+      \"name\": \"Vince McMahon\",
+      \"emoji\": \"💼\",
+      \"score\": 5,
+      \"reaction\": \"It’s a clean premise, but it’s SMALL. You’re basically saying, 'You could’ve been something, but you’re not'—that’s a mid-card line with no payoff, no twist, no explosion. Compared to that Grandma Savage shot, this one doesn’t have the same sting or specificity; it doesn’t get OVER. I want a hard turn, a button, a moment that makes the crowd gasp—RIGHT NOW it just drifts. Score it a 5, because it’s serviceable, but it’s not main-event material.\"
+    }
+  ],
+  \"banter\": [
+    \"The Iron Sheik: VINCE YOU TALK ABOUT EXPLOSION, I MAKE EXPLOSION WITH MY BOOT IN YOUR ASS, YOU JABRONI.\",
+    \"Vince McMahon: Sheik, you’d get a pop if you aimed that rage at the JOKE instead of me!\",
+    \"Ultimate Warrior: THE SHEIK AND THE BOSS COLLIDE IN A GALAXY OF BOOTSMOKE AND PAPER PROMOS, AND THE CROWD BECOMES STAR-DUSTTTT!\"
+  ]
+}"
+[Log] ✅ Parsed Response: – Object (api.js, line 115)
+Object
