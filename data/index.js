@@ -4,6 +4,7 @@ export { JUDGES, JUDGE_TAGS } from './judges.js';
 export { TEMPLATES } from './templates.js';
 export { WORD_POOLS } from './wordPools.js';
 export { OPPONENTS } from './opponents.js';
+export { ADS, getRandomAds } from './ads.js';
 export {
   HOST, getHostLine, getPlayerAwareOpening, getJudgeHistoryLine,
   HOST_OPENINGS, HOST_GHOST_INTROS, HOST_GHOST_REACTIONS,

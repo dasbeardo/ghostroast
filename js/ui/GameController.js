@@ -11,6 +11,7 @@ import {
   MatchOpeningScreen,
   GhostIntroScreen,
   DraftingScreen,
+  AdBreakScreen,
   PresentationScreen,
   ResultsScreen,
   MatchEndScreen,
@@ -78,6 +79,7 @@ export class GameController {
     this.roundResults = null;
     this.playerTotalPoints = 0;
     this.opponentTotalPoints = 0;
+    this.firstReactionsPromise = null; // For API prefetching
   }
 
   /**
@@ -217,12 +219,43 @@ export class GameController {
       round: this.currentRound,
       onComplete: (roast, filledSlots) => {
         this.playerRoast = roast;
-        this.showPresentation();
+
+        // Fire FIRST API call immediately on Lock In!
+        // Determine who goes first and start fetching their reactions
+        const firstRoaster = this.playerGoesFirst ? 'player' : 'opponent';
+        const firstRoasterData = firstRoaster === 'player'
+          ? { name: state.playerName || 'You', emoji: '👤' }
+          : this.opponent;
+        const firstRoast = firstRoaster === 'player' ? this.playerRoast : this.opponentRoast;
+
+        // Start API call (runs during ad break)
+        this.firstReactionsPromise = this.getJudgeReactions(
+          firstRoast,
+          this.selectedJudges,
+          firstRoasterData.name,
+          firstRoasterData.emoji,
+          false, // not second roast
+          null   // no first roast context
+        );
+
+        // Show ad break while API loads
+        this.showAdBreak();
       },
       onMenu: () => this.showInGameMenu(
         () => this.showDrafting(), // onResume: redraw drafting screen
         null // onQuit handled in showInGameMenu
       )
+    });
+    this.showScreen(screen);
+  }
+
+  /**
+   * Show ad break screen while API loads
+   */
+  showAdBreak() {
+    const screen = AdBreakScreen({
+      apiPromise: this.firstReactionsPromise,
+      onComplete: () => this.showPresentation()
     });
     this.showScreen(screen);
   }
@@ -242,7 +275,9 @@ export class GameController {
       round: this.currentRound,
       playerScore: this.playerMatchScore,
       opponentScore: this.opponentMatchScore,
-      getJudgeReactions: (roast, judges) => this.getJudgeReactions(roast, judges),
+      firstReactionsPromise: this.firstReactionsPromise, // Pass pre-fetched promise
+      getJudgeReactions: (roast, judges, roasterName, roasterEmoji, isSecond, context) =>
+        this.getJudgeReactions(roast, judges, roasterName, roasterEmoji, isSecond, context),
       onComplete: (results) => {
         this.roundResults = results;
         this.playerTotalPoints += results.playerTotal;

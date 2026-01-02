@@ -21,6 +21,7 @@ export function PresentationScreen({
   round = 1,
   playerScore = 0,
   opponentScore = 0,
+  firstReactionsPromise = null, // Pre-fetched first reactions from ad break
   onComplete,
   getJudgeReactions
 }) {
@@ -109,20 +110,30 @@ export function PresentationScreen({
     const firstRoast = firstRoaster === 'player' ? playerRoast : opponentRoast;
     const secondRoast = secondRoaster === 'player' ? playerRoast : opponentRoast;
 
-    // === PREFETCH: Start fetching first reactions IMMEDIATELY ===
-    // This runs in background while we show the roast
-    const firstReactionsPromise = fetchJudgeReactions(
-      firstRoast, firstRoasterData, firstRoaster, false, null
-    );
+    // === USE PRE-FETCHED PROMISE or start now ===
+    // First reactions should already be fetching from the ad break
+    // If we have a pre-fetched promise, wrap it to transform the format
+    let reactionsPromise;
+    if (firstReactionsPromise) {
+      reactionsPromise = firstReactionsPromise.then(reactions => ({
+        reactions: reactions.map(r => r.reaction),
+        scores: reactions.map(r => r.score),
+        banter: reactions.banter || []
+      }));
+    } else {
+      reactionsPromise = fetchJudgeReactions(
+        firstRoast, firstRoasterData, firstRoaster, false, null
+      );
+    }
 
-    // === FIRST ROAST === (API already loading in background)
+    // === FIRST ROAST === (API already loading from ad break)
     await presentRoast(firstRoasterData, firstRoast, firstRoaster);
     await waitForTap();
 
     // Check if reactions are ready - show loading only if still waiting
     let firstReactionsData;
     const raceResult = await Promise.race([
-      firstReactionsPromise.then(data => ({ ready: true, data })),
+      reactionsPromise.then(data => ({ ready: true, data })),
       Promise.resolve({ ready: false })
     ]);
 
@@ -130,7 +141,7 @@ export function PresentationScreen({
       firstReactionsData = raceResult.data;
     } else {
       showLoading('The judges are deliberating...');
-      firstReactionsData = await firstReactionsPromise;
+      firstReactionsData = await reactionsPromise;
     }
 
     // Build context for second roast NOW so we can prefetch
