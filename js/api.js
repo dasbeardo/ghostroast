@@ -31,6 +31,14 @@ async function callOpenAI(body) {
 // V3 Panel Judging: Single call for all 3 judges + banter
 export async function getJudgePanelResponse(judges, ghostContext, roasterName, roasterEmoji, roast, isSecondRoast, firstRoastContext) {
 
+  console.group('🎭 API CALL: Judge Panel Response');
+  console.log('Judges:', judges.map(j => j.name));
+  console.log('Ghost Context:', ghostContext);
+  console.log('Roaster:', roasterName, roasterEmoji);
+  console.log('Roast:', roast);
+  console.log('Is Second Roast:', isSecondRoast);
+  if (firstRoastContext) console.log('First Roast Context:', firstRoastContext);
+
   // Build judge personality blocks (static, cacheable)
   const judgeBlocks = judges.map((judge, i) => {
     return `=== JUDGE ${i + 1}: ${judge.name.toUpperCase()} ${judge.emoji} ===
@@ -78,7 +86,7 @@ Return valid JSON only. Each judge reacts in character (3-5 sentences). Then add
   ]
 }`;
 
-  const data = await callOpenAI({
+  const requestBody = {
     model: 'gpt-5.2',
     messages: [
       { role: 'system', content: systemPrompt },
@@ -86,14 +94,26 @@ Return valid JSON only. Each judge reacts in character (3-5 sentences). Then add
     ],
     max_completion_tokens: 800,
     temperature: 0.9
-  });
+  };
+
+  console.log('📤 Request Body:', requestBody);
+
+  const data = await callOpenAI(requestBody);
+
+  console.log('📥 Raw API Response:', data);
 
   if (data.error) {
+    console.error('❌ API Error:', data.error);
+    console.groupEnd();
     throw new Error(data.error.message);
   }
 
   const text = data.choices?.[0]?.message?.content || '';
+  console.log('📝 Response Text:', text);
+
   const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+  console.log('✅ Parsed Response:', parsed);
+  console.groupEnd();
 
   return parsed;
 }

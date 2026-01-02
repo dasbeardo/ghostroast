@@ -36,9 +36,21 @@ export function DraftingScreen({
   let rerollsLeft = rerolls;
   let pickerOpen = false;
 
+  // DEBUG: Log template and word pools
+  console.group('📝 DRAFTING SCREEN INIT');
+  console.log('Ghost:', ghost?.name, ghost?.emoji, 'Themes:', ghost?.themes);
+  console.log('Template Object:', template);
+  console.log('Template Text:', template?.template);
+  console.log('Template Slots:', template?.slots);
+  console.log('Available Word Pools:', Object.keys(wordPools || {}));
+
   // Parse template - find blanks
   const templateParts = parseTemplate(template?.template || "You're like [BLANK] — [BLANK]");
+  console.log('Parsed Template Parts:', templateParts);
   const totalSlots = templateParts.filter(p => p.isBlank).length;
+  console.log('Total Slots:', totalSlots);
+  console.groupEnd();
+
   filledSlots = new Array(totalSlots).fill(null);
 
   const screen = el('div', { class: 'screen screen-drafting' }, [
@@ -139,7 +151,14 @@ export function DraftingScreen({
       if (match.index > lastIndex) {
         parts.push({ text: text.slice(lastIndex, match.index), isBlank: false });
       }
-      parts.push({ text: match[1], isBlank: true, pool: match[1], index: blankIndex++ });
+      // Look up the actual pool from template.slots if available
+      const slotData = template?.slots?.[blankIndex];
+      const poolName = slotData?.pool || match[1]; // Fallback to bracket content if no slots
+      const label = slotData?.label || match[1];
+
+      console.log(`📌 Slot ${blankIndex}: bracket="${match[1]}", pool="${poolName}", label="${label}"`);
+
+      parts.push({ text: label, isBlank: true, pool: poolName, index: blankIndex++ });
       lastIndex = regex.lastIndex;
     }
     if (lastIndex < text.length) {
@@ -184,6 +203,7 @@ export function DraftingScreen({
 
   // Open word picker
   function openPicker(slotIndex, poolName) {
+    console.log('🎯 OPENING PICKER - Slot:', slotIndex, 'Pool:', poolName);
     activeSlot = slotIndex;
     pickerOpen = true;
     loadWords(poolName);
@@ -203,21 +223,35 @@ export function DraftingScreen({
 
   // Load words for pool with ghost-themed weighting
   function loadWords(poolName) {
+    console.group('🎰 LOADING WORDS');
+    console.log('Requested Pool:', poolName);
+    console.log('Pool Exists:', !!wordPools?.[poolName]);
+    console.log('Fallback Pool:', !wordPools?.[poolName] ? 'pathetic_nouns' : 'none needed');
+
     const pool = wordPools?.[poolName] || wordPools?.['pathetic_nouns'] || { base: ['something', 'nothing', 'everything'] };
+    console.log('Pool Data:', pool);
 
     // Handle old format (simple array) for backwards compatibility
     if (Array.isArray(pool)) {
+      console.log('Pool Format: Array (legacy)');
       currentWords = shuffle([...pool]).slice(0, 12);
+      console.log('Loaded Words:', currentWords);
+      console.groupEnd();
       return;
     }
 
+    console.log('Pool Format: Object with base/themed');
     // Build weighted pool - themed words appear 3x for higher selection chance
     let words = [...(pool.base || [])];
+    console.log('Base Words Count:', pool.base?.length || 0);
+
     const ghostThemes = ghost?.themes || [];
+    console.log('Ghost Themes:', ghostThemes);
 
     if (pool.themed && ghostThemes.length > 0) {
       for (const theme of ghostThemes) {
         const themedWords = pool.themed[theme] || [];
+        console.log(`Themed Words for "${theme}":`, themedWords.length);
         // Add themed words 3 times for higher selection probability
         words.push(...themedWords, ...themedWords, ...themedWords);
       }
@@ -227,6 +261,8 @@ export function DraftingScreen({
     const shuffled = shuffle(words);
     const uniqueWords = [...new Set(shuffled)];
     currentWords = uniqueWords.slice(0, 12);
+    console.log('Final Words:', currentWords);
+    console.groupEnd();
   }
 
   // Shuffle and reload words
