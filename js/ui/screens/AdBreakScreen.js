@@ -135,10 +135,9 @@ export function AdBreakScreen({ apiPromise, onComplete }) {
   }
 
   function updateNavButtons() {
-    prevBtn.style.opacity = currentAdIndex > 0 ? '1' : '0.3';
-    prevBtn.style.pointerEvents = currentAdIndex > 0 ? 'auto' : 'none';
-    nextBtn.style.opacity = currentAdIndex < ads.length - 1 ? '1' : '0.3';
-    nextBtn.style.pointerEvents = currentAdIndex < ads.length - 1 ? 'auto' : 'none';
+    // Use CSS class for disabled state
+    prevBtn.classList.toggle('ad-break__nav--disabled', currentAdIndex <= 0);
+    nextBtn.classList.toggle('ad-break__nav--disabled', currentAdIndex >= ads.length - 1);
   }
 
   function stopTypewriter() {

@@ -20,9 +20,9 @@ import { state, VERSION } from '../../state.js';
 export function MenuScreen({ onNewGame, onContinue, onStats, onSettings, onImportExport, onCredits }) {
   const playerName = state.playerName || 'Stranger';
   const stats = state.stats || {};
-  const wins = stats.matchWins || 0;
-  const losses = stats.matchLosses || 0;
-  const streak = stats.currentStreak || 0;
+  const wins = stats.totalWins || 0;
+  const losses = stats.totalLosses || 0;
+  const streak = stats.currentWinStreak || 0;
   const hasSave = !!state.savedGame;
 
   // Mort's welcome message

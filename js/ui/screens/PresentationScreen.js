@@ -262,7 +262,7 @@ export function PresentationScreen({
     };
   }
 
-  // Present a roast
+  // Present a roast with tap-to-complete support
   async function presentRoast(roaster, roastText, who) {
     clearElement(stage);
 
@@ -288,8 +288,36 @@ export function PresentationScreen({
     const bubble = el('div', { class: 'bubble bubble--roast bubble--expand-down' });
     stage.appendChild(bubble);
 
+    // Create typewriter
     const typeWriter = new TypeWriter(bubble, { speed: 20 });
-    await typeWriter.type(roastText);
+
+    // Start typing (don't await yet)
+    const typingPromise = typeWriter.type(roastText);
+
+    // Wait for either: typing to complete OR user tap
+    await new Promise(resolve => {
+      let resolved = false;
+
+      const finish = () => {
+        if (resolved) return;
+        resolved = true;
+        screen.removeEventListener('click', handleEarlyTap);
+        resolve();
+      };
+
+      const handleEarlyTap = (e) => {
+        // Don't interfere with button clicks
+        if (e.target.closest('button')) return;
+
+        if (typeWriter.typing) {
+          typeWriter.complete();
+        }
+        finish();
+      };
+
+      screen.addEventListener('click', handleEarlyTap);
+      typingPromise.then(finish);
+    });
   }
 
   // Show loading state
@@ -301,7 +329,7 @@ export function PresentationScreen({
     ]));
   }
 
-  // Show a judge reaction
+  // Show a judge reaction with tap-to-complete support
   async function showJudgeReaction(judge, reaction, score) {
     clearElement(stage);
 
@@ -319,17 +347,51 @@ export function PresentationScreen({
     const bubble = el('div', { class: 'bubble bubble--judge bubble--expand-down' });
     stage.appendChild(bubble);
 
-    // Type the reaction
-    const typeWriter = new TypeWriter(bubble, { speed: 15 });
-    await typeWriter.type(reaction);
+    // Score placeholder (will be added when typing completes or on tap)
+    let scoreBadge = null;
+    const showScore = () => {
+      if (!scoreBadge) {
+        scoreBadge = el('div', { class: 'score-badge score-badge--pop' }, [`${score}/10`]);
+        stage.appendChild(scoreBadge);
+      }
+    };
 
-    // Show score badge after typing completes
-    await delay(200);
-    const scoreBadge = el('div', { class: 'score-badge score-badge--pop' }, [`${score}/10`]);
-    stage.appendChild(scoreBadge);
+    // Create typewriter
+    const typeWriter = new TypeWriter(bubble, { speed: 15 });
+
+    // Start typing (don't await yet)
+    const typingPromise = typeWriter.type(reaction);
+
+    // Wait for either: typing to complete OR user tap
+    await new Promise(resolve => {
+      let resolved = false;
+
+      const finish = () => {
+        if (resolved) return;
+        resolved = true;
+        screen.removeEventListener('click', handleEarlyTap);
+        showScore();
+        resolve();
+      };
+
+      const handleEarlyTap = (e) => {
+        // Don't interfere with button clicks
+        if (e.target.closest('button')) return;
+
+        if (typeWriter.typing) {
+          typeWriter.complete();
+        }
+        finish();
+      };
+
+      screen.addEventListener('click', handleEarlyTap);
+      typingPromise.then(() => {
+        setTimeout(finish, 200); // Small delay after natural completion
+      });
+    });
   }
 
-  // Show banter between judges
+  // Show banter between judges with tap-to-complete support
   async function showBanter(banterLines) {
     clearElement(stage);
 
@@ -340,13 +402,45 @@ export function PresentationScreen({
     const banterContainer = el('div', { class: 'presentation__banter' });
     stage.appendChild(banterContainer);
 
+    // Track all typewriters for tap-to-complete-all
+    const typeWriters = [];
+
     for (const line of banterLines) {
       const banterLine = el('div', { class: 'banter-line' });
       banterContainer.appendChild(banterLine);
 
       const typeWriter = new TypeWriter(banterLine, { speed: 12 });
-      await typeWriter.type(line);
-      await delay(300);
+      typeWriters.push({ typeWriter, line, element: banterLine });
+
+      // Start typing (don't await yet)
+      const typingPromise = typeWriter.type(line);
+
+      // Wait for either: typing to complete OR user tap
+      await new Promise(resolve => {
+        let resolved = false;
+
+        const finish = () => {
+          if (resolved) return;
+          resolved = true;
+          screen.removeEventListener('click', handleEarlyTap);
+          resolve();
+        };
+
+        const handleEarlyTap = (e) => {
+          // Don't interfere with button clicks
+          if (e.target.closest('button')) return;
+
+          if (typeWriter.typing) {
+            typeWriter.complete();
+          }
+          finish();
+        };
+
+        screen.addEventListener('click', handleEarlyTap);
+        typingPromise.then(() => {
+          setTimeout(finish, 150); // Brief pause between lines
+        });
+      });
     }
   }
 

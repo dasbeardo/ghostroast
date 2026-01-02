@@ -119,15 +119,18 @@ export function ResultsScreen({
       }, [playerMatchScore >= 2 || opponentMatchScore >= 2 ? 'See Final Results' : 'Next Round']),
     ]),
 
-    // Detail modal (hidden)
-    el('div', { class: 'overlay', id: 'detail-overlay', style: 'display: none', onClick: hideDetail }),
-    el('div', { class: 'modal results__detail', id: 'detail-modal', style: 'display: none' }, [
-      el('div', { class: 'modal__header' }, [
-        el('h3', { class: 'modal__title', id: 'detail-title' }),
-        el('button', { class: 'modal__close', onClick: hideDetail }, ['×']),
+    // Detail modal (hidden) - modal is INSIDE overlay so flexbox centers it
+    el('div', { class: 'overlay', id: 'detail-overlay', style: 'display: none' }, [
+      el('div', { class: 'modal results__detail', id: 'detail-modal' }, [
+        el('div', { class: 'modal__header' }, [
+          el('h3', { class: 'modal__title', id: 'detail-title' }),
+          el('button', { class: 'modal__close', onClick: hideDetail }, ['×']),
+        ]),
+        el('div', { class: 'results__detail-content' }, [
+          el('div', { class: 'results__detail-roast', id: 'detail-roast' }),
+          el('div', { class: 'results__detail-judges', id: 'detail-judges' }),
+        ]),
       ]),
-      el('div', { class: 'results__detail-roast', id: 'detail-roast' }),
-      el('div', { class: 'results__detail-judges', id: 'detail-judges' }),
     ]),
   ]);
 
@@ -136,6 +139,13 @@ export function ResultsScreen({
   const detailTitle = $('#detail-title', screen);
   const detailRoast = $('#detail-roast', screen);
   const detailJudges = $('#detail-judges', screen);
+
+  // Handle overlay click (but not modal click)
+  detailOverlay.addEventListener('click', (e) => {
+    if (e.target === detailOverlay) {
+      hideDetail();
+    }
+  });
 
   function showDetail(who) {
     const isPlayer = who === 'player';
@@ -163,12 +173,10 @@ export function ResultsScreen({
     });
 
     detailOverlay.style.display = 'flex';
-    detailModal.style.display = 'block';
   }
 
   function hideDetail() {
     detailOverlay.style.display = 'none';
-    detailModal.style.display = 'none';
   }
 
   return screen;
