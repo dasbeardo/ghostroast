@@ -655,21 +655,23 @@ export class GameController {
           <div class="credits__tagline">A Comedy of Errors... And Death</div>
         </div>
         <div class="credits__section">
-          <div class="credits__role">Concept & Design</div>
+          <div class="credits__role">Created & Designed by</div>
           <div class="credits__name">Corey Bricker</div>
         </div>
         <div class="credits__section">
-          <div class="credits__role">Engineering</div>
-          <div class="credits__name">Claude</div>
+          <div class="credits__role">Engineered by</div>
+          <div class="credits__name">Corey Bricker</div>
+          <div class="credits__note">with assistance from Claude, ChatGPT & Gemini</div>
         </div>
         <div class="credits__section">
-          <div class="credits__role">AI Judges Powered By</div>
-          <div class="credits__name">OpenAI GPT-5.2</div>
+          <div class="credits__role">AI Judges Powered by</div>
+          <div class="credits__name">OpenAI*</div>
         </div>
         <div class="credits__section">
           <div class="credits__role">Special Thanks</div>
           <div class="credits__name">The Network (Afterlife Division)</div>
         </div>
+        <div class="credits__disclaimer">*This project uses OpenAI's API but is not affiliated with or endorsed by OpenAI.</div>
         <div class="credits__version">v${VERSION}</div>
       </div>
     `;
