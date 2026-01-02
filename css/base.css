@@ -74,6 +74,24 @@ p, h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  /* Safe area padding for notched devices */
+  padding-top: var(--safe-area-top);
+  padding-bottom: var(--safe-area-bottom);
+  padding-left: var(--safe-area-left);
+  padding-right: var(--safe-area-right);
+}
+
+/* Larger screens get more width */
+@media (min-width: 600px) {
+  .game-container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 900px) {
+  .game-container {
+    max-width: 600px;
+  }
 }
 
 /* Optional: subtle vignette effect */
@@ -93,6 +111,7 @@ p, h1, h2, h3, h4, h5, h6 {
 /* ==========================================
    SCREEN BASE
    Each screen fills the container.
+   Pattern: header (fixed) → content (scrolls) → footer (fixed)
    ========================================== */
 
 .screen {
@@ -110,10 +129,41 @@ p, h1, h2, h3, h4, h5, h6 {
   display: none;
 }
 
-/* Screen with scrollable content area */
+/* Screen sections */
+.screen__header,
+.screen__footer,
+.screen__actions {
+  flex-shrink: 0; /* Don't shrink - stay fixed size */
+}
+
+.screen__content {
+  flex: 1;           /* Take remaining space */
+  overflow-y: auto;  /* Scroll when content overflows */
+  overflow-x: hidden;
+  min-height: 0;     /* Fix flexbox scroll bug */
+}
+
+/* Screen with scrollable content area (legacy support) */
 .screen--scrollable {
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+/* Scrollable container utility */
+.scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollable--hidden-bar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollable--hidden-bar::-webkit-scrollbar {
+  display: none;
 }
 
 /* ==========================================
