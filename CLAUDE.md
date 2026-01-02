@@ -392,6 +392,41 @@ Player can optionally tag their roast as "directed at" a specific judge.
 - Reference a judge's catchphrase → they love it or hate the mockery
 - Play judges against each other strategically
 
+**Expanded Targeting:**
+- Tag joke with target: ghost / opponent / specific judge / host / Destiny
+- Different reactions based on who's being targeted
+- Host and Destiny could have their own defensive/reactive dialogue
+
+### Dynamic Judge Traits & RNG Behaviors
+Add traits, topics, and relationships to judges that vary per round/match.
+
+**Mechanics:**
+- Each judge has pool of possible traits (moods, hot topics, grudges)
+- RNG selects 1-2 traits per judge at match start
+- Traits sent to API: "Tonight, Gordon is extra irritable about undercooked jokes"
+- Creates variety even with same judge panel
+
+**Examples:**
+- "Kanye is feeling particularly humble tonight" (rare trait)
+- "The Iron Sheik has beef with anyone who mentions Hulk Hogan"
+- "Judge Judy is tired and has NO patience"
+
+### Seasonal Events & Date-Aware Content
+Fetch real date/time to unlock special content.
+
+**Mechanics:**
+- Check date on load
+- Unlock seasonal ads (Halloween, Christmas, etc.)
+- Special ghosts for holidays
+- Anniversary events
+- Time-of-day easter eggs (late night mode?)
+
+**Examples:**
+- Halloween: Spooky sponsor ads, themed ghosts
+- Friday the 13th: Jason-themed content
+- New Year's: "Afterlife Resolution" ads
+- 3 AM: "The Witching Hour" special mode?
+
 ### Robot Judges / AI Taking Jobs in the Afterlife
 The celebrity judges are actually robots/AI impersonating the real celebrities.
 
@@ -407,6 +442,29 @@ The celebrity judges are actually robots/AI impersonating the real celebrities.
 - Maybe a secret ending where you discover the truth
 
 **Tone:** Dark comedy commentary on AI, fits cheap network aesthetic, self-aware meta humor.
+
+### Lore Section / About Page
+In-menu section with character profiles and world-building.
+
+**Format: 90s Internet Fanzine Style**
+- Treat like a fan-made site for "The Network"
+- Q&A interviews with characters
+- "Did You Know?" facts about the afterlife
+- Grainy photos, weird fonts, under construction gifs
+- Guest book (fake comments from "fans")
+
+**Why Fanzine?**
+- The Network is too cheap to pay for real marketing
+- In-universe explanation: fans made these sites themselves
+- Fits the Angelfire/Geocities aesthetic perfectly
+- Could be a web ring of "fan sites"
+
+**Potential Pages:**
+- "Mort Holloway: The Man Behind the Mic" (interview)
+- "DESTINY'S REALM" (her mystic fan page, all purple and stars)
+- "Judge Appreciation Corner" (profiles, fan theories)
+- "The Ghost Database" (lore about deceased contestants)
+- "Network Schedule" (fake TV listings)
 
 ### Other Future Ideas
 - Multiplayer (real-time PvP)
