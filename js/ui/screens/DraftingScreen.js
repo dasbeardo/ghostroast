@@ -200,12 +200,32 @@ export function DraftingScreen({
     picker.style.display = 'none';
   }
 
-  // Load words for pool
+  // Load words for pool with ghost-themed weighting
   function loadWords(poolName) {
-    // Get words from pool (simplified - in real version, use weighted selection)
-    const pool = wordPools?.[poolName] || wordPools?.['pathetic_things'] || { base: ['something', 'nothing', 'everything'] };
-    const allWords = [...(pool.base || []), ...(pool.themed?.[ghost?.theme] || [])];
-    currentWords = shuffle(allWords).slice(0, 12);
+    const pool = wordPools?.[poolName] || wordPools?.['pathetic_nouns'] || { base: ['something', 'nothing', 'everything'] };
+
+    // Handle old format (simple array) for backwards compatibility
+    if (Array.isArray(pool)) {
+      currentWords = shuffle([...pool]).slice(0, 12);
+      return;
+    }
+
+    // Build weighted pool - themed words appear 3x for higher selection chance
+    let words = [...(pool.base || [])];
+    const ghostThemes = ghost?.themes || [];
+
+    if (pool.themed && ghostThemes.length > 0) {
+      for (const theme of ghostThemes) {
+        const themedWords = pool.themed[theme] || [];
+        // Add themed words 3 times for higher selection probability
+        words.push(...themedWords, ...themedWords, ...themedWords);
+      }
+    }
+
+    // Shuffle and take unique words for display
+    const shuffled = shuffle(words);
+    const uniqueWords = [...new Set(shuffled)];
+    currentWords = uniqueWords.slice(0, 12);
   }
 
   // Shuffle and reload words

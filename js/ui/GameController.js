@@ -15,13 +15,42 @@ import {
   MatchEndScreen
 } from './screens/index.js';
 
-import { state, VERSION } from '../state.js';
+import { state, VERSION, savePlayerStats } from '../state.js';
+import { getJudgePanelResponse } from '../api.js';
 import { GHOSTS } from '../../data/ghosts.js';
 import { JUDGES } from '../../data/judges.js';
 import { TEMPLATES } from '../../data/templates.js';
 import { WORD_POOLS } from '../../data/wordPools.js';
 import { OPPONENTS } from '../../data/opponents.js';
 import { shuffle } from '../utils.js';
+
+/**
+ * Build weighted word pool based on ghost themes
+ * Themed words appear 3x for higher selection chance
+ */
+function buildWeightedPool(poolName, ghostThemes = []) {
+  const pool = WORD_POOLS[poolName];
+  if (!pool) return [];
+
+  // Handle old format (simple array) for backwards compatibility
+  if (Array.isArray(pool)) {
+    return [...pool];
+  }
+
+  // New format: { base: [...], themed: { theme1: [...], ... } }
+  let words = [...(pool.base || [])];
+
+  // Add themed words with higher weight (3x)
+  if (pool.themed && ghostThemes.length > 0) {
+    for (const theme of ghostThemes) {
+      const themedWords = pool.themed[theme] || [];
+      // Add themed words 3 times for higher selection probability
+      words.push(...themedWords, ...themedWords, ...themedWords);
+    }
+  }
+
+  return words;
+}
 
 /**
  * Game Controller class
@@ -133,8 +162,8 @@ export class GameController {
     this.playerTemplate = shuffledTemplates[0];
     this.opponentTemplate = shuffledTemplates[1] || shuffledTemplates[0];
 
-    // AI picks words immediately
-    this.opponentRoast = this.generateAIRoast(this.opponentTemplate);
+    // AI picks words immediately using weighted pools
+    this.opponentRoast = this.generateAIRoast(this.opponentTemplate, this.currentGhost);
 
     // Show ghost intro
     this.showGhostIntro();
@@ -264,44 +293,92 @@ export class GameController {
   }
 
   /**
-   * Generate AI roast from template
+   * Generate AI roast from template using weighted word pools
    */
-  generateAIRoast(template) {
-    const text = template?.template || "You're like [pathetic_things] — [it_shows]";
-    let roast = '"';
+  generateAIRoast(template, ghost) {
+    const ghostThemes = ghost?.themes || [];
+    let roast = '';
 
-    const regex = /\[([^\]]+)\]/g;
-    let lastIndex = 0;
-    let match;
+    // Use template slots to pick words from weighted pools
+    if (template?.slots) {
+      let result = template.template;
+      template.slots.forEach((slot, i) => {
+        const poolName = slot.pool;
+        const weightedWords = buildWeightedPool(poolName, ghostThemes);
+        const shuffled = shuffle(weightedWords);
+        const word = shuffled[0] || 'something';
+        result = result.replace(`[slot${i}]`, word);
+      });
+      roast = result;
+    } else {
+      // Fallback for templates without slots
+      const text = template?.template || "You're like [pathetic_nouns] — [punchline_observations]";
+      const regex = /\[([^\]]+)\]/g;
+      let lastIndex = 0;
+      let match;
 
-    while ((match = regex.exec(text)) !== null) {
-      roast += text.slice(lastIndex, match.index);
-      const poolName = match[1];
-      const pool = WORD_POOLS[poolName] || { base: ['something'] };
-      const allWords = [...(pool.base || [])];
-      const word = allWords[Math.floor(Math.random() * allWords.length)] || 'something';
-      roast += word;
-      lastIndex = regex.lastIndex;
+      while ((match = regex.exec(text)) !== null) {
+        roast += text.slice(lastIndex, match.index);
+        const poolName = match[1];
+        const weightedWords = buildWeightedPool(poolName, ghostThemes);
+        const shuffled = shuffle(weightedWords);
+        const word = shuffled[0] || 'something';
+        roast += word;
+        lastIndex = regex.lastIndex;
+      }
+      roast += text.slice(lastIndex);
     }
-    roast += text.slice(lastIndex) + '"';
 
     return roast;
   }
 
   /**
-   * Get judge reactions from API
+   * Get judge reactions from real API
+   * @param {string} roast - The roast text
+   * @param {Object[]} judges - Array of judges
+   * @param {string} roasterName - Name of the roaster
+   * @param {string} roasterEmoji - Emoji for the roaster
+   * @param {boolean} isSecondRoast - Whether this is the second roast
+   * @param {Object|null} firstRoastContext - Context from first roast (if second)
    */
-  async getJudgeReactions(roast, judges) {
-    // For now, generate placeholder reactions
-    // In production, this would call the OpenAI API
-    return judges.map(judge => ({
-      reaction: this.generatePlaceholderReaction(judge, roast),
-      score: Math.floor(Math.random() * 4) + 5 // 5-8
-    }));
+  async getJudgeReactions(roast, judges, roasterName, roasterEmoji, isSecondRoast = false, firstRoastContext = null) {
+    // Build ghost context for judges
+    const ghost = this.currentGhost;
+    const ghostContext = `${ghost.emoji} ${ghost.name} - ${ghost.died}. ${ghost.bio[0]}`;
+
+    try {
+      // Call the real API
+      const panelResponse = await getJudgePanelResponse(
+        judges,
+        ghostContext,
+        roasterName,
+        roasterEmoji,
+        roast,
+        isSecondRoast,
+        firstRoastContext
+      );
+
+      // Return formatted results
+      return panelResponse.judges.map(j => ({
+        name: j.name,
+        emoji: j.emoji,
+        reaction: j.reaction,
+        score: j.score
+      }));
+    } catch (error) {
+      console.error('API call failed, using fallback:', error);
+      // Fallback to placeholder reactions
+      return judges.map(judge => ({
+        name: judge.name,
+        emoji: judge.emoji,
+        reaction: this.generatePlaceholderReaction(judge, roast),
+        score: Math.floor(Math.random() * 4) + 5
+      }));
+    }
   }
 
   /**
-   * Generate placeholder reaction
+   * Generate placeholder reaction (fallback)
    */
   generatePlaceholderReaction(judge, roast) {
     const reactions = [

@@ -83,6 +83,9 @@ export function PresentationScreen({
     opponentTotal: 0
   };
 
+  // First roast context for second roast judging
+  let firstRoastContext = null;
+
   // Run the presentation
   async function runPresentation() {
     let skipped = false;
@@ -90,18 +93,22 @@ export function PresentationScreen({
 
     const firstRoaster = playerGoesFirst ? 'player' : 'opponent';
     const secondRoaster = playerGoesFirst ? 'opponent' : 'player';
+    const firstRoasterData = firstRoaster === 'player' ? player : opponent;
+    const secondRoasterData = secondRoaster === 'player' ? player : opponent;
+    const firstRoast = firstRoaster === 'player' ? playerRoast : opponentRoast;
+    const secondRoast = secondRoaster === 'player' ? playerRoast : opponentRoast;
 
     // Present first roast
-    await presentRoast(
-      firstRoaster === 'player' ? player : opponent,
-      firstRoaster === 'player' ? playerRoast : opponentRoast,
-      firstRoaster
-    );
+    await presentRoast(firstRoasterData, firstRoast, firstRoaster);
 
-    // Judge first roast
+    // Judge first roast (isSecondRoast = false, no context)
     const firstReactions = await judgeRoast(
-      firstRoaster === 'player' ? playerRoast : opponentRoast,
+      firstRoast,
       firstRoaster,
+      firstRoasterData?.name || (firstRoaster === 'player' ? 'Player' : 'AI'),
+      firstRoasterData?.emoji || (firstRoaster === 'player' ? '👤' : '🤖'),
+      false,  // isSecondRoast
+      null,   // firstRoastContext
       skipped
     );
 
@@ -115,6 +122,13 @@ export function PresentationScreen({
       results.opponentTotal = firstReactions.scores.reduce((a, b) => a + b, 0);
     }
 
+    // Store first roast context for second roast
+    firstRoastContext = {
+      roasterName: firstRoasterData?.name || (firstRoaster === 'player' ? 'Player' : 'AI'),
+      roast: firstRoast,
+      scores: firstReactions.scores
+    };
+
     // Show totals
     totals.style.opacity = '1';
     updateTotals();
@@ -122,16 +136,16 @@ export function PresentationScreen({
     if (!skipped) await delay(800);
 
     // Present second roast
-    await presentRoast(
-      secondRoaster === 'player' ? player : opponent,
-      secondRoaster === 'player' ? playerRoast : opponentRoast,
-      secondRoaster
-    );
+    await presentRoast(secondRoasterData, secondRoast, secondRoaster);
 
-    // Judge second roast
+    // Judge second roast (isSecondRoast = true, with context)
     const secondReactions = await judgeRoast(
-      secondRoaster === 'player' ? playerRoast : opponentRoast,
+      secondRoast,
       secondRoaster,
+      secondRoasterData?.name || (secondRoaster === 'player' ? 'Player' : 'AI'),
+      secondRoasterData?.emoji || (secondRoaster === 'player' ? '👤' : '🤖'),
+      true,   // isSecondRoast
+      firstRoastContext,
       skipped
     );
 
@@ -190,7 +204,7 @@ export function PresentationScreen({
   }
 
   // Judge a roast
-  async function judgeRoast(roastText, who, fastMode) {
+  async function judgeRoast(roastText, who, roasterName, roasterEmoji, isSecondRoast, context, fastMode) {
     const reactions = [];
     const scores = [];
 
@@ -198,7 +212,15 @@ export function PresentationScreen({
     let aiReactions = null;
     if (getJudgeReactions) {
       try {
-        aiReactions = await getJudgeReactions(roastText, judges);
+        // Call with full parameters for proper API context
+        aiReactions = await getJudgeReactions(
+          roastText,
+          judges,
+          roasterName,
+          roasterEmoji,
+          isSecondRoast,
+          context
+        );
       } catch (e) {
         console.error('Failed to get judge reactions:', e);
       }
