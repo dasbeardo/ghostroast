@@ -1,15 +1,25 @@
 /**
  * Roast Mortem - Judge Select Screen
- * Players can pick 3 judges OR let Destiny decide.
+ * Redesigned with category grid first, then judges in category.
+ * "LET DESTINY DECIDE?" button for theatrical random selection.
  */
 
 import { el, $, $$, clearElement } from '../dom.js';
 import { Portrait } from '../components/Portrait.js';
 import { TypeWriter, delay } from '../components/Dialogue.js';
-import { JUDGES } from '../../../data/judges.js';
+import { JUDGES, JUDGE_TAGS } from '../../../data/judges.js';
 import { shuffle } from '../../utils.js';
 
-const JUDGE_TAGS = ['all', 'wrestling', 'politics', 'actors', 'tv', 'villains', 'sports', 'chaos'];
+// Category card data with emojis and display names
+const CATEGORIES = [
+  { tag: 'wrestling', name: 'Wrestling', emoji: '🤼', color: '#8B0000' },
+  { tag: 'politics', name: 'Politics', emoji: '🏛️', color: '#1a3a5c' },
+  { tag: 'actors', name: 'Actors', emoji: '🎭', color: '#4a2a6a' },
+  { tag: 'tv', name: 'TV Stars', emoji: '📺', color: '#2a4a3a' },
+  { tag: 'villains', name: 'Villains', emoji: '😈', color: '#3a1a3a' },
+  { tag: 'sports', name: 'Sports', emoji: '🏆', color: '#5a4a1a' },
+  { tag: 'chaos', name: 'Chaos', emoji: '🌪️', color: '#4a1a1a' },
+];
 
 // Destiny character - mysterious fortune teller
 const DESTINY = {
@@ -30,8 +40,9 @@ const DESTINY = {
  */
 export function JudgeSelectScreen({ opponent, onConfirm, onDestiny }) {
   let selectedJudges = [];
-  let activeFilter = 'all';
-  let destinyMode = false;
+  let currentView = 'categories'; // 'categories' or 'judges'
+  let activeCategory = null;
+  let destinyRevealing = false;
 
   const screen = el('div', { class: 'screen screen-judge-select' }, [
     // Header
@@ -42,7 +53,20 @@ export function JudgeSelectScreen({ opponent, onConfirm, onDestiny }) {
       ]),
     ]),
 
-    // Main content area - switches between judge grid and destiny
+    // Destiny button at top
+    el('div', { class: 'judge-select__destiny-row' }, [
+      el('button', {
+        class: 'btn btn--destiny',
+        id: 'destiny-btn',
+        onClick: () => triggerDestiny()
+      }, [
+        el('span', { class: 'destiny-btn__icon' }, ['🔮']),
+        el('span', { class: 'destiny-btn__text' }, ['LET DESTINY DECIDE?']),
+        el('span', { class: 'destiny-btn__icon' }, ['🔮']),
+      ]),
+    ]),
+
+    // Main content area - switches between categories and judges
     el('div', { class: 'judge-select__main', id: 'main-content' }),
 
     // Selection slots (always visible)
@@ -62,44 +86,62 @@ export function JudgeSelectScreen({ opponent, onConfirm, onDestiny }) {
   const mainContent = $('#main-content', screen);
   const slotsContainer = $('#slots', screen);
   const actionsContainer = $('#actions', screen);
+  const destinyBtn = $('#destiny-btn', screen);
 
-  // Render the choose mode (pick judges yourself)
-  function renderChooseMode() {
-    destinyMode = false;
+  // Render category grid
+  function renderCategories() {
+    currentView = 'categories';
+    activeCategory = null;
     clearElement(mainContent);
     clearElement(actionsContainer);
 
-    // Toggle buttons
-    mainContent.appendChild(el('div', { class: 'judge-select__mode-toggle' }, [
-      el('button', {
-        class: 'judge-select__mode-btn judge-select__mode-btn--active',
-        onClick: () => renderChooseMode()
-      }, ['Pick Judges']),
-      el('button', {
-        class: 'judge-select__mode-btn',
-        onClick: () => renderDestinyMode()
-      }, ['🔮 Ask Destiny']),
-    ]));
+    const gridEl = el('div', { class: 'judge-select__category-grid' });
 
-    // Filters
-    const filtersEl = el('div', { class: 'judge-select__filters' });
-    JUDGE_TAGS.forEach(tag => {
-      const btn = el('button', {
-        class: `judge-select__filter ${tag === activeFilter ? 'judge-select__filter--active' : ''}`,
-        onClick: () => {
-          activeFilter = tag;
-          renderChooseMode();
-        }
-      }, [tag === 'all' ? 'All' : tag.charAt(0).toUpperCase() + tag.slice(1)]);
-      filtersEl.appendChild(btn);
+    CATEGORIES.forEach(cat => {
+      const judgeCount = JUDGES.filter(j => j.tags && j.tags.includes(cat.tag)).length;
+
+      const card = el('div', {
+        class: 'judge-select__category-card',
+        style: `--category-color: ${cat.color}`,
+        onClick: () => renderJudgesInCategory(cat)
+      }, [
+        el('div', { class: 'category-card__emoji' }, [cat.emoji]),
+        el('div', { class: 'category-card__name' }, [cat.name]),
+        el('div', { class: 'category-card__count' }, [`${judgeCount} judges`]),
+      ]);
+      gridEl.appendChild(card);
     });
-    mainContent.appendChild(filtersEl);
+
+    mainContent.appendChild(gridEl);
+
+    // Actions - confirm button
+    renderActions();
+    updateSlots();
+  }
+
+  // Render judges in a specific category
+  function renderJudgesInCategory(category) {
+    currentView = 'judges';
+    activeCategory = category;
+    clearElement(mainContent);
+    clearElement(actionsContainer);
+
+    // Back button header
+    const headerEl = el('div', { class: 'judge-select__category-header' }, [
+      el('button', {
+        class: 'judge-select__back-btn',
+        onClick: () => renderCategories()
+      }, ['← Back']),
+      el('div', { class: 'judge-select__category-title' }, [
+        el('span', { class: 'category-title__emoji' }, [category.emoji]),
+        el('span', {}, [category.name]),
+      ]),
+    ]);
+    mainContent.appendChild(headerEl);
 
     // Judge grid
     const gridEl = el('div', { class: 'judge-select__grid' });
-    const filteredJudges = activeFilter === 'all'
-      ? JUDGES
-      : JUDGES.filter(j => j.tags && j.tags.includes(activeFilter));
+    const filteredJudges = JUDGES.filter(j => j.tags && j.tags.includes(category.tag));
 
     filteredJudges.forEach(judge => {
       const isSelected = selectedJudges.some(j => j.id === judge.id);
@@ -122,6 +164,13 @@ export function JudgeSelectScreen({ opponent, onConfirm, onDestiny }) {
     mainContent.appendChild(gridEl);
 
     // Actions
+    renderActions();
+    updateSlots();
+  }
+
+  // Render action buttons
+  function renderActions() {
+    clearElement(actionsContainer);
     actionsContainer.appendChild(el('button', {
       class: 'btn btn--primary btn--full',
       disabled: selectedJudges.length !== 3,
@@ -131,113 +180,6 @@ export function JudgeSelectScreen({ opponent, onConfirm, onDestiny }) {
         }
       }
     }, ['Start Match']));
-
-    updateSlots();
-  }
-
-  // Render destiny mode
-  function renderDestinyMode() {
-    destinyMode = true;
-    clearElement(mainContent);
-    clearElement(actionsContainer);
-
-    // Toggle buttons
-    mainContent.appendChild(el('div', { class: 'judge-select__mode-toggle' }, [
-      el('button', {
-        class: 'judge-select__mode-btn',
-        onClick: () => renderChooseMode()
-      }, ['Pick Judges']),
-      el('button', {
-        class: 'judge-select__mode-btn judge-select__mode-btn--active',
-        onClick: () => renderDestinyMode()
-      }, ['🔮 Ask Destiny']),
-    ]));
-
-    // Destiny character
-    const destinySection = el('div', { class: 'judge-select__destiny' }, [
-      el('div', { class: 'judge-select__destiny-portrait' }, [
-        Portrait({
-          emoji: DESTINY.emoji,
-          size: 'xl',
-          spotlight: true
-        }),
-      ]),
-      el('div', { class: 'judge-select__destiny-name' }, [DESTINY.name]),
-      el('div', { class: 'judge-select__destiny-title' }, [DESTINY.title]),
-      el('div', { class: 'judge-select__destiny-dialogue', id: 'destiny-dialogue' }, [
-        '"Tap me to reveal your fated panel..."'
-      ]),
-    ]);
-
-    // Make destiny tappable
-    destinySection.addEventListener('click', async () => {
-      await revealDestiny();
-    });
-
-    mainContent.appendChild(destinySection);
-
-    // Actions - only confirm if judges selected
-    actionsContainer.appendChild(el('button', {
-      class: 'btn btn--primary btn--full',
-      disabled: selectedJudges.length !== 3,
-      id: 'destiny-confirm-btn',
-      onClick: () => {
-        if (selectedJudges.length === 3 && onConfirm) {
-          onConfirm(selectedJudges);
-        }
-      }
-    }, ['Accept Your Fate']));
-
-    updateSlots();
-  }
-
-  // Reveal destiny's choice
-  async function revealDestiny() {
-    const dialogueEl = $('#destiny-dialogue', screen);
-    const confirmBtn = $('#destiny-confirm-btn', screen);
-
-    if (!dialogueEl) return;
-
-    // Clear previous selection
-    selectedJudges = [];
-    updateSlots();
-
-    // Pick random line
-    const line = DESTINY.lines[Math.floor(Math.random() * DESTINY.lines.length)];
-
-    // Type the line
-    dialogueEl.textContent = '"';
-    const typeWriter = new TypeWriter(dialogueEl, { speed: 25 });
-    await typeWriter.type(line);
-    dialogueEl.textContent = `"${line}"`;
-
-    await delay(500);
-
-    // Reveal judges one by one
-    const shuffled = shuffle([...JUDGES]);
-    const chosen = shuffled.slice(0, 3);
-
-    const slots = $$('.judge-select__slot', screen);
-
-    for (let i = 0; i < 3; i++) {
-      await delay(400);
-      selectedJudges.push(chosen[i]);
-
-      // Animate the slot
-      const slot = slots[i];
-      slot.classList.add('judge-select__slot--reveal');
-      clearElement(slot);
-      slot.classList.add('judge-select__slot--filled');
-      slot.appendChild(Portrait({
-        emoji: chosen[i].emoji,
-        size: 'md'
-      }));
-    }
-
-    // Enable confirm button
-    if (confirmBtn) {
-      confirmBtn.disabled = false;
-    }
   }
 
   // Toggle judge selection
@@ -248,7 +190,13 @@ export function JudgeSelectScreen({ opponent, onConfirm, onDestiny }) {
     } else if (selectedJudges.length < 3) {
       selectedJudges.push(judge);
     }
-    renderChooseMode();
+
+    // Re-render current view
+    if (currentView === 'judges' && activeCategory) {
+      renderJudgesInCategory(activeCategory);
+    } else {
+      renderCategories();
+    }
   }
 
   // Update selection slots
@@ -263,29 +211,109 @@ export function JudgeSelectScreen({ opponent, onConfirm, onDestiny }) {
           emoji: selectedJudges[i].emoji,
           size: 'md'
         }));
+        // Make slot clickable to remove judge
+        slot.onclick = () => {
+          selectedJudges.splice(i, 1);
+          if (currentView === 'judges' && activeCategory) {
+            renderJudgesInCategory(activeCategory);
+          } else {
+            renderCategories();
+          }
+        };
       } else {
         slot.classList.remove('judge-select__slot--filled');
         slot.textContent = '?';
+        slot.onclick = null;
       }
     });
   }
 
-  // External API
+  // Trigger Destiny reveal sequence
+  async function triggerDestiny() {
+    if (destinyRevealing) return;
+    destinyRevealing = true;
+
+    // Disable destiny button during reveal
+    destinyBtn.disabled = true;
+    destinyBtn.classList.add('btn--destiny--revealing');
+
+    // Clear selection
+    selectedJudges = [];
+    updateSlots();
+
+    // Show destiny reveal screen
+    clearElement(mainContent);
+
+    const destinySection = el('div', { class: 'judge-select__destiny-reveal' }, [
+      el('div', { class: 'destiny-reveal__portrait' }, [
+        Portrait({
+          emoji: DESTINY.emoji,
+          size: 'xl',
+          spotlight: true
+        }),
+      ]),
+      el('div', { class: 'destiny-reveal__name' }, [DESTINY.name]),
+      el('div', { class: 'destiny-reveal__title' }, [DESTINY.title]),
+      el('div', { class: 'destiny-reveal__dialogue', id: 'destiny-dialogue' }),
+    ]);
+    mainContent.appendChild(destinySection);
+
+    const dialogueEl = $('#destiny-dialogue', screen);
+
+    // Pick random line and type it
+    const line = DESTINY.lines[Math.floor(Math.random() * DESTINY.lines.length)];
+    dialogueEl.textContent = '"';
+    const typeWriter = new TypeWriter(dialogueEl, { speed: 25 });
+    await typeWriter.type(line);
+    dialogueEl.textContent = `"${line}"`;
+
+    await delay(600);
+
+    // Reveal judges one by one
+    const shuffled = shuffle([...JUDGES]);
+    const chosen = shuffled.slice(0, 3);
+    const slots = $$('.judge-select__slot', screen);
+
+    for (let i = 0; i < 3; i++) {
+      await delay(500);
+      selectedJudges.push(chosen[i]);
+
+      // Animate the slot
+      const slot = slots[i];
+      slot.classList.add('judge-select__slot--reveal');
+      clearElement(slot);
+      slot.classList.add('judge-select__slot--filled');
+      slot.appendChild(Portrait({
+        emoji: chosen[i].emoji,
+        size: 'md'
+      }));
+    }
+
+    await delay(400);
+
+    // Re-enable button and render actions
+    destinyBtn.disabled = false;
+    destinyBtn.classList.remove('btn--destiny--revealing');
+    destinyRevealing = false;
+
+    // Show confirm button
+    renderActions();
+
+    // Update slot click handlers
+    updateSlots();
+  }
+
+  // External API for setting judges programmatically
   screen.setSelectedJudges = (judgeList) => {
     selectedJudges = [...judgeList];
     updateSlots();
-    if (destinyMode) {
-      const confirmBtn = $('#destiny-confirm-btn', screen);
-      if (confirmBtn) confirmBtn.disabled = selectedJudges.length !== 3;
-    } else {
-      renderChooseMode();
-    }
+    renderActions();
   };
 
   screen.getSelectedJudges = () => selectedJudges;
 
   // Initial render
-  renderChooseMode();
+  renderCategories();
 
   return screen;
 }

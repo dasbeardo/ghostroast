@@ -1,5 +1,6 @@
 /**
  * Roast Mortem - Judge Select Screen Styles
+ * Redesigned with category grid and carnival-style Destiny button
  */
 
 .screen-judge-select {
@@ -21,46 +22,223 @@
   margin-bottom: var(--space-xs);
 }
 
-.judge-select__opponent {
+.judge-select__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+}
+
+/* ============================
+   DESTINY BUTTON - Carnival Mystic Style
+   ============================ */
+
+.judge-select__destiny-row {
+  padding: 0 var(--space-md) var(--space-md);
+}
+
+.btn--destiny {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: linear-gradient(135deg, #2a1a4a 0%, #1a0a3a 50%, #2a1a4a 100%);
+  border: 2px solid var(--color-score);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  color: var(--color-score);
+  text-shadow: var(--glow-amber);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn--destiny::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 200, 100, 0.1),
+    transparent
+  );
+  animation: destiny-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes destiny-shimmer {
+  0% { left: -100%; }
+  50%, 100% { left: 100%; }
+}
+
+.btn--destiny:hover {
+  transform: scale(1.02);
+  box-shadow: var(--glow-amber), 0 0 30px rgba(255, 180, 50, 0.3);
+}
+
+.btn--destiny:active {
+  transform: scale(0.98);
+}
+
+.btn--destiny:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn--destiny--revealing {
+  animation: destiny-pulse 1s ease-in-out infinite;
+}
+
+@keyframes destiny-pulse {
+  0%, 100% { box-shadow: var(--glow-amber); }
+  50% { box-shadow: 0 0 25px var(--color-score), 0 0 50px rgba(255, 180, 50, 0.4); }
+}
+
+.destiny-btn__icon {
+  font-size: var(--text-lg);
+  animation: float-gentle 2s ease-in-out infinite;
+}
+
+.destiny-btn__icon:first-child {
+  animation-delay: 0s;
+}
+
+.destiny-btn__icon:last-child {
+  animation-delay: 1s;
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.destiny-btn__text {
+  letter-spacing: 2px;
+}
+
+/* ============================
+   MAIN CONTENT AREA
+   ============================ */
+
+.judge-select__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ============================
+   CATEGORY GRID
+   ============================ */
+
+.judge-select__category-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  overflow-y: auto;
+  align-content: start;
+}
+
+.judge-select__category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, var(--category-color, #2a2a3a) 0%, #1a1a2a 100%);
+  border-radius: var(--radius-lg);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  min-height: 100px;
+}
+
+.judge-select__category-card:hover {
+  border-color: var(--color-interactive);
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.judge-select__category-card:active {
+  transform: scale(0.98);
+}
+
+.category-card__emoji {
+  font-size: 32px;
+  margin-bottom: var(--space-xs);
+}
+
+.category-card__name {
   font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.category-card__count {
+  font-family: var(--font-body);
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
 }
 
-/* Filter bar */
-.judge-select__filters {
+/* ============================
+   CATEGORY HEADER (when viewing judges)
+   ============================ */
+
+.judge-select__category-header {
   display: flex;
-  gap: var(--space-xs);
-  padding: 0 var(--space-md) var(--space-md);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.judge-select__filter {
+.judge-select__back-btn {
   padding: var(--space-xs) var(--space-sm);
   background: var(--color-bg-mid);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   font-family: var(--font-ui);
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
-  white-space: nowrap;
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out);
 }
 
-.judge-select__filter:hover {
+.judge-select__back-btn:hover {
   border-color: var(--color-interactive);
   color: var(--color-interactive);
 }
 
-.judge-select__filter--active {
-  background: var(--color-interactive);
-  border-color: var(--color-interactive);
-  color: var(--color-bg-dark);
+.judge-select__category-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
 }
 
-/* Judge grid */
+.category-title__emoji {
+  font-size: var(--text-lg);
+}
+
+/* ============================
+   JUDGE GRID
+   ============================ */
+
 .judge-select__grid {
   flex: 1;
   display: grid;
@@ -109,14 +287,30 @@
   white-space: nowrap;
 }
 
-/* Selection slots */
+/* ============================
+   SELECTION SLOTS
+   ============================ */
+
+.judge-select__slots-section {
+  background: var(--color-bg-surface);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--space-sm);
+}
+
+.judge-select__slots-label {
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  letter-spacing: 1px;
+  margin-bottom: var(--space-xs);
+}
+
 .judge-select__slots {
   display: flex;
   justify-content: center;
   gap: var(--space-md);
   padding: var(--space-md);
-  background: var(--color-bg-surface);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .judge-select__slot {
@@ -143,7 +337,29 @@
   border-color: var(--color-danger);
 }
 
-/* Actions */
+/* Slot reveal animation */
+.judge-select__slot--reveal {
+  animation: slot-reveal 0.4s var(--ease-bounce);
+}
+
+@keyframes slot-reveal {
+  0% {
+    transform: scale(0) rotateY(180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotateY(90deg);
+  }
+  100% {
+    transform: scale(1) rotateY(0);
+    opacity: 1;
+  }
+}
+
+/* ============================
+   ACTIONS
+   ============================ */
+
 .judge-select__actions {
   display: flex;
   gap: var(--space-sm);
@@ -155,57 +371,95 @@
   flex: 1;
 }
 
-/* Destiny modal */
-.destiny-modal {
-  text-align: center;
-}
+/* ============================
+   DESTINY REVEAL SCREEN
+   ============================ */
 
-.destiny-modal__cards {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-md);
-  margin: var(--space-lg) 0;
-}
-
-.destiny-modal__card {
-  width: 70px;
-  height: 100px;
-  background: var(--color-bg-mid);
-  border: var(--border-medium) solid var(--color-score);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--text-2xl);
-  transition: transform var(--duration-slow) var(--ease-out);
-  transform-style: preserve-3d;
-}
-
-.destiny-modal__card--revealed {
-  animation: card-flip var(--duration-slow) var(--ease-out);
-}
-
-.destiny-modal__card--back {
-  background: linear-gradient(135deg, var(--color-bg-mid), var(--color-bg-surface));
-}
-
-/* Subtitle under title */
-.judge-select__subtitle {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  color: var(--color-text-secondary);
-  margin-top: var(--space-xs);
-}
-
-/* Main content area */
-.judge-select__main {
+.judge-select__destiny-reveal {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  text-align: center;
 }
 
-/* Mode toggle (Pick Judges / Ask Destiny tabs) */
+.destiny-reveal__portrait {
+  margin-bottom: var(--space-md);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.destiny-reveal__name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--color-score);
+  text-shadow: var(--glow-score);
+  margin-bottom: var(--space-xs);
+}
+
+.destiny-reveal__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.destiny-reveal__dialogue {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  color: var(--color-text-primary);
+  font-style: italic;
+  max-width: 280px;
+  line-height: 1.5;
+  min-height: 80px;
+}
+
+/* ============================
+   LEGACY STYLES (kept for compatibility)
+   ============================ */
+
+/* Filter bar - no longer used but kept for reference */
+.judge-select__filters {
+  display: flex;
+  gap: var(--space-xs);
+  padding: 0 var(--space-md) var(--space-md);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.judge-select__filter {
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-mid);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.judge-select__filter:hover {
+  border-color: var(--color-interactive);
+  color: var(--color-interactive);
+}
+
+.judge-select__filter--active {
+  background: var(--color-interactive);
+  border-color: var(--color-interactive);
+  color: var(--color-bg-dark);
+}
+
+/* Mode toggle - no longer used */
 .judge-select__mode-toggle {
   display: flex;
   background: var(--color-bg-surface);
@@ -232,96 +486,4 @@
 .judge-select__mode-btn--active {
   color: var(--color-interactive);
   border-bottom-color: var(--color-interactive);
-}
-
-/* Slots section with label */
-.judge-select__slots-section {
-  background: var(--color-bg-surface);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: var(--space-sm);
-}
-
-.judge-select__slots-label {
-  text-align: center;
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  color: var(--color-text-secondary);
-  letter-spacing: 1px;
-  margin-bottom: var(--space-xs);
-}
-
-/* Destiny section */
-.judge-select__destiny {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-lg);
-  cursor: pointer;
-  transition: transform var(--duration-fast) var(--ease-out);
-}
-
-.judge-select__destiny:hover {
-  transform: scale(1.02);
-}
-
-.judge-select__destiny:active {
-  transform: scale(0.98);
-}
-
-.judge-select__destiny-portrait {
-  margin-bottom: var(--space-md);
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-.judge-select__destiny-name {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  color: var(--color-score);
-  text-shadow: var(--glow-score);
-  margin-bottom: var(--space-xs);
-}
-
-.judge-select__destiny-title {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  color: var(--color-text-secondary);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: var(--space-md);
-}
-
-.judge-select__destiny-dialogue {
-  font-family: var(--font-body);
-  font-size: var(--text-md);
-  color: var(--color-text-primary);
-  font-style: italic;
-  text-align: center;
-  max-width: 280px;
-  line-height: 1.5;
-}
-
-/* Slot reveal animation */
-.judge-select__slot--reveal {
-  animation: slot-reveal 0.4s var(--ease-bounce);
-}
-
-@keyframes slot-reveal {
-  0% {
-    transform: scale(0) rotateY(180deg);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2) rotateY(90deg);
-  }
-  100% {
-    transform: scale(1) rotateY(0);
-    opacity: 1;
-  }
 }
