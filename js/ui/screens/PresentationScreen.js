@@ -100,7 +100,7 @@ export function PresentationScreen({
     });
   }
 
-  // Run the presentation
+  // Run the presentation with optimized prefetching
   async function runPresentation() {
     const firstRoaster = playerGoesFirst ? 'player' : 'opponent';
     const secondRoaster = playerGoesFirst ? 'opponent' : 'player';
@@ -109,30 +109,41 @@ export function PresentationScreen({
     const firstRoast = firstRoaster === 'player' ? playerRoast : opponentRoast;
     const secondRoast = secondRoaster === 'player' ? playerRoast : opponentRoast;
 
-    // === FIRST ROAST ===
-    await presentRoast(firstRoasterData, firstRoast, firstRoaster);
-    await waitForTap();
-
-    // Start fetching judge reactions in background
+    // === PREFETCH: Start fetching first reactions IMMEDIATELY ===
+    // This runs in background while we show the roast
     const firstReactionsPromise = fetchJudgeReactions(
       firstRoast, firstRoasterData, firstRoaster, false, null
     );
 
-    // Show "Judges are deliberating..." while waiting
-    showLoading('The judges are deliberating...');
-    const firstReactionsData = await firstReactionsPromise;
+    // === FIRST ROAST === (API already loading in background)
+    await presentRoast(firstRoasterData, firstRoast, firstRoaster);
+    await waitForTap();
 
-    // Show each judge reaction, wait for tap after each
-    for (let i = 0; i < judges.length; i++) {
-      await showJudgeReaction(judges[i], firstReactionsData.reactions[i], firstReactionsData.scores[i]);
-      await waitForTap();
+    // Check if reactions are ready - show loading only if still waiting
+    let firstReactionsData;
+    const raceResult = await Promise.race([
+      firstReactionsPromise.then(data => ({ ready: true, data })),
+      Promise.resolve({ ready: false })
+    ]);
+
+    if (raceResult.ready) {
+      firstReactionsData = raceResult.data;
+    } else {
+      showLoading('The judges are deliberating...');
+      firstReactionsData = await firstReactionsPromise;
     }
 
-    // Show banter if available
-    if (firstReactionsData.banter && firstReactionsData.banter.length > 0) {
-      await showBanter(firstReactionsData.banter);
-      await waitForTap();
-    }
+    // Build context for second roast NOW so we can prefetch
+    firstRoastContext = {
+      roasterName: firstRoasterData?.name || 'Roaster',
+      roast: firstRoast,
+      scores: firstReactionsData.scores
+    };
+
+    // === PREFETCH: Start fetching second reactions while user reads first ===
+    const secondReactionsPromise = fetchJudgeReactions(
+      secondRoast, secondRoasterData, secondRoaster, true, firstRoastContext
+    );
 
     // Store first roast results
     if (firstRoaster === 'player') {
@@ -145,27 +156,40 @@ export function PresentationScreen({
       results.opponentTotal = firstReactionsData.scores.reduce((a, b) => a + b, 0);
     }
 
-    firstRoastContext = {
-      roasterName: firstRoasterData?.name || 'Roaster',
-      roast: firstRoast,
-      scores: firstReactionsData.scores
-    };
+    // Show each judge reaction, wait for tap after each
+    // (Second roast reactions loading in background during this time!)
+    for (let i = 0; i < judges.length; i++) {
+      await showJudgeReaction(judges[i], firstReactionsData.reactions[i], firstReactionsData.scores[i]);
+      await waitForTap();
+    }
+
+    // Show banter if available
+    if (firstReactionsData.banter && firstReactionsData.banter.length > 0) {
+      await showBanter(firstReactionsData.banter);
+      await waitForTap();
+    }
 
     // Show totals
     totals.style.opacity = '1';
     updateTotals();
 
-    // === SECOND ROAST ===
+    // === SECOND ROAST === (reactions likely already loaded!)
     await presentRoast(secondRoasterData, secondRoast, secondRoaster);
     await waitForTap();
 
-    // Start fetching second reactions
-    const secondReactionsPromise = fetchJudgeReactions(
-      secondRoast, secondRoasterData, secondRoaster, true, firstRoastContext
-    );
+    // Check if second reactions are ready
+    let secondReactionsData;
+    const raceResult2 = await Promise.race([
+      secondReactionsPromise.then(data => ({ ready: true, data })),
+      Promise.resolve({ ready: false })
+    ]);
 
-    showLoading('The judges consider the rebuttal...');
-    const secondReactionsData = await secondReactionsPromise;
+    if (raceResult2.ready) {
+      secondReactionsData = raceResult2.data;
+    } else {
+      showLoading('The judges consider the rebuttal...');
+      secondReactionsData = await secondReactionsPromise;
+    }
 
     // Show each judge reaction
     for (let i = 0; i < judges.length; i++) {
