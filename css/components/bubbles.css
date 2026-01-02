@@ -238,6 +238,14 @@
   }
 }
 
+/* Expand downward - text grows down from top */
+.bubble--expand-down {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: auto;
+}
+
 /* Typewriter cursor for text being typed */
 .typing-cursor::after {
   content: '▌';
@@ -249,4 +257,41 @@
 @keyframes cursor-blink {
   0%, 100% { opacity: 0.7; }
   50% { opacity: 0; }
+}
+
+/* ==========================================
+   SCORE BADGE
+   ========================================== */
+
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-accent-green);
+  color: var(--color-bg-dark);
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  font-weight: bold;
+  border: var(--border-thick) solid var(--color-bg-dark);
+  box-shadow: 3px 3px 0 var(--color-bg-dark);
+  margin-top: var(--space-md);
+}
+
+.score-badge--pop {
+  animation: score-pop 0.4s var(--ease-bounce);
+}
+
+@keyframes score-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

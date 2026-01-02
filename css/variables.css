@@ -153,9 +153,9 @@
   /* Portraits */
   --portrait-size-sm: 36px;
   --portrait-size-md: 48px;
-  --portrait-size-lg: 80px;
-  --portrait-size-xl: 120px;
-  --portrait-size-featured: 100px;
+  --portrait-size-lg: 100px;
+  --portrait-size-xl: 140px;
+  --portrait-size-featured: 120px;
 
   /* Buttons */
   --btn-padding-x: var(--space-lg);

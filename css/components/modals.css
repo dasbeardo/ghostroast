@@ -290,3 +290,128 @@
   0%, 100% { opacity: 0.4; }
   50% { opacity: 1; }
 }
+
+/* ==========================================
+   CENTERED MODAL VARIANT
+   ========================================== */
+
+.modal--centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: calc(var(--z-modal) + 1);
+  animation: modal-pop var(--duration-normal) var(--ease-bounce);
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.modal__text {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--space-md);
+}
+
+.modal__actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.modal__actions .btn {
+  flex: 1;
+}
+
+.modal__message {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+/* ==========================================
+   CREDITS MODAL
+   ========================================== */
+
+.modal__content--credits {
+  text-align: center;
+}
+
+.credits__section {
+  margin-bottom: var(--space-lg);
+}
+
+.credits__section:last-of-type {
+  margin-bottom: var(--space-md);
+}
+
+.credits__logo {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--color-accent-red);
+  text-shadow: var(--glow-red);
+  letter-spacing: 2px;
+  margin-bottom: var(--space-xs);
+}
+
+.credits__tagline {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.credits__role {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xs);
+}
+
+.credits__name {
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  color: var(--color-text-primary);
+}
+
+.credits__version {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================
+   IN-GAME MENU
+   ========================================== */
+
+.ingame-menu__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.ingame-menu__actions .btn {
+  width: 100%;
+}
+
+/* ==========================================
+   OVERLAY VISIBILITY
+   ========================================== */
+
+.overlay--visible {
+  display: flex !important;
+}

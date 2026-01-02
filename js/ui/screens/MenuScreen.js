@@ -13,9 +13,11 @@ import { state, VERSION } from '../../state.js';
  * @param {Function} options.onContinue - Callback for continue
  * @param {Function} options.onStats - Callback for stats
  * @param {Function} options.onSettings - Callback for settings
+ * @param {Function} options.onImportExport - Callback for import/export
+ * @param {Function} options.onCredits - Callback for credits
  * @returns {HTMLElement}
  */
-export function MenuScreen({ onNewGame, onContinue, onStats, onSettings }) {
+export function MenuScreen({ onNewGame, onContinue, onStats, onSettings, onImportExport, onCredits }) {
   const playerName = state.playerName || 'Stranger';
   const stats = state.stats || {};
   const wins = stats.matchWins || 0;
@@ -81,9 +83,9 @@ export function MenuScreen({ onNewGame, onContinue, onStats, onSettings }) {
 
     // Footer
     el('footer', { class: 'menu__footer' }, [
-      el('button', { class: 'menu__footer-link' }, ['Import/Export']),
+      el('button', { class: 'menu__footer-link', onClick: onImportExport }, ['Import/Export']),
       el('span', { class: 'menu__version' }, [`v${VERSION}`]),
-      el('button', { class: 'menu__footer-link' }, ['Credits']),
+      el('button', { class: 'menu__footer-link', onClick: onCredits }, ['Credits']),
     ]),
   ]);
 

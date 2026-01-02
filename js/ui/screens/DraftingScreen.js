@@ -26,7 +26,8 @@ export function DraftingScreen({
   playerScore = 0,
   opponentScore = 0,
   round = 1,
-  onComplete
+  onComplete,
+  onMenu
 }) {
   // State
   let filledSlots = [];
@@ -48,7 +49,7 @@ export function DraftingScreen({
         el('div', { class: 'ghost-intro__round' }, [`Round ${round}`]),
       ]),
       el('div', {}),
-      el('button', { class: 'btn-icon' }, ['☰']),
+      el('button', { class: 'btn-icon', onClick: onMenu }, ['☰']),
     ]),
 
     // Ghost reference

@@ -1,28 +1,14 @@
 /**
  * Roast Mortem - Presentation Screen
+ * Shows roasts and judge reactions with tap-to-advance flow.
  */
 
 import { el, $, clearElement } from '../dom.js';
 import { Portrait } from '../components/Portrait.js';
 import { TypeWriter, delay } from '../components/Dialogue.js';
-import { onSkip, clearSkip } from '../index.js';
 
 /**
  * Render the presentation screen
- * @param {Object} options
- * @param {Object} options.ghost - Ghost being roasted
- * @param {Object} options.player - Player data
- * @param {Object} options.opponent - Opponent data
- * @param {string} options.playerRoast - Player's roast text
- * @param {string} options.opponentRoast - Opponent's roast text
- * @param {Object[]} options.judges - Array of 3 judges
- * @param {boolean} options.playerGoesFirst - Who presents first
- * @param {number} options.round - Current round
- * @param {number} options.playerScore - Match score
- * @param {number} options.opponentScore - Match score
- * @param {Function} options.onComplete - Callback with results
- * @param {Function} options.getJudgeReactions - Async function to get judge reactions
- * @returns {HTMLElement}
  */
 export function PresentationScreen({
   ghost,
@@ -38,6 +24,10 @@ export function PresentationScreen({
   onComplete,
   getJudgeReactions
 }) {
+  // Tap resolver for user-controlled advancement
+  let tapResolver = null;
+  let canTap = false;
+
   const screen = el('div', { class: 'screen screen-presentation' }, [
     // Header
     el('div', { class: 'presentation__header' }, [
@@ -47,10 +37,10 @@ export function PresentationScreen({
       ]),
     ]),
 
-    // Stage
+    // Stage - content area
     el('div', { class: 'presentation__stage', id: 'stage' }),
 
-    // Totals
+    // Totals bar
     el('div', { class: 'presentation__totals', id: 'totals', style: 'opacity: 0' }, [
       el('div', { class: 'presentation__total presentation__total--player' }, [
         el('span', { class: 'presentation__total-label' }, [player?.name || 'YOU']),
@@ -62,16 +52,20 @@ export function PresentationScreen({
       ]),
     ]),
 
-    // Footer
-    el('div', { class: 'presentation__footer' }, [
-      el('div', { class: 'tap-hint' }, ['Tap to continue']),
+    // Tap hint footer
+    el('div', { class: 'presentation__footer', id: 'footer' }, [
+      el('div', { class: 'tap-hint', id: 'tap-hint', style: 'opacity: 0' }, ['Tap to continue']),
     ]),
   ]);
+
+  // Add tap handler to entire screen
+  screen.addEventListener('click', handleTap);
 
   const stage = $('#stage', screen);
   const totals = $('#totals', screen);
   const playerTotalEl = $('#player-total', screen);
   const opponentTotalEl = $('#opponent-total', screen);
+  const tapHint = $('#tap-hint', screen);
 
   // Results storage
   const results = {
@@ -80,17 +74,34 @@ export function PresentationScreen({
     playerReactions: [],
     opponentReactions: [],
     playerTotal: 0,
-    opponentTotal: 0
+    opponentTotal: 0,
+    banter: []
   };
 
   // First roast context for second roast judging
   let firstRoastContext = null;
 
+  // Handle tap
+  function handleTap() {
+    if (canTap && tapResolver) {
+      canTap = false;
+      tapHint.style.opacity = '0';
+      tapResolver();
+      tapResolver = null;
+    }
+  }
+
+  // Wait for user tap
+  function waitForTap() {
+    return new Promise(resolve => {
+      tapResolver = resolve;
+      canTap = true;
+      tapHint.style.opacity = '1';
+    });
+  }
+
   // Run the presentation
   async function runPresentation() {
-    let skipped = false;
-    onSkip(() => { skipped = true; });
-
     const firstRoaster = playerGoesFirst ? 'player' : 'opponent';
     const secondRoaster = playerGoesFirst ? 'opponent' : 'player';
     const firstRoasterData = firstRoaster === 'player' ? player : opponent;
@@ -98,83 +109,129 @@ export function PresentationScreen({
     const firstRoast = firstRoaster === 'player' ? playerRoast : opponentRoast;
     const secondRoast = secondRoaster === 'player' ? playerRoast : opponentRoast;
 
-    // Present first roast
+    // === FIRST ROAST ===
     await presentRoast(firstRoasterData, firstRoast, firstRoaster);
+    await waitForTap();
 
-    // Judge first roast (isSecondRoast = false, no context)
-    const firstReactions = await judgeRoast(
-      firstRoast,
-      firstRoaster,
-      firstRoasterData?.name || (firstRoaster === 'player' ? 'Player' : 'AI'),
-      firstRoasterData?.emoji || (firstRoaster === 'player' ? '👤' : '🤖'),
-      false,  // isSecondRoast
-      null,   // firstRoastContext
-      skipped
+    // Start fetching judge reactions in background
+    const firstReactionsPromise = fetchJudgeReactions(
+      firstRoast, firstRoasterData, firstRoaster, false, null
     );
 
-    if (firstRoaster === 'player') {
-      results.playerReactions = firstReactions.reactions;
-      results.playerScores = firstReactions.scores;
-      results.playerTotal = firstReactions.scores.reduce((a, b) => a + b, 0);
-    } else {
-      results.opponentReactions = firstReactions.reactions;
-      results.opponentScores = firstReactions.scores;
-      results.opponentTotal = firstReactions.scores.reduce((a, b) => a + b, 0);
+    // Show "Judges are deliberating..." while waiting
+    showLoading('The judges are deliberating...');
+    const firstReactionsData = await firstReactionsPromise;
+
+    // Show each judge reaction, wait for tap after each
+    for (let i = 0; i < judges.length; i++) {
+      await showJudgeReaction(judges[i], firstReactionsData.reactions[i], firstReactionsData.scores[i]);
+      await waitForTap();
     }
 
-    // Store first roast context for second roast
+    // Show banter if available
+    if (firstReactionsData.banter && firstReactionsData.banter.length > 0) {
+      await showBanter(firstReactionsData.banter);
+      await waitForTap();
+    }
+
+    // Store first roast results
+    if (firstRoaster === 'player') {
+      results.playerReactions = firstReactionsData.reactions;
+      results.playerScores = firstReactionsData.scores;
+      results.playerTotal = firstReactionsData.scores.reduce((a, b) => a + b, 0);
+    } else {
+      results.opponentReactions = firstReactionsData.reactions;
+      results.opponentScores = firstReactionsData.scores;
+      results.opponentTotal = firstReactionsData.scores.reduce((a, b) => a + b, 0);
+    }
+
     firstRoastContext = {
-      roasterName: firstRoasterData?.name || (firstRoaster === 'player' ? 'Player' : 'AI'),
+      roasterName: firstRoasterData?.name || 'Roaster',
       roast: firstRoast,
-      scores: firstReactions.scores
+      scores: firstReactionsData.scores
     };
 
     // Show totals
     totals.style.opacity = '1';
     updateTotals();
 
-    if (!skipped) await delay(800);
-
-    // Present second roast
+    // === SECOND ROAST ===
     await presentRoast(secondRoasterData, secondRoast, secondRoaster);
+    await waitForTap();
 
-    // Judge second roast (isSecondRoast = true, with context)
-    const secondReactions = await judgeRoast(
-      secondRoast,
-      secondRoaster,
-      secondRoasterData?.name || (secondRoaster === 'player' ? 'Player' : 'AI'),
-      secondRoasterData?.emoji || (secondRoaster === 'player' ? '👤' : '🤖'),
-      true,   // isSecondRoast
-      firstRoastContext,
-      skipped
+    // Start fetching second reactions
+    const secondReactionsPromise = fetchJudgeReactions(
+      secondRoast, secondRoasterData, secondRoaster, true, firstRoastContext
     );
 
+    showLoading('The judges consider the rebuttal...');
+    const secondReactionsData = await secondReactionsPromise;
+
+    // Show each judge reaction
+    for (let i = 0; i < judges.length; i++) {
+      await showJudgeReaction(judges[i], secondReactionsData.reactions[i], secondReactionsData.scores[i]);
+      await waitForTap();
+    }
+
+    // Show banter if available
+    if (secondReactionsData.banter && secondReactionsData.banter.length > 0) {
+      await showBanter(secondReactionsData.banter);
+      await waitForTap();
+    }
+
+    // Store second roast results
     if (secondRoaster === 'player') {
-      results.playerReactions = secondReactions.reactions;
-      results.playerScores = secondReactions.scores;
-      results.playerTotal = secondReactions.scores.reduce((a, b) => a + b, 0);
+      results.playerReactions = secondReactionsData.reactions;
+      results.playerScores = secondReactionsData.scores;
+      results.playerTotal = secondReactionsData.scores.reduce((a, b) => a + b, 0);
     } else {
-      results.opponentReactions = secondReactions.reactions;
-      results.opponentScores = secondReactions.scores;
-      results.opponentTotal = secondReactions.scores.reduce((a, b) => a + b, 0);
+      results.opponentReactions = secondReactionsData.reactions;
+      results.opponentScores = secondReactionsData.scores;
+      results.opponentTotal = secondReactionsData.scores.reduce((a, b) => a + b, 0);
     }
 
     updateTotals();
 
-    if (!skipped) await delay(1000);
-
-    clearSkip();
-
+    // Complete
     if (onComplete) {
       onComplete(results);
     }
+  }
+
+  // Fetch judge reactions (with banter)
+  async function fetchJudgeReactions(roastText, roasterData, who, isSecondRoast, context) {
+    const roasterName = roasterData?.name || (who === 'player' ? 'Player' : 'AI');
+    const roasterEmoji = roasterData?.emoji || (who === 'player' ? '👤' : '🤖');
+
+    if (getJudgeReactions) {
+      try {
+        const data = await getJudgeReactions(
+          roastText, judges, roasterName, roasterEmoji, isSecondRoast, context
+        );
+        // API returns array of {name, emoji, reaction, score} plus banter
+        return {
+          reactions: data.map(j => j.reaction),
+          scores: data.map(j => j.score),
+          banter: data.banter || []
+        };
+      } catch (e) {
+        console.error('Failed to get judge reactions:', e);
+      }
+    }
+
+    // Fallback
+    return {
+      reactions: judges.map(() => generateFallbackReaction()),
+      scores: judges.map(() => Math.floor(Math.random() * 4) + 5),
+      banter: []
+    };
   }
 
   // Present a roast
   async function presentRoast(roaster, roastText, who) {
     clearElement(stage);
 
-    // Ghost target
+    // Layout: ghost at top, roaster portrait, then speech bubble below
     stage.appendChild(el('div', { class: 'presentation__target' }, [
       Portrait({ emoji: ghost?.emoji || '👻', size: 'sm', type: 'ghost', bobbing: true }),
       el('div', {}, [
@@ -183,7 +240,6 @@ export function PresentationScreen({
       ]),
     ]));
 
-    // Roaster
     stage.appendChild(el('div', { class: 'presentation__roaster' }, [
       Portrait({
         emoji: roaster?.emoji || (who === 'player' ? '👤' : '🤖'),
@@ -193,81 +249,70 @@ export function PresentationScreen({
       el('span', { class: 'presentation__roaster-name' }, [roaster?.name || 'Roaster']),
     ]));
 
-    // Roast bubble
-    const bubble = el('div', { class: 'bubble bubble--roast' });
+    // Speech bubble - text expands DOWNWARD
+    const bubble = el('div', { class: 'bubble bubble--roast bubble--expand-down' });
     stage.appendChild(bubble);
 
     const typeWriter = new TypeWriter(bubble, { speed: 20 });
     await typeWriter.type(roastText);
-
-    await delay(500);
   }
 
-  // Judge a roast
-  async function judgeRoast(roastText, who, roasterName, roasterEmoji, isSecondRoast, context, fastMode) {
-    const reactions = [];
-    const scores = [];
+  // Show loading state
+  function showLoading(message) {
+    clearElement(stage);
+    stage.appendChild(el('div', { class: 'presentation__loading' }, [
+      el('div', { class: 'loading-spinner' }),
+      el('div', { class: 'presentation__loading-text' }, [message]),
+    ]));
+  }
 
-    // Get AI reactions if available
-    let aiReactions = null;
-    if (getJudgeReactions) {
-      try {
-        // Call with full parameters for proper API context
-        aiReactions = await getJudgeReactions(
-          roastText,
-          judges,
-          roasterName,
-          roasterEmoji,
-          isSecondRoast,
-          context
-        );
-      } catch (e) {
-        console.error('Failed to get judge reactions:', e);
-      }
+  // Show a judge reaction
+  async function showJudgeReaction(judge, reaction, score) {
+    clearElement(stage);
+
+    // Judge portrait at top
+    stage.appendChild(el('div', { class: 'presentation__judge' }, [
+      Portrait({
+        emoji: judge.emoji,
+        size: 'lg',
+        spotlight: true
+      }),
+      el('span', { class: 'presentation__judge-name' }, [judge.name]),
+    ]));
+
+    // Reaction bubble - expands downward
+    const bubble = el('div', { class: 'bubble bubble--judge bubble--expand-down' });
+    stage.appendChild(bubble);
+
+    // Type the reaction
+    const typeWriter = new TypeWriter(bubble, { speed: 15 });
+    await typeWriter.type(reaction);
+
+    // Show score badge after typing completes
+    await delay(200);
+    const scoreBadge = el('div', { class: 'score-badge score-badge--pop' }, [`${score}/10`]);
+    stage.appendChild(scoreBadge);
+  }
+
+  // Show banter between judges
+  async function showBanter(banterLines) {
+    clearElement(stage);
+
+    stage.appendChild(el('div', { class: 'presentation__banter-header' }, [
+      el('span', {}, ['📢 Judge Banter']),
+    ]));
+
+    const banterContainer = el('div', { class: 'presentation__banter' });
+    stage.appendChild(banterContainer);
+
+    for (const line of banterLines) {
+      const banterLine = el('div', { class: 'banter-line' });
+      banterContainer.appendChild(banterLine);
+
+      const typeWriter = new TypeWriter(banterLine, { speed: 12 });
+      await typeWriter.type(line);
+      await delay(300);
     }
-
-    for (let i = 0; i < judges.length; i++) {
-      const judge = judges[i];
-
-      clearElement(stage);
-
-      // Judge
-      stage.appendChild(el('div', { class: 'presentation__judge' }, [
-        Portrait({
-          emoji: judge.emoji,
-          size: 'lg',
-          spotlight: true
-        }),
-        el('span', { class: 'presentation__judge-name' }, [judge.name]),
-      ]));
-
-      // Reaction bubble
-      const bubble = el('div', { class: 'bubble bubble--judge' });
-      stage.appendChild(bubble);
-
-      // Get reaction text
-      const reaction = aiReactions?.[i]?.reaction || generateFallbackReaction(judge);
-      const score = aiReactions?.[i]?.score || Math.floor(Math.random() * 4) + 5;
-
-      reactions.push(reaction);
-      scores.push(score);
-
-      // Type reaction
-      if (!fastMode) {
-        const typeWriter = new TypeWriter(bubble, { speed: 15 });
-        await typeWriter.type(reaction);
-      } else {
-        bubble.textContent = reaction;
-      }
-
-      // Show score
-      const scoreBadge = el('div', { class: 'score-badge score-badge--animate presentation__judge-score' }, [`${score}/10`]);
-      stage.appendChild(scoreBadge);
-
-      if (!fastMode) await delay(600);
-    }
-
-    return { reactions, scores };
   }
 
   // Update totals display
@@ -276,8 +321,8 @@ export function PresentationScreen({
     opponentTotalEl.textContent = results.opponentTotal || '—';
   }
 
-  // Fallback reaction generator
-  function generateFallbackReaction(judge) {
+  // Fallback reaction
+  function generateFallbackReaction() {
     const reactions = [
       "I've seen better. I've also seen worse.",
       "That was certainly... words.",
@@ -288,7 +333,7 @@ export function PresentationScreen({
     return reactions[Math.floor(Math.random() * reactions.length)];
   }
 
-  // Start presentation after mount
+  // Start after mount
   setTimeout(runPresentation, 500);
 
   return screen;

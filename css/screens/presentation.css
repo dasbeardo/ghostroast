@@ -13,9 +13,10 @@
 .presentation__header {
   display: flex;
   justify-content: center;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-xs) var(--space-md);
   background: var(--color-bg-surface);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .presentation__status {
@@ -41,9 +42,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: var(--space-xl);
-  gap: var(--space-lg);
+  justify-content: flex-start;
+  padding: var(--space-md) var(--space-lg);
+  padding-top: var(--space-sm);
+  gap: var(--space-md);
+  overflow-y: auto;
 }
 
 /* Ghost target pill */
@@ -90,7 +93,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
 }
 
 .presentation__judge-name {
@@ -143,4 +146,54 @@
 .presentation__footer {
   padding: var(--space-md);
   text-align: center;
+}
+
+/* Loading state */
+.presentation__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.presentation__loading-text {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* Banter section */
+.presentation__banter-header {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-accent-amber);
+  margin-bottom: var(--space-md);
+}
+
+.presentation__banter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-width: 320px;
+  width: 100%;
+}
+
+.banter-line {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-accent-amber);
+}
+
+/* Tap hint */
+.tap-hint {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }

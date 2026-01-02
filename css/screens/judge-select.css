@@ -188,3 +188,140 @@
 .destiny-modal__card--back {
   background: linear-gradient(135deg, var(--color-bg-mid), var(--color-bg-surface));
 }
+
+/* Subtitle under title */
+.judge-select__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+}
+
+/* Main content area */
+.judge-select__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Mode toggle (Pick Judges / Ask Destiny tabs) */
+.judge-select__mode-toggle {
+  display: flex;
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.judge-select__mode-btn {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  border: none;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  border-bottom: 2px solid transparent;
+}
+
+.judge-select__mode-btn:hover {
+  color: var(--color-text-primary);
+}
+
+.judge-select__mode-btn--active {
+  color: var(--color-interactive);
+  border-bottom-color: var(--color-interactive);
+}
+
+/* Slots section with label */
+.judge-select__slots-section {
+  background: var(--color-bg-surface);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--space-sm);
+}
+
+.judge-select__slots-label {
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  letter-spacing: 1px;
+  margin-bottom: var(--space-xs);
+}
+
+/* Destiny section */
+.judge-select__destiny {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.judge-select__destiny:hover {
+  transform: scale(1.02);
+}
+
+.judge-select__destiny:active {
+  transform: scale(0.98);
+}
+
+.judge-select__destiny-portrait {
+  margin-bottom: var(--space-md);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.judge-select__destiny-name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--color-score);
+  text-shadow: var(--glow-score);
+  margin-bottom: var(--space-xs);
+}
+
+.judge-select__destiny-title {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.judge-select__destiny-dialogue {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  color: var(--color-text-primary);
+  font-style: italic;
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+/* Slot reveal animation */
+.judge-select__slot--reveal {
+  animation: slot-reveal 0.4s var(--ease-bounce);
+}
+
+@keyframes slot-reveal {
+  0% {
+    transform: scale(0) rotateY(180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotateY(90deg);
+  }
+  100% {
+    transform: scale(1) rotateY(0);
+    opacity: 1;
+  }
+}

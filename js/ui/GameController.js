@@ -17,7 +17,7 @@ import {
   StatsScreen
 } from './screens/index.js';
 
-import { state, VERSION, savePlayerStats } from '../state.js';
+import { state, VERSION, savePlayerStats, exportSaveData, importSaveData } from '../state.js';
 import { getJudgePanelResponse } from '../api.js';
 import { GHOSTS } from '../../data/ghosts.js';
 import { JUDGES } from '../../data/judges.js';
@@ -105,7 +105,9 @@ export class GameController {
       onNewGame: () => this.startNewGame(),
       onContinue: () => this.continueGame(),
       onStats: () => this.showStats(),
-      onSettings: () => this.showSettings()
+      onSettings: () => this.showSettings(),
+      onImportExport: () => this.showImportExport(),
+      onCredits: () => this.showCredits()
     });
     this.showScreen(screen);
   }
@@ -216,7 +218,11 @@ export class GameController {
       onComplete: (roast, filledSlots) => {
         this.playerRoast = roast;
         this.showPresentation();
-      }
+      },
+      onMenu: () => this.showInGameMenu(
+        () => this.showDrafting(), // onResume: redraw drafting screen
+        null // onQuit handled in showInGameMenu
+      )
     });
     this.showScreen(screen);
   }
@@ -383,22 +389,27 @@ export class GameController {
         firstRoastContext
       );
 
-      // Return formatted results
-      return panelResponse.judges.map(j => ({
+      // Return formatted results with banter attached
+      const results = panelResponse.judges.map(j => ({
         name: j.name,
         emoji: j.emoji,
         reaction: j.reaction,
         score: j.score
       }));
+      // Attach banter to the array for PresentationScreen
+      results.banter = panelResponse.banter || [];
+      return results;
     } catch (error) {
       console.error('API call failed, using fallback:', error);
       // Fallback to placeholder reactions
-      return judges.map(judge => ({
+      const results = judges.map(judge => ({
         name: judge.name,
         emoji: judge.emoji,
         reaction: this.generatePlaceholderReaction(judge, roast),
         score: Math.floor(Math.random() * 4) + 5
       }));
+      results.banter = [];
+      return results;
     }
   }
 
@@ -547,6 +558,186 @@ export class GameController {
   showSettings() {
     // TODO: Implement settings
     alert('Settings coming soon!');
+  }
+
+  /**
+   * Show import/export modal
+   */
+  showImportExport() {
+    // Create modal elements
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay overlay--visible';
+    overlay.style.display = 'flex';
+
+    const modal = document.createElement('div');
+    modal.className = 'modal modal--centered';
+    modal.innerHTML = `
+      <div class="modal__header">
+        <h3 class="modal__title">Import/Export Save</h3>
+        <button class="modal__close" id="modal-close">×</button>
+      </div>
+      <div class="modal__content">
+        <p class="modal__text">Export your save data to back up your progress, or import a save code to restore it.</p>
+        <div class="modal__actions">
+          <button class="btn btn--secondary" id="export-btn">📋 Export Save</button>
+          <button class="btn btn--secondary" id="import-btn">📥 Import Save</button>
+        </div>
+        <div class="modal__message" id="save-message" style="margin-top: 12px; min-height: 20px;"></div>
+        <textarea id="import-textarea" placeholder="Paste save data here..." rows="4" style="display: none; width: 100%; margin-top: 12px; background: var(--color-bg-dark); border: 1px solid var(--color-bg-surface); border-radius: 4px; color: var(--color-text-primary); font-family: var(--font-body); font-size: 14px; padding: 8px; resize: none;"></textarea>
+        <button class="btn btn--primary" id="confirm-import-btn" style="display: none; margin-top: 8px; width: 100%;">Confirm Import</button>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+
+    const closeModal = () => {
+      overlay.remove();
+      modal.remove();
+    };
+
+    overlay.addEventListener('click', closeModal);
+    modal.querySelector('#modal-close').addEventListener('click', closeModal);
+
+    modal.querySelector('#export-btn').addEventListener('click', () => {
+      const data = exportSaveData();
+      navigator.clipboard.writeText(data).then(() => {
+        modal.querySelector('#save-message').textContent = '✅ Save data copied to clipboard!';
+        modal.querySelector('#save-message').style.color = 'var(--color-accent-green)';
+      }).catch(() => {
+        prompt('Copy this save data:', data);
+      });
+    });
+
+    modal.querySelector('#import-btn').addEventListener('click', () => {
+      modal.querySelector('#import-textarea').style.display = 'block';
+      modal.querySelector('#confirm-import-btn').style.display = 'block';
+    });
+
+    modal.querySelector('#confirm-import-btn').addEventListener('click', () => {
+      const textarea = modal.querySelector('#import-textarea');
+      const messageEl = modal.querySelector('#save-message');
+      if (textarea.value.trim()) {
+        const result = importSaveData(textarea.value.trim());
+        if (result.success) {
+          messageEl.textContent = `✅ Loaded save data for ${result.playerName}!`;
+          messageEl.style.color = 'var(--color-accent-green)';
+          setTimeout(() => {
+            closeModal();
+            this.showMenu(); // Refresh menu
+          }, 1500);
+        } else {
+          messageEl.textContent = `❌ ${result.error}`;
+          messageEl.style.color = 'var(--color-accent-red)';
+        }
+      }
+    });
+  }
+
+  /**
+   * Show credits modal
+   */
+  showCredits() {
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay overlay--visible';
+    overlay.style.display = 'flex';
+
+    const modal = document.createElement('div');
+    modal.className = 'modal modal--centered';
+    modal.innerHTML = `
+      <div class="modal__header">
+        <h3 class="modal__title">Credits</h3>
+        <button class="modal__close" id="modal-close">×</button>
+      </div>
+      <div class="modal__content modal__content--credits">
+        <div class="credits__section">
+          <div class="credits__logo">ROAST MORTEM</div>
+          <div class="credits__tagline">A Comedy of Errors... And Death</div>
+        </div>
+        <div class="credits__section">
+          <div class="credits__role">Concept & Design</div>
+          <div class="credits__name">Drew Campbell</div>
+        </div>
+        <div class="credits__section">
+          <div class="credits__role">Engineering</div>
+          <div class="credits__name">Claude</div>
+        </div>
+        <div class="credits__section">
+          <div class="credits__role">AI Judges Powered By</div>
+          <div class="credits__name">OpenAI GPT-5.2</div>
+        </div>
+        <div class="credits__section">
+          <div class="credits__role">Special Thanks</div>
+          <div class="credits__name">The Network (Afterlife Division)</div>
+        </div>
+        <div class="credits__version">v${VERSION}</div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+
+    const closeModal = () => {
+      overlay.remove();
+      modal.remove();
+    };
+
+    overlay.addEventListener('click', closeModal);
+    modal.querySelector('#modal-close').addEventListener('click', closeModal);
+  }
+
+  /**
+   * Show in-game menu (pause menu)
+   */
+  showInGameMenu(onResume, onQuit) {
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay overlay--visible';
+    overlay.style.display = 'flex';
+
+    const modal = document.createElement('div');
+    modal.className = 'modal modal--centered';
+    modal.innerHTML = `
+      <div class="modal__header">
+        <h3 class="modal__title">Paused</h3>
+      </div>
+      <div class="modal__content">
+        <div class="ingame-menu__actions">
+          <button class="btn btn--primary btn--full" id="resume-btn">Resume Game</button>
+          <button class="btn btn--secondary btn--full" id="stats-btn">View Stats</button>
+          <button class="btn btn--ghost btn--full" id="quit-btn">Quit to Menu</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+
+    const closeModal = () => {
+      overlay.remove();
+      modal.remove();
+    };
+
+    modal.querySelector('#resume-btn').addEventListener('click', () => {
+      closeModal();
+      if (onResume) onResume();
+    });
+
+    modal.querySelector('#stats-btn').addEventListener('click', () => {
+      closeModal();
+      // Show stats then return to game
+      const screen = StatsScreen({
+        onBack: () => {
+          if (onResume) onResume();
+        }
+      });
+      this.showScreen(screen);
+    });
+
+    modal.querySelector('#quit-btn').addEventListener('click', () => {
+      closeModal();
+      if (onQuit) onQuit();
+      this.showMenu();
+    });
   }
 }
 

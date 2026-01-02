@@ -30,8 +30,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: var(--space-lg);
-  padding-top: 80px;
+  padding: var(--space-md);
+  padding-top: 60px;
 }
 
 .drafting__template-header {
