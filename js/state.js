@@ -1,6 +1,6 @@
 // Game state - single source of truth
 
-export const VERSION = '0.6.5.1';
+export const VERSION = '0.6.5.2';
 
 // Proxy configuration - set this to your Cloudflare Worker URL after deploying
 // Leave empty to use direct API key mode
