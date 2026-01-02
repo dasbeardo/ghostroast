@@ -656,7 +656,7 @@ export class GameController {
         </div>
         <div class="credits__section">
           <div class="credits__role">Concept & Design</div>
-          <div class="credits__name">Drew Campbell</div>
+          <div class="credits__name">Corey Bricker</div>
         </div>
         <div class="credits__section">
           <div class="credits__role">Engineering</div>
