@@ -5,6 +5,7 @@
 
 export { MenuScreen } from './MenuScreen.js';
 export { JudgeSelectScreen } from './JudgeSelectScreen.js';
+export { MatchOpeningScreen } from './MatchOpeningScreen.js';
 export { GhostIntroScreen } from './GhostIntroScreen.js';
 export { DraftingScreen } from './DraftingScreen.js';
 export { PresentationScreen } from './PresentationScreen.js';

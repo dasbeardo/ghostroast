@@ -43,6 +43,7 @@
 
 @import 'screens/menu.css';
 @import 'screens/judge-select.css';
+@import 'screens/match-opening.css';
 @import 'screens/ghost-intro.css';
 @import 'screens/drafting.css';
 @import 'screens/presentation.css';

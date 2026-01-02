@@ -8,6 +8,7 @@ import { initUI, transitionScreen } from './index.js';
 import {
   MenuScreen,
   JudgeSelectScreen,
+  MatchOpeningScreen,
   GhostIntroScreen,
   DraftingScreen,
   PresentationScreen,
@@ -136,7 +137,7 @@ export class GameController {
       opponent: this.opponent,
       onConfirm: (selectedJudges) => {
         this.selectedJudges = selectedJudges;
-        this.startRound();
+        this.showMatchOpening();
       },
       onDestiny: () => {
         // Random judge selection
@@ -144,6 +145,20 @@ export class GameController {
         const randomJudges = shuffled.slice(0, 3);
         screen.setSelectedJudges(randomJudges);
       }
+    });
+    this.showScreen(screen);
+  }
+
+  /**
+   * Show match opening screen with host intro
+   */
+  showMatchOpening() {
+    const screen = MatchOpeningScreen({
+      player: { name: state.playerName || 'You', emoji: '👤' },
+      opponent: this.opponent,
+      judges: this.selectedJudges,
+      stats: state.stats,
+      onContinue: () => this.startRound()
     });
     this.showScreen(screen);
   }
