@@ -1,6 +1,6 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.6.3
+**Version**: 0.6.4
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three AI judges (player-selected or random) score the final jokes.
@@ -81,13 +81,14 @@ ghostroast/
 │   ├── templates.js        # 16 roast templates (2 slots each)
 │   ├── wordPools.js        # Themed word pools (500+ words)
 │   ├── opponents.js        # 10 AI opponents
-│   └── host.js             # Mort Holloway host character
+│   ├── host.js             # Mort Holloway host character
+│   └── ads.js              # (PLANNED) Fake sponsor ads for ad breaks
 ├── worker/                 # Cloudflare Worker for API proxy
 │   ├── worker.js
 │   ├── wrangler.toml
 │   └── DEPLOY.md
 ├── docs/
-│   └── ui-redesign-spec.md # New UI specification
+│   └── ui-redesign-spec.md # Full UI specification (see for Destiny sequence details)
 ├── mockups/                # HTML mockups for new UI
 ├── CLAUDE.md               # This file
 └── .gitignore
@@ -108,11 +109,11 @@ ghostroast/
 - Second roast call includes first roast context for comparison
 - Judges react in character with 3-5 sentences each
 
-### API Prefetching Optimization
-- First reactions fetch starts **immediately** when presentation screen loads
-- Second reactions fetch starts **as soon as first reactions arrive**
-- User reads content while API loads in background
-- Loading screen only shows if API hasn't finished yet
+### API Call Timing
+- API call should fire **immediately on "Lock In Roast"** button (before presentation screen)
+- Pass promise to PresentationScreen for seamless handoff
+- Second reactions fetch starts as soon as first reactions arrive
+- Ad breaks fill wait time (see Ad Break System below)
 
 ### Tap-to-Advance Flow (New UI)
 - Judge reactions require user tap to advance (not auto-advance)
@@ -120,11 +121,26 @@ ghostroast/
 - Gives players time to read and enjoy reactions
 - Banter displays after all judge reactions
 
-### Judge Selection with Destiny
-- **Pick Judges mode**: Manual selection from grid, filter by tag
-- **Ask Destiny mode**: Mystical character reveals random judges
-- Destiny has animated portrait, typewriter dialogue, card reveal animation
-- Mode toggle tabs at top of screen
+### Judge Selection (REDESIGN PLANNED)
+**New Design:**
+1. **Category grid first** - Show tags as tappable cards (Wrestling, Politics, Actors, etc.)
+2. **Tap category** → See grid of judges in that category
+3. **Back button** → Return to category grid
+4. **"LET DESTINY DECIDE?"** button - Carnival mystic/fortune teller vibe, triggers Destiny sequence
+5. **Selection slots** - 3 slots at bottom showing current picks
+
+### Destiny Character (Full Theatrical Sequence)
+See `docs/ui-redesign-spec.md` lines 176-232 for full beat-by-beat breakdown.
+
+**Key beats:**
+1. Mort reluctantly goes to get her
+2. Mort calls off-screen ("DESTINY! ...we need you out here!")
+3. Destiny arrives with glow, Mort undercuts ("The veil grows thin..." / "It's a Tuesday.")
+4. Three tarot cards slide in face-down
+5-7. Each card flips to reveal judge - Destiny gives cryptic line, Mort translates
+8. Destiny exits with sparkle, Mort brushes off glitter
+
+**Dynamic:** Amazing Jonathan-style relationship - Mort is dismissive/exasperated, Destiny is mystical/dramatic.
 
 ### Themed Word Pools
 - Word pools have `base` entries (always available) and `themed` entries
@@ -146,6 +162,57 @@ ghostroast/
 
 ---
 
+## Ad Break System (PLANNED)
+
+### Purpose
+Fill API wait time with fake sponsor ads. Adds comedy, world-building, and masks loading.
+
+### Layout
+```
+┌─────────────────────────────────┐
+│  📺 A WORD FROM OUR SPONSORS   │  ← Header (stays)
+├─────────────────────────────────┤
+│    [  16:9 AD IMAGE/GRAPHIC  ] │  ← ~30% height
+├─────────────────────────────────┤
+│  "Tired of being dead? Try     │  ← ~70% height
+│   Afterlife Energy Drink™!     │   Typewriter text
+│   Now with 50% more ectoplasm. │   (radio ad transcript style)
+│   Side effects may include..." │
+├─────────────────────────────────┤
+│  ● ○ ○     [BACK TO THE SHOW]  │  ← Progress dots + skip button
+└─────────────────────────────────┘
+```
+
+### Behavior
+- Always show 3 ads per break
+- Text types out (typewriter effect)
+- User swipes/taps to advance between ads
+- Once an ad has played, shows full text on revisit
+- "Back to the Show" / "Skip Ads" appears when API ready
+- Never forced back - user always controls advancement
+- Image can be hidden until trigger word types out (comedic timing)
+
+### Ad Data Structure
+```js
+{
+  sponsor: "Eternal Rest Mattresses",
+  tagline: "You're already dead. Might as well be comfortable.",
+  text: "Are you tired of floating aimlessly through the void? ...",
+  image: "eternal-rest.png",  // or emoji placeholder
+  revealAt: "void"  // optional - image reveals when this word types
+}
+```
+
+### Example Sponsors
+- Eternal Rest Mattresses
+- Ecto-Glow Skincare
+- Spirit Airlines ("We were always for the dead, really.")
+- Mort's Mortuary & Martini Bar
+- The Network promos ("Stay tuned for 'Cooking With Corpses'!")
+- Haunt-A-Home Realty
+
+---
+
 ## Game Flow (New UI)
 ```
 API KEY SCREEN
@@ -159,8 +226,8 @@ MENU
   Footer: Import/Export | Credits
   ↓
 JUDGE SELECTION
-  Pick Judges tab: Select 3 from grid, filter by category
-  Ask Destiny tab: Tap Destiny for random reveal with animation
+  Category grid → tap category → see judges
+  "LET DESTINY DECIDE?" button for theatrical random reveal
   ↓
 MATCH OPENING
   Mort welcomes player with stat-aware intro
@@ -175,10 +242,13 @@ ROUND LOOP (best of 3):
   Player taps blanks, picks words from weighted pools
   Menu button (☰) opens pause menu
   ↓
+  AD BREAK (while API loads)
+  "A Word From Our Sponsors" - 3 fake ads
+  Skip button appears when API ready
+  ↓
   PRESENTATION (tap-to-advance)
   First roast types out → tap → judge reactions (tap after each)
   → banter → tap → second roast → tap → judge reactions → banter
-  API prefetches in background during user reading time
   ↓
   RESULTS SCREEN
   Both roasts with scores, judge reactions side-by-side
@@ -213,6 +283,12 @@ AI opponent names/emojis (cosmetic only)
 ### Host: Mort Holloway 🎩
 Eternal host with typewriter dialogue templates
 
+### Destiny 🔮 (PLANNED)
+Mystic fortune teller character for random judge selection
+
+### Ads (PLANNED)
+Fake sponsor ads for ad breaks during API loading
+
 ---
 
 ## New UI Features (v0.6.3)
@@ -236,7 +312,6 @@ Eternal host with typewriter dialogue templates
 - Full stats display: wins, losses, streaks
 - Opponent records, judge averages
 - Ghosts roasted count
-- Export/import functionality
 
 ---
 
@@ -261,10 +336,11 @@ js/state.js             → Game state, VERSION, localStorage helpers
 ## How to Resume Work
 
 1. Read this doc for context
-2. Run `python3 -m http.server 3000`
-3. Open `http://localhost:3000/index-new.html` (new UI)
-4. Enter OpenAI API key when prompted
-5. Key files for new UI:
+2. Read `docs/ui-redesign-spec.md` for full UI specification
+3. Run `python3 -m http.server 3000`
+4. Open `http://localhost:3000/index-new.html` (new UI)
+5. Enter OpenAI API key when prompted
+6. Key files for new UI:
    - `js/ui/GameController.js` - Main game logic
    - `js/ui/screens/*.js` - Screen components
    - `css/screens/*.css` - Screen styles
@@ -275,6 +351,12 @@ js/state.js             → Game state, VERSION, localStorage helpers
 
 ## Known Issues / TODO
 
+### In Progress
+- [ ] **Ad Break System** - Fake sponsor ads during API loading
+- [ ] **Judge Selection Redesign** - Category grid → judges, with Destiny button
+- [ ] **Destiny Theatrical Sequence** - Full Mort/Destiny dialogue from spec
+- [ ] **API timing optimization** - Fire API call on "Lock In Roast" button
+
 ### Needs Work
 - [ ] Mobile responsiveness improvements
 - [ ] Sound effects / animations
@@ -282,15 +364,49 @@ js/state.js             → Game state, VERSION, localStorage helpers
 
 ### Completed Recently
 - [x] **Tap-to-advance flow** - User controls pacing of judge reactions
-- [x] **Destiny character** - Mystical random judge selection with animations
-- [x] **API prefetching** - Eliminates loading waits by fetching ahead
+- [x] **API prefetching** - Second roast fetches while user reads first reactions
 - [x] **In-game menu** - Pause, view stats, quit during gameplay
 - [x] **Credits modal** - Proper attribution with OpenAI disclaimer
 - [x] **Import/Export modal** - Save data backup/restore from menu
 - [x] **Modular UI architecture** - Component-based screens and CSS
 - [x] **Stats screen** - Full stats display with export
 
-### Future Ideas
+---
+
+## Future Ideas
+
+### Directed Roasts / Judge Targeting
+Player can optionally tag their roast as "directed at" a specific judge.
+
+**Mechanics:**
+- During drafting, optional "Dedicate this roast to..." selector
+- Judges have relationship data (allies, rivals, sensitive topics)
+- API prompt includes context: "This roast referenced you"
+- Dynamic reactions: judge being roasted gets defensive/flattered
+- Banter gets personal: "Did they just come at ME?"
+
+**Emergent Moments:**
+- Roast about Tommy → Kanye defends him → Ramsay mocks Kanye
+- Reference a judge's catchphrase → they love it or hate the mockery
+- Play judges against each other strategically
+
+### Robot Judges / AI Taking Jobs in the Afterlife
+The celebrity judges are actually robots/AI impersonating the real celebrities.
+
+**Lore:**
+- Even in the afterlife, AI is taking jobs
+- "The network" is too cheap to hire real celebrity ghosts
+- These are budget robot impersonators
+
+**Potential Reveals:**
+- Occasional glitches in judge dialogue
+- Mort makes offhand comments about "the talent budget"
+- Easter eggs where judges malfunction momentarily
+- Maybe a secret ending where you discover the truth
+
+**Tone:** Dark comedy commentary on AI, fits cheap network aesthetic, self-aware meta humor.
+
+### Other Future Ideas
 - Roguelike progression (unlock templates, ghosts, judges)
 - Multiplayer (real-time PvP)
 - Sound effects / crowd reactions
@@ -305,5 +421,6 @@ js/state.js             → Game state, VERSION, localStorage helpers
 2. **Modular architecture** - Components, screens, CSS modules
 3. **User controls pacing** - Tap-to-advance, never auto-skip
 4. **Distinct judges** - Each has unique voice via method-acting prompts
-5. **Smart prefetching** - Hide API latency behind user reading time
-6. **Fun first** - Prioritize funny combinations over technical elegance
+5. **Smart loading** - Hide API latency with ad breaks
+6. **Cheap network vibe** - Authentically broadcast, authentically budget
+7. **Fun first** - Prioritize funny combinations over technical elegance
