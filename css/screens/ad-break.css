@@ -109,18 +109,18 @@
 }
 
 .ad-break__sponsor {
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  color: var(--color-score);
-  margin-bottom: var(--space-sm);
+  font-family: var(--font-ui), sans-serif;
+  font-size: var(--text-sm, 14px);
+  color: var(--color-score, #f5a623);
+  margin-bottom: var(--space-sm, 8px);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .ad-break__text {
-  font-family: var(--font-body);
-  font-size: var(--text-md);
-  color: var(--color-text-primary);
+  font-family: var(--font-body), serif;
+  font-size: var(--text-md, 16px);
+  color: var(--color-text-primary, #e8e8e8);
   line-height: 1.6;
   flex: 1;
 }
