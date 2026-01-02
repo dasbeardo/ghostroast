@@ -1,6 +1,6 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.6.4
+**Version**: 0.6.5
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three AI judges (player-selected or random) score the final jokes.
@@ -43,6 +43,7 @@ ghostroast/
 │       ├── judge-select.css
 │       ├── ghost-intro.css
 │       ├── drafting.css
+│       ├── ad-break.css    # NEW - Ad break styling
 │       ├── presentation.css
 │       ├── results.css
 │       ├── match-opening.css
@@ -53,7 +54,7 @@ ghostroast/
 │   ├── state.js            # Game state + VERSION + localStorage
 │   ├── render.js           # Legacy render functions
 │   ├── game.js             # Legacy game logic
-│   ├── api.js              # OpenAI API calls (V3 Panel Judging)
+│   ├── api.js              # OpenAI API calls (V3 Panel Judging) + debug logging
 │   ├── utils.js            # shuffle, $, typeText, delay
 │   └── ui/                 # NEW modular UI system
 │       ├── index.js        # UI initialization
@@ -70,6 +71,7 @@ ghostroast/
 │           ├── MatchOpeningScreen.js
 │           ├── GhostIntroScreen.js
 │           ├── DraftingScreen.js
+│           ├── AdBreakScreen.js    # NEW - Ad break component
 │           ├── PresentationScreen.js
 │           ├── ResultsScreen.js
 │           ├── MatchEndScreen.js
@@ -82,7 +84,7 @@ ghostroast/
 │   ├── wordPools.js        # Themed word pools (500+ words)
 │   ├── opponents.js        # 10 AI opponents
 │   ├── host.js             # Mort Holloway host character
-│   └── ads.js              # (PLANNED) Fake sponsor ads for ad breaks
+│   └── ads.js              # 12 fake sponsor ads for ad breaks
 ├── worker/                 # Cloudflare Worker for API proxy
 │   ├── worker.js
 │   ├── wrangler.toml
@@ -109,11 +111,11 @@ ghostroast/
 - Second roast call includes first roast context for comparison
 - Judges react in character with 3-5 sentences each
 
-### API Call Timing
-- API call should fire **immediately on "Lock In Roast"** button (before presentation screen)
-- Pass promise to PresentationScreen for seamless handoff
+### API Call Timing (IMPLEMENTED)
+- API call fires **immediately on "Lock In Roast"** button
+- Promise passed through AdBreakScreen → PresentationScreen
+- Ad break masks loading time
 - Second reactions fetch starts as soon as first reactions arrive
-- Ad breaks fill wait time (see Ad Break System below)
 
 ### Tap-to-Advance Flow (New UI)
 - Judge reactions require user tap to advance (not auto-advance)
@@ -121,26 +123,18 @@ ghostroast/
 - Gives players time to read and enjoy reactions
 - Banter displays after all judge reactions
 
-### Judge Selection (REDESIGN PLANNED)
-**New Design:**
-1. **Category grid first** - Show tags as tappable cards (Wrestling, Politics, Actors, etc.)
+### Judge Selection (IMPLEMENTED)
+**Current Design:**
+1. **Category grid first** - 2-column grid of category cards (Wrestling, Politics, Actors, etc.)
 2. **Tap category** → See grid of judges in that category
 3. **Back button** → Return to category grid
-4. **"LET DESTINY DECIDE?"** button - Carnival mystic/fortune teller vibe, triggers Destiny sequence
-5. **Selection slots** - 3 slots at bottom showing current picks
+4. **"LET DESTINY DECIDE?"** button - Carnival mystic styling, triggers Destiny reveal
+5. **Selection slots** - 3 slots at bottom showing current picks, tappable to remove
 
-### Destiny Character (Full Theatrical Sequence)
-See `docs/ui-redesign-spec.md` lines 176-232 for full beat-by-beat breakdown.
+### Destiny Character
+**Current implementation:** Basic reveal sequence with Destiny appearing, typing cryptic message, and revealing 3 random judges one by one.
 
-**Key beats:**
-1. Mort reluctantly goes to get her
-2. Mort calls off-screen ("DESTINY! ...we need you out here!")
-3. Destiny arrives with glow, Mort undercuts ("The veil grows thin..." / "It's a Tuesday.")
-4. Three tarot cards slide in face-down
-5-7. Each card flips to reveal judge - Destiny gives cryptic line, Mort translates
-8. Destiny exits with sparkle, Mort brushes off glitter
-
-**Dynamic:** Amazing Jonathan-style relationship - Mort is dismissive/exasperated, Destiny is mystical/dramatic.
+**Full theatrical sequence (TODO):** See `docs/ui-redesign-spec.md` lines 176-232 for Mort/Destiny dialogue exchange (Amazing Jonathan-style dynamic).
 
 ### Themed Word Pools
 - Word pools have `base` entries (always available) and `themed` entries
@@ -162,7 +156,7 @@ See `docs/ui-redesign-spec.md` lines 176-232 for full beat-by-beat breakdown.
 
 ---
 
-## Ad Break System (PLANNED)
+## Ad Break System (IMPLEMENTED)
 
 ### Purpose
 Fill API wait time with fake sponsor ads. Adds comedy, world-building, and masks loading.
@@ -172,7 +166,7 @@ Fill API wait time with fake sponsor ads. Adds comedy, world-building, and masks
 ┌─────────────────────────────────┐
 │  📺 A WORD FROM OUR SPONSORS   │  ← Header (stays)
 ├─────────────────────────────────┤
-│    [  16:9 AD IMAGE/GRAPHIC  ] │  ← ~30% height
+│    [  16:9 AD IMAGE/GRAPHIC  ] │  ← ~30% height, emoji placeholder
 ├─────────────────────────────────┤
 │  "Tired of being dead? Try     │  ← ~70% height
 │   Afterlife Energy Drink™!     │   Typewriter text
@@ -186,30 +180,54 @@ Fill API wait time with fake sponsor ads. Adds comedy, world-building, and masks
 ### Behavior
 - Always show 3 ads per break
 - Text types out (typewriter effect)
-- User swipes/taps to advance between ads
+- User swipes/taps arrows to advance between ads
 - Once an ad has played, shows full text on revisit
-- "Back to the Show" / "Skip Ads" appears when API ready
-- Never forced back - user always controls advancement
-- Image can be hidden until trigger word types out (comedic timing)
+- "BACK TO THE SHOW" button appears when API ready
+- Image can be hidden until trigger word types out (comedic timing via `revealAt`)
 
-### Ad Data Structure
-```js
-{
-  sponsor: "Eternal Rest Mattresses",
-  tagline: "You're already dead. Might as well be comfortable.",
-  text: "Are you tired of floating aimlessly through the void? ...",
-  image: "eternal-rest.png",  // or emoji placeholder
-  revealAt: "void"  // optional - image reveals when this word types
-}
-```
-
-### Example Sponsors
+### Current Ads (12)
 - Eternal Rest Mattresses
 - Ecto-Glow Skincare
-- Spirit Airlines ("We were always for the dead, really.")
+- Spirit Airlines
 - Mort's Mortuary & Martini Bar
-- The Network promos ("Stay tuned for 'Cooking With Corpses'!")
+- The Afterlife Network
 - Haunt-A-Home Realty
+- GhostWriter Pro
+- Limbo Fitness
+- Séance & Sensibility Dating
+- Possession Insurance
+- The Void Café
+- Casket & Barrel
+
+---
+
+## Debugging
+
+### Console Logging (ENABLED)
+Debug logging is currently enabled in dev. Open browser DevTools (F12) → Console to see:
+
+**📝 DRAFTING SCREEN INIT**
+- Ghost name, emoji, themes
+- Template object and slots
+- Available word pools
+
+**📌 Slot Parsing**
+- Shows bracket text vs actual pool name lookup
+- Verifies correct pool is being used
+
+**🎯 OPENING PICKER / 🎰 LOADING WORDS**
+- Pool requested, whether it exists
+- Base words count, themed words added
+- Final 12 words selected
+
+**🎭 API CALL**
+- Full request body (system prompt, user prompt)
+- Judges, ghost context, roast text
+- Raw API response and parsed JSON
+
+### Saving Console Output
+- Right-click Console → "Save as..." to export as `.log` file
+- Or: Right-click → "Select all" → Copy → Paste
 
 ---
 
@@ -273,6 +291,7 @@ Celebrity personas with method-acting prompts:
 
 ### Templates (16)
 2-slot templates with punchline structure
+- Each slot has `pool` (word pool name) and `label` (display hint)
 
 ### Word Pools (500+ words)
 Categorized with base + themed entries
@@ -283,15 +302,15 @@ AI opponent names/emojis (cosmetic only)
 ### Host: Mort Holloway 🎩
 Eternal host with typewriter dialogue templates
 
-### Destiny 🔮 (PLANNED)
+### Destiny 🔮
 Mystic fortune teller character for random judge selection
 
-### Ads (PLANNED)
+### Ads (12)
 Fake sponsor ads for ad breaks during API loading
 
 ---
 
-## New UI Features (v0.6.3)
+## New UI Features (v0.6.5)
 
 ### In-Game Menu
 - Pause menu accessible via ☰ button during drafting
@@ -315,56 +334,39 @@ Fake sponsor ads for ad breaks during API loading
 
 ---
 
-## Module Structure (New UI)
-
-```
-js/ui/index.js          → initUI(), transitionScreen()
-js/ui/dom.js            → el(), $(), $$(), clearElement()
-js/ui/GameController.js → Main controller class
-                        → showMenu(), startNewGame(), showPresentation(), etc.
-                        → getJudgeReactions(), updateStats()
-                        → showInGameMenu(), showCredits(), showImportExport()
-js/ui/components/       → Portrait, TypeWriter, delay
-js/ui/screens/          → All screen components (MenuScreen, etc.)
-
-js/api.js               → getJudgePanelResponse() - V3 panel judging
-js/state.js             → Game state, VERSION, localStorage helpers
-```
-
----
-
-## How to Resume Work
-
-1. Read this doc for context
-2. Read `docs/ui-redesign-spec.md` for full UI specification
-3. Run `python3 -m http.server 3000`
-4. Open `http://localhost:3000/index-new.html` (new UI)
-5. Enter OpenAI API key when prompted
-6. Key files for new UI:
-   - `js/ui/GameController.js` - Main game logic
-   - `js/ui/screens/*.js` - Screen components
-   - `css/screens/*.css` - Screen styles
-   - `js/api.js` - Judge API calls
-   - `data/*.js` - Content
-
----
-
 ## Known Issues / TODO
 
-### In Progress
-- [ ] **Ad Break System** - Fake sponsor ads during API loading
-- [ ] **Judge Selection Redesign** - Category grid → judges, with Destiny button
-- [ ] **Destiny Theatrical Sequence** - Full Mort/Destiny dialogue from spec
-- [ ] **API timing optimization** - Fire API call on "Lock In Roast" button
+### High Priority - Bugs
+- [ ] **Mobile ad break text not showing** - Works on desktop, not mobile. Needs investigation.
+- [ ] **Player stats on main menu** - Stats don't display on menu (Stats screen works fine)
+- [ ] **Ghost cause of death** - Many showing "UNKNOWN CAUSES" instead of actual cause
+- [ ] **Bottom content cutoff** - Some browsers cut off content at bottom of screen
 
-### Needs Work
+### Medium Priority - UX Improvements
+- [ ] **Tap-to-complete typewriter** - Allow tapping once to instantly reveal full text + score, then tap again to advance. Currently must wait for full typewriter.
+- [ ] **Ghost info box too small** - Text is cramped, needs larger display area
+- [ ] **Word pool limiting** - Show fewer options (e.g., 6-8 instead of 12) for more strategic choices and variety in repeat games
+
+### Lower Priority - Enhancements
+- [ ] **Desktop ad break arrows** - Clickable nav arrows needed (hint text mentions them but they need better visibility)
+- [ ] **Judge reaction quality** - Judges don't acknowledge when jokes make no sense. Need prompt improvements to call out bad jokes and score accordingly.
+- [ ] **Judge variety** - Reactions feel samey between rounds/runs. Consider: more distinct personalities, acknowledgment of previous rounds, varying reaction lengths.
+- [ ] **Full Destiny theatrical sequence** - Implement Mort/Destiny dialogue exchange per spec
+
+### Future / Nice-to-Have
 - [ ] Mobile responsiveness improvements
 - [ ] Sound effects / animations
 - [ ] More ghost themes
+- [ ] Directed roasts / judge targeting
+- [ ] Roguelike progression (unlock templates, ghosts, judges)
 
 ### Completed Recently
+- [x] **Ad Break System** - 12 fake sponsor ads with typewriter effect, image reveal triggers
+- [x] **Judge Selection Redesign** - Category grid with back navigation, Destiny button
+- [x] **API prefetching** - Fire API on Lock In, pass promise through ad break
+- [x] **Word pool slot fix** - Parser now correctly looks up pools from template.slots
+- [x] **Debug logging** - Console output for API calls, word pools, templates
 - [x] **Tap-to-advance flow** - User controls pacing of judge reactions
-- [x] **API prefetching** - Second roast fetches while user reads first reactions
 - [x] **In-game menu** - Pause, view stats, quit during gameplay
 - [x] **Credits modal** - Proper attribution with OpenAI disclaimer
 - [x] **Import/Export modal** - Save data backup/restore from menu
@@ -407,7 +409,6 @@ The celebrity judges are actually robots/AI impersonating the real celebrities.
 **Tone:** Dark comedy commentary on AI, fits cheap network aesthetic, self-aware meta humor.
 
 ### Other Future Ideas
-- Roguelike progression (unlock templates, ghosts, judges)
 - Multiplayer (real-time PvP)
 - Sound effects / crowd reactions
 - Daily ghost mode
