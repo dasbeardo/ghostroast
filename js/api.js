@@ -40,68 +40,93 @@ function safeParseJSON(text) {
   }
 }
 
-// Build targeting context for the prompt
-function buildTargetContext(target, judges) {
-  if (!target || target.type === 'ghost') {
-    return ''; // No special context for ghost (default)
-  }
+// Build dynamic scoring rules based on target
+function buildScoringRules(target, judges) {
+  const targetType = target?.type || 'ghost';
 
-  let context = '\n\n⚠️ TARGETING ALERT: ';
+  // Base rules that always apply
+  let rules = `CRITICAL SCORING RULES:
+1. NON-SEQUITURS GET PUNISHED: If a joke makes no logical sense or the punchline doesn't land, CALL IT OUT and score low.
+2. USE YOUR FULL RANGE: A score of 5-6 is mediocre. Reserve 7+ for jokes that actually made you react. Give 3 or below for bad jokes.
+3. BE HONEST: If you would groan or cringe, say so. If you would laugh, show it.
+`;
 
-  switch (target.type) {
+  // Target-specific scoring rules
+  switch (targetType) {
+    case 'ghost':
+      rules += `4. GHOST CONNECTION MATTERS: This roast targets the GHOST. Judge how well it connects to their specific traits, bio, or cause of death. Generic jokes that could apply to anyone score lower.`;
+      break;
+
     case 'self':
-      context += 'This roast is SELF-DEPRECATING. The roaster is making fun of themselves, not the ghost. ';
-      context += 'Self-deprecation is a valid comedy move but caps the ceiling. Score fairly (max 7-8) unless it\'s exceptionally clever.';
+      rules += `4. SELF-DEPRECATION: This roast is the comedian making fun of THEMSELVES. Ghost connection is NOT required. Judge the self-deprecation on its wit and delivery. Max score around 7-8 unless exceptionally clever - going after yourself is safe but limited.`;
       break;
 
     case 'judge':
       const targetJudge = judges.find(j => j.name === target.name);
-      if (targetJudge) {
-        context += `This roast is DIRECTED AT ${target.name.toUpperCase()}! `;
-        if (targetJudge.whenTargeted) {
-          context += `${target.name} is ${targetJudge.whenTargeted.disposition}. `;
-          context += targetJudge.whenTargeted.reactionHint + ' ';
-          if (targetJudge.whenTargeted.bonusIfLands) {
-            context += `If the joke lands, ${target.name} may score +${targetJudge.whenTargeted.bonusIfLands}. `;
-          }
-          if (targetJudge.whenTargeted.penaltyIfFlops) {
-            context += `If it flops, they may score ${targetJudge.whenTargeted.penaltyIfFlops}. `;
-          }
+      rules += `4. JUDGE TARGETING: This roast targets ${target.name.toUpperCase()} directly! Ghost connection is NOT required. `;
+      if (targetJudge?.whenTargeted) {
+        rules += `${target.name} is ${targetJudge.whenTargeted.disposition} when targeted. `;
+        rules += targetJudge.whenTargeted.reactionHint;
+        if (targetJudge.whenTargeted.bonusIfLands) {
+          rules += ` Potential bonus: +${targetJudge.whenTargeted.bonusIfLands} if it lands.`;
         }
-        context += 'The targeted judge should react PERSONALLY. Other judges should react to the drama.';
+        if (targetJudge.whenTargeted.penaltyIfFlops) {
+          rules += ` Potential penalty: ${targetJudge.whenTargeted.penaltyIfFlops} if it flops.`;
+        }
       }
+      rules += ` The targeted judge should react PERSONALLY. Other judges react to the drama.`;
       break;
 
     case 'opponent':
-      context += 'This roast targets THE OPPONENT (the other roaster), not the ghost. ';
-      context += 'Meta trash-talk is bold but risky. Score based on wit, not just audacity. Cap around 8 unless brilliant.';
+      rules += `4. OPPONENT TARGETING: This roast is trash-talk aimed at THE OTHER ROASTER, not the ghost. Ghost connection is NOT required. Judge based on wit and audacity. This is bold but risky - cap around 8 unless brilliant.`;
       break;
 
     case 'mort':
-      context += 'This roast targets MORT THE HOST! ';
-      context += 'Mort is a professional who secretly loves the attention. He\'ll act wounded but won\'t tank the score. ';
-      context += 'Judges should react to the audacity of going after the host.';
+      rules += `4. HOST TARGETING: This roast goes after MORT THE HOST! Ghost connection is NOT required. Mort is a professional who secretly loves attention. Judge the audacity and cleverness. React to the boldness of going after the host.`;
       break;
 
     case 'destiny':
-      context += 'This roast targets DESTINY THE MYSTIC (who selected the judges)! ';
-      context += 'This is bold and slightly dangerous. She may deliver ominous prophecies about the roaster\'s future failures. ';
-      context += 'Judges should react with amusement or concern about supernatural retaliation.';
+      rules += `4. DESTINY TARGETING: This roast targets DESTINY THE MYSTIC who picked the judges! Ghost connection is NOT required. This is dangerous territory. React with amusement or concern about supernatural retaliation. She may prophesy their failures.`;
       break;
   }
 
-  return context;
+  return rules;
+}
+
+// Build targeting context note (brief, for user prompt)
+function buildTargetNote(target, judges) {
+  if (!target || target.type === 'ghost') {
+    return 'Target: The Ghost (standard roast)';
+  }
+
+  switch (target.type) {
+    case 'self':
+      return '🎯 Target: SELF (self-deprecating humor)';
+    case 'judge':
+      return `🎯 Target: ${target.name.toUpperCase()} (the judge!)`;
+    case 'opponent':
+      return '🎯 Target: THE OPPONENT (trash talk)';
+    case 'mort':
+      return '🎯 Target: MORT THE HOST (bold move!)';
+    case 'destiny':
+      return '🎯 Target: DESTINY THE MYSTIC (dangerous!)';
+    default:
+      return '';
+  }
 }
 
 // V3 Panel Judging: Single call for all 3 judges + banter
 export async function getJudgePanelResponse(judges, ghostContext, roasterName, roasterEmoji, roast, isSecondRoast, firstRoastContext, target = null) {
 
+  const targetType = target?.type || 'ghost';
+  const isGhostTarget = targetType === 'ghost';
+
   console.group('🎭 API CALL: Judge Panel Response');
   console.log('Judges:', judges.map(j => j.name));
-  console.log('Ghost Context:', ghostContext);
+  console.log('Target Type:', targetType);
+  console.log('Ghost Context:', isGhostTarget ? ghostContext : '(not sent - not targeting ghost)');
   console.log('Roaster:', roasterName, roasterEmoji);
   console.log('Roast:', roast);
-  console.log('Target:', target);
   console.log('Is Second Roast:', isSecondRoast);
   if (firstRoastContext) console.log('First Roast Context:', firstRoastContext);
 
@@ -113,7 +138,7 @@ Score range: ${judge.scoreRange[0]}-${judge.scoreRange[1]}`;
 
     // Add targeting disposition if this judge is targeted
     if (target?.type === 'judge' && target.name === judge.name && judge.whenTargeted) {
-      block += `\n\n🎯 YOU ARE BEING TARGETED BY THIS ROAST. React personally! Disposition: ${judge.whenTargeted.disposition}`;
+      block += `\n\n🎯 YOU ARE BEING TARGETED BY THIS ROAST! React personally! Disposition: ${judge.whenTargeted.disposition}. ${judge.whenTargeted.reactionHint}`;
     }
 
     return block;
@@ -132,28 +157,31 @@ ${firstRoastContext.target ? `(Targeted: ${firstRoastContext.target.type === 'gh
 NOW COMPARE: Is this second roast better, worse, or about the same? Your scores should REFLECT the comparison. If the second roast is clearly weaker, score it lower. If it's clearly better, score it higher. Don't be afraid to show the gap.`;
   }
 
-  // Build targeting context
-  const targetContext = buildTargetContext(target, judges);
+  // Build dynamic scoring rules based on target
+  const scoringRules = buildScoringRules(target, judges);
 
-  // System prompt with judge blocks
-  const systemPrompt = `You are generating reactions from 3 celebrity judges at ROAST MORTEM, a comedy roast battle where contestants roast deceased people.
+  // Build target note for user prompt
+  const targetNote = buildTargetNote(target, judges);
 
-CRITICAL SCORING RULES:
-1. GHOST CONNECTION MATTERS: If the joke doesn't connect to the ghost's specific traits, bio, or cause of death, it's a weak joke. Score accordingly (lower half of your range).
-2. NON-SEQUITURS GET PUNISHED: If a joke makes no logical sense or the punchline doesn't land, CALL IT OUT and score low. Don't be polite about bad jokes.
-3. USE YOUR FULL RANGE: A score of 5-6 is mediocre. Reserve 7+ for jokes that actually made you react. Give 3 or below for jokes that actively annoyed you.
-4. BE HONEST: If you would groan or cringe at a joke, say so. If you would laugh, show it.
+  // System prompt with judge blocks and dynamic scoring rules
+  const systemPrompt = `You are generating reactions from 3 celebrity judges at ROAST MORTEM, a comedy roast battle.
+
+${scoringRules}
 
 Each judge exists in their own reality. Embody them fully — not parody, not impression. You ARE them.
 
 ${judgeBlocks}`;
 
-  // User prompt with dynamic content
-  const userPrompt = `Tonight's ghost is being roasted. The ghost's details ARE IMPORTANT — good roasts reference them specifically.
+  // User prompt - only include ghost context if targeting ghost
+  let userPrompt;
+  if (isGhostTarget) {
+    userPrompt = `Tonight's ghost is being roasted. The ghost's details ARE IMPORTANT — good roasts reference them specifically.
 
 ═══ GHOST CONTEXT ═══
 ${ghostContext}
-═══════════════════${comparisonNote}${targetContext}
+═══════════════════${comparisonNote}
+
+${targetNote}
 
 ═══ THE ROAST ═══
 ${roasterEmoji} ${roasterName} grabs the mic:
@@ -162,7 +190,32 @@ ${roasterEmoji} ${roasterName} grabs the mic:
 
 ---
 
-React as each judge IN CHARACTER. Be specific about what worked or didn't. If the joke was nonsense, say so! If it brilliantly connected to the ghost, praise it!
+React as each judge IN CHARACTER. Be specific about what worked or didn't. If the joke was nonsense, say so! If it brilliantly connected to the ghost, praise it!`;
+  } else {
+    // Non-ghost target - don't emphasize ghost connection
+    userPrompt = `Tonight at ROAST MORTEM, we have an unusual situation...${comparisonNote}
+
+${targetNote}
+
+${targetType === 'self' ? 'The roaster is going after THEMSELVES with self-deprecating humor.' :
+  targetType === 'judge' ? `The roaster is going after ${target.name} - one of YOU, the judges!` :
+  targetType === 'opponent' ? 'The roaster is trash-talking their OPPONENT instead of the ghost.' :
+  targetType === 'mort' ? 'The roaster is going after MORT THE HOST. Bold move!' :
+  targetType === 'destiny' ? 'The roaster is targeting DESTINY THE MYSTIC. Risky business!' : ''}
+
+(For context, there IS a ghost tonight: ${ghostContext} - but this joke isn't aimed at them.)
+
+═══ THE ROAST ═══
+${roasterEmoji} ${roasterName} grabs the mic:
+
+"${roast}"
+
+---
+
+React as each judge IN CHARACTER. Judge this on its intended target, not ghost connection. Be specific about what worked or didn't!`;
+  }
+
+  userPrompt += `
 
 Return valid JSON only:
 {

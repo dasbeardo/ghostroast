@@ -16,8 +16,11 @@ export function AdBreakScreen({ apiPromise, onComplete }) {
   let currentAdIndex = 0;
   let playedAds = new Set(); // Ads that have fully typed out
   let apiReady = false;
-  let typewriterInterval = null;
+  let typewriterActive = false;
+  let typewriterRafId = null;
   let currentCharIndex = 0;
+  let lastTypeTime = 0;
+  const TYPE_INTERVAL = 30; // ms per character
 
   // Create screen structure
   const screen = el('div', { class: 'screen screen-ad-break' }, [
@@ -141,9 +144,10 @@ export function AdBreakScreen({ apiPromise, onComplete }) {
   }
 
   function stopTypewriter() {
-    if (typewriterInterval) {
-      clearInterval(typewriterInterval);
-      typewriterInterval = null;
+    typewriterActive = false;
+    if (typewriterRafId) {
+      cancelAnimationFrame(typewriterRafId);
+      typewriterRafId = null;
     }
   }
 
@@ -169,9 +173,10 @@ export function AdBreakScreen({ apiPromise, onComplete }) {
       textEl.textContent = ad.text;
       imageArea.classList.remove('ad-break__image-area--hidden');
     } else {
-      // First time - typewriter effect
+      // First time - typewriter effect using requestAnimationFrame (Safari-friendly)
       textEl.textContent = '';
       currentCharIndex = 0;
+      lastTypeTime = 0;
       startTypewriter(ad);
     }
 
@@ -184,30 +189,50 @@ export function AdBreakScreen({ apiPromise, onComplete }) {
     const revealWord = ad.revealAt ? ad.revealAt.toLowerCase() : null;
     let revealed = false;
 
-    typewriterInterval = setInterval(() => {
-      if (currentCharIndex < text.length) {
-        currentCharIndex++;
-        const currentText = text.substring(0, currentCharIndex);
-        textEl.textContent = currentText;
+    typewriterActive = true;
 
-        // Check for reveal word
-        if (revealWord && !revealed && currentText.toLowerCase().includes(revealWord)) {
-          revealed = true;
-          imageArea.classList.remove('ad-break__image-area--hidden');
-          imageArea.classList.add('ad-break__image-area--revealed');
-        }
-      } else {
-        // Finished typing
-        stopTypewriter();
-        playedAds.add(currentAdIndex);
-        updateDots();
+    function typeStep(timestamp) {
+      if (!typewriterActive) return;
 
-        // Reveal image if not already
-        if (!revealed) {
-          imageArea.classList.remove('ad-break__image-area--hidden');
+      // Initialize lastTypeTime on first frame
+      if (!lastTypeTime) lastTypeTime = timestamp;
+
+      // Check if enough time has passed for next character
+      const elapsed = timestamp - lastTypeTime;
+      if (elapsed >= TYPE_INTERVAL) {
+        lastTypeTime = timestamp;
+
+        if (currentCharIndex < text.length) {
+          currentCharIndex++;
+          const currentText = text.substring(0, currentCharIndex);
+          textEl.textContent = currentText;
+
+          // Check for reveal word
+          if (revealWord && !revealed && currentText.toLowerCase().includes(revealWord)) {
+            revealed = true;
+            imageArea.classList.remove('ad-break__image-area--hidden');
+            imageArea.classList.add('ad-break__image-area--revealed');
+          }
+        } else {
+          // Finished typing
+          stopTypewriter();
+          playedAds.add(currentAdIndex);
+          updateDots();
+
+          // Reveal image if not already
+          if (!revealed) {
+            imageArea.classList.remove('ad-break__image-area--hidden');
+          }
+          return; // Don't schedule another frame
         }
       }
-    }, 30); // Speed: 30ms per character
+
+      // Schedule next frame
+      typewriterRafId = requestAnimationFrame(typeStep);
+    }
+
+    // Start the animation loop
+    typewriterRafId = requestAnimationFrame(typeStep);
   }
 
   // Allow tapping on screen to speed up / complete current typewriter
@@ -216,7 +241,7 @@ export function AdBreakScreen({ apiPromise, onComplete }) {
     if (e.target.closest('button')) return;
 
     // If typewriter is running, complete it
-    if (typewriterInterval) {
+    if (typewriterActive) {
       stopTypewriter();
       const ad = ads[currentAdIndex];
       textEl.textContent = ad.text;
