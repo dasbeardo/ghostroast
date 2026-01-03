@@ -15,7 +15,10 @@ import { Portrait } from '../components/Portrait.js';
  * @param {number} options.playerScore - Match score
  * @param {number} options.opponentScore - Match score
  * @param {number} options.round - Current round
- * @param {Function} options.onComplete - Callback with filled template
+ * @param {Array} options.judges - The 3 judges for targeting
+ * @param {Object} options.opponent - AI opponent info
+ * @param {boolean} options.destinyUsed - Whether Destiny picked judges
+ * @param {Function} options.onComplete - Callback with (roast, filledSlots, target)
  * @returns {HTMLElement}
  */
 export function DraftingScreen({
@@ -26,6 +29,9 @@ export function DraftingScreen({
   playerScore = 0,
   opponentScore = 0,
   round = 1,
+  judges = [],
+  opponent = null,
+  destinyUsed = false,
   onComplete,
   onMenu
 }) {
@@ -35,6 +41,7 @@ export function DraftingScreen({
   let currentWords = [];
   let rerollsLeft = rerolls;
   let pickerOpen = false;
+  let selectedTarget = { type: 'ghost' }; // Default target
 
   // DEBUG: Log template and word pools
   console.group('📝 DRAFTING SCREEN INIT');
@@ -43,6 +50,8 @@ export function DraftingScreen({
   console.log('Template Text:', template?.template);
   console.log('Template Slots:', template?.slots);
   console.log('Available Word Pools:', Object.keys(wordPools || {}));
+  console.log('Judges for targeting:', judges.map(j => j.name));
+  console.log('Destiny used:', destinyUsed);
 
   // Parse template - find blanks
   const templateParts = parseTemplate(template?.template || "You're like [BLANK] — [BLANK]");
@@ -52,6 +61,55 @@ export function DraftingScreen({
   console.groupEnd();
 
   filledSlots = new Array(totalSlots).fill(null);
+
+  // Build target options
+  function buildTargetOptions() {
+    const targets = [
+      { type: 'ghost', emoji: ghost?.emoji || '👻', label: 'Ghost', sublabel: ghost?.name || 'Target' },
+      { type: 'self', emoji: '🪞', label: 'Self', sublabel: 'Deprecate' }
+    ];
+
+    // Add each judge as a target option
+    judges.forEach(judge => {
+      targets.push({
+        type: 'judge',
+        name: judge.name,
+        emoji: judge.emoji,
+        label: judge.name.split(' ')[0], // First name only
+        sublabel: judge.whenTargeted?.disposition || 'Judge'
+      });
+    });
+
+    // Add opponent
+    if (opponent) {
+      targets.push({
+        type: 'opponent',
+        emoji: opponent.emoji || '🤖',
+        label: 'Opponent',
+        sublabel: opponent.name || 'AI'
+      });
+    }
+
+    // Always can target Mort
+    targets.push({
+      type: 'mort',
+      emoji: '🎩',
+      label: 'Mort',
+      sublabel: 'Host'
+    });
+
+    // Destiny only if she picked judges
+    if (destinyUsed) {
+      targets.push({
+        type: 'destiny',
+        emoji: '🔮',
+        label: 'Destiny',
+        sublabel: 'Mystic'
+      });
+    }
+
+    return targets;
+  }
 
   const screen = el('div', { class: 'screen screen-drafting' }, [
     // Header
@@ -90,6 +148,15 @@ export function DraftingScreen({
 
       // Slot indicators
       el('div', { class: 'drafting__slots', id: 'slot-indicators' }),
+
+      // Target selector
+      el('div', { class: 'drafting__target-section', id: 'target-section' }, [
+        el('div', { class: 'drafting__target-header' }, [
+          el('span', { class: 'drafting__target-label' }, ['🎯 Target']),
+          el('span', { class: 'drafting__target-hint' }, ['Who is this roast aimed at?']),
+        ]),
+        el('div', { class: 'drafting__target-scroll', id: 'target-scroll' }),
+      ]),
     ]),
 
     // Actions
@@ -101,7 +168,7 @@ export function DraftingScreen({
         onClick: () => {
           if (filledSlots.every(s => s !== null) && onComplete) {
             const roast = buildRoast();
-            onComplete(roast, filledSlots);
+            onComplete(roast, filledSlots, selectedTarget);
           }
         }
       }, ['Lock In Roast']),
@@ -138,6 +205,7 @@ export function DraftingScreen({
   const wordGrid = $('#word-grid', screen);
   const shuffleBtn = $('#shuffle-btn', screen);
   const rerollDisplay = $('.drafting__reroll', screen);
+  const targetScroll = $('#target-scroll', screen);
 
   // Parse template into parts
   function parseTemplate(text) {
@@ -199,6 +267,37 @@ export function DraftingScreen({
       });
       slotIndicators.appendChild(dot);
     }
+  }
+
+  // Render target selector
+  function renderTargets() {
+    clearElement(targetScroll);
+    const targets = buildTargetOptions();
+
+    targets.forEach(target => {
+      const isSelected = selectedTarget.type === target.type &&
+        (target.type !== 'judge' || selectedTarget.name === target.name);
+
+      const chip = el('button', {
+        class: `drafting__target-chip ${isSelected ? 'drafting__target-chip--selected' : ''}`,
+        onClick: () => selectTarget(target)
+      }, [
+        el('span', { class: 'drafting__target-emoji' }, [target.emoji]),
+        el('span', { class: 'drafting__target-name' }, [target.label]),
+      ]);
+
+      targetScroll.appendChild(chip);
+    });
+  }
+
+  // Select a target
+  function selectTarget(target) {
+    selectedTarget = {
+      type: target.type,
+      name: target.name,
+      emoji: target.emoji
+    };
+    renderTargets();
   }
 
   // Open word picker
@@ -346,6 +445,7 @@ export function DraftingScreen({
   // Initial render
   renderTemplate();
   renderSlots();
+  renderTargets();
 
   return screen;
 }

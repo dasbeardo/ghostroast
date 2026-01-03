@@ -1,6 +1,6 @@
 // Game state - single source of truth
 
-export const VERSION = '0.6.5.2';
+export const VERSION = '0.7.0';
 
 // Proxy configuration - set this to your Cloudflare Worker URL after deploying
 // Leave empty to use direct API key mode
@@ -67,7 +67,16 @@ export const state = {
     ghostsRoasted: [],  // Names of all ghosts roasted
     highestSingleScore: 0,  // Best score from 3 judges in one round
     longestWinStreak: 0,
-    currentWinStreak: 0
+    currentWinStreak: 0,
+    // Targeting history
+    targetingHistory: {
+      ghost: 0,
+      self: 0,
+      judges: {},  // { judgeName: count }
+      opponent: 0,
+      mort: 0,
+      destiny: 0
+    }
   },
   opponent: null,
   ghost: null,
@@ -86,6 +95,11 @@ export const state = {
   aiTemplate: null,
   aiSlots: [],
   aiInsult: '',
+
+  // Targeting system
+  playerTarget: null,  // { type: 'ghost'|'self'|'judge'|'opponent'|'mort'|'destiny', name?: string, emoji?: string }
+  aiTarget: null,      // Same structure for AI opponent
+  destinyUsed: false,  // True if Destiny picked the judges (enables targeting her)
 
   activeSlot: null,
   results: null,
@@ -131,6 +145,44 @@ export const state = {
 // Save player stats to localStorage
 export function savePlayerStats() {
   localStorage.setItem('roastmortem_stats', JSON.stringify(state.stats));
+}
+
+// Update targeting history
+export function recordTargeting(target) {
+  if (!target) return;
+
+  // Initialize targetingHistory if missing (for existing save data)
+  if (!state.stats.targetingHistory) {
+    state.stats.targetingHistory = {
+      ghost: 0, self: 0, judges: {}, opponent: 0, mort: 0, destiny: 0
+    };
+  }
+
+  switch (target.type) {
+    case 'ghost':
+      state.stats.targetingHistory.ghost++;
+      break;
+    case 'self':
+      state.stats.targetingHistory.self++;
+      break;
+    case 'judge':
+      if (!state.stats.targetingHistory.judges[target.name]) {
+        state.stats.targetingHistory.judges[target.name] = 0;
+      }
+      state.stats.targetingHistory.judges[target.name]++;
+      break;
+    case 'opponent':
+      state.stats.targetingHistory.opponent++;
+      break;
+    case 'mort':
+      state.stats.targetingHistory.mort++;
+      break;
+    case 'destiny':
+      state.stats.targetingHistory.destiny++;
+      break;
+  }
+
+  savePlayerStats();
 }
 
 // Export save data as JSON string

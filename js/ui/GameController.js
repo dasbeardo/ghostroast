@@ -18,8 +18,8 @@ import {
   StatsScreen
 } from './screens/index.js';
 
-import { state, VERSION, savePlayerStats, exportSaveData, importSaveData } from '../state.js';
-import { getJudgePanelResponse } from '../api.js';
+import { state, VERSION, savePlayerStats, exportSaveData, importSaveData, recordTargeting } from '../state.js';
+import { getJudgePanelResponse, generateAITarget } from '../api.js';
 import { GHOSTS } from '../../data/ghosts.js';
 import { JUDGES } from '../../data/judges.js';
 import { TEMPLATES } from '../../data/templates.js';
@@ -80,6 +80,11 @@ export class GameController {
     this.playerTotalPoints = 0;
     this.opponentTotalPoints = 0;
     this.firstReactionsPromise = null; // For API prefetching
+
+    // Targeting system
+    this.destinyUsed = false; // True if Destiny picked judges
+    this.playerTarget = null;
+    this.opponentTarget = null;
   }
 
   /**
@@ -126,6 +131,9 @@ export class GameController {
     this.usedGhosts = [];
     this.playerTotalPoints = 0;
     this.opponentTotalPoints = 0;
+    this.destinyUsed = false;
+    this.playerTarget = null;
+    this.opponentTarget = null;
 
     // Pick random opponent
     this.opponent = OPPONENTS[Math.floor(Math.random() * OPPONENTS.length)];
@@ -145,9 +153,10 @@ export class GameController {
         this.showMatchOpening();
       },
       onDestiny: () => {
-        // Random judge selection
+        // Random judge selection via Destiny
         const shuffled = shuffle([...JUDGES]);
         const randomJudges = shuffled.slice(0, 3);
+        this.destinyUsed = true; // Track that Destiny picked judges
         screen.setSelectedJudges(randomJudges);
       }
     });
@@ -171,7 +180,7 @@ export class GameController {
   /**
    * Start a new round
    */
-  startRound() {
+  async startRound() {
     // Pick ghost (no repeats)
     const availableGhosts = GHOSTS.filter(g => !this.usedGhosts.includes(g.name));
     this.currentGhost = availableGhosts[Math.floor(Math.random() * availableGhosts.length)];
@@ -184,6 +193,10 @@ export class GameController {
 
     // AI picks words immediately using weighted pools
     this.opponentRoast = this.generateAIRoast(this.opponentTemplate, this.currentGhost);
+
+    // AI picks a target
+    this.opponentTarget = await generateAITarget(this.selectedJudges, this.currentGhost, this.destinyUsed);
+    console.log('🤖 AI Target:', this.opponentTarget);
 
     // Show ghost intro
     this.showGhostIntro();
@@ -217,8 +230,16 @@ export class GameController {
       playerScore: this.playerMatchScore,
       opponentScore: this.opponentMatchScore,
       round: this.currentRound,
-      onComplete: (roast, filledSlots) => {
+      judges: this.selectedJudges,
+      opponent: this.opponent,
+      destinyUsed: this.destinyUsed,
+      onComplete: (roast, filledSlots, target) => {
         this.playerRoast = roast;
+        this.playerTarget = target;
+
+        // Record targeting in stats
+        recordTargeting(target);
+        console.log('🎯 Player Target:', target);
 
         // Fire FIRST API call immediately on Lock In!
         // Determine who goes first and start fetching their reactions
@@ -227,6 +248,7 @@ export class GameController {
           ? { name: state.playerName || 'You', emoji: '👤' }
           : this.opponent;
         const firstRoast = firstRoaster === 'player' ? this.playerRoast : this.opponentRoast;
+        const firstTarget = firstRoaster === 'player' ? this.playerTarget : this.opponentTarget;
 
         // Start API call (runs during ad break)
         this.firstReactionsPromise = this.getJudgeReactions(
@@ -235,7 +257,8 @@ export class GameController {
           firstRoasterData.name,
           firstRoasterData.emoji,
           false, // not second roast
-          null   // no first roast context
+          null,  // no first roast context
+          firstTarget // pass target
         );
 
         // Show ad break while API loads
@@ -276,8 +299,10 @@ export class GameController {
       playerScore: this.playerMatchScore,
       opponentScore: this.opponentMatchScore,
       firstReactionsPromise: this.firstReactionsPromise, // Pass pre-fetched promise
-      getJudgeReactions: (roast, judges, roasterName, roasterEmoji, isSecond, context) =>
-        this.getJudgeReactions(roast, judges, roasterName, roasterEmoji, isSecond, context),
+      playerTarget: this.playerTarget,
+      opponentTarget: this.opponentTarget,
+      getJudgeReactions: (roast, judges, roasterName, roasterEmoji, isSecond, context, target) =>
+        this.getJudgeReactions(roast, judges, roasterName, roasterEmoji, isSecond, context, target),
       onComplete: (results) => {
         this.roundResults = results;
         this.playerTotalPoints += results.playerTotal;
@@ -406,8 +431,9 @@ export class GameController {
    * @param {string} roasterEmoji - Emoji for the roaster
    * @param {boolean} isSecondRoast - Whether this is the second roast
    * @param {Object|null} firstRoastContext - Context from first roast (if second)
+   * @param {Object|null} target - Target of the roast (ghost, self, judge, etc.)
    */
-  async getJudgeReactions(roast, judges, roasterName, roasterEmoji, isSecondRoast = false, firstRoastContext = null) {
+  async getJudgeReactions(roast, judges, roasterName, roasterEmoji, isSecondRoast = false, firstRoastContext = null, target = null) {
     // Build ghost context for judges
     const ghost = this.currentGhost;
     const ghostContext = `${ghost.emoji} ${ghost.name} - ${ghost.died}. ${ghost.bio[0]}`;
@@ -421,7 +447,8 @@ export class GameController {
         roasterEmoji,
         roast,
         isSecondRoast,
-        firstRoastContext
+        firstRoastContext,
+        target
       );
 
       // Return formatted results with banter attached

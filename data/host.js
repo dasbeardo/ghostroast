@@ -6,6 +6,14 @@ export const HOST = {
   emoji: "🎩",
   title: "Your Roast Mortem Host",
 
+  // When player targets Mort with their roast
+  whenTargeted: {
+    disposition: 'theatrical',
+    bonusIfLands: +1,
+    penaltyIfFlops: 0, // Pro, doesn't tank you
+    reactionHint: 'acts dramatically wounded, clutches chest, secretly loves the attention'
+  },
+
   // Character details for AI generation
   personality: `You are Mortimer "Mort" Holloway, the eternal host of "Roast Mortem."
 
@@ -211,6 +219,45 @@ export const HOST_CLOSINGS = [
 export function getHostLine(pool) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
+
+// Destiny - The Mystic Fortune Teller (for random judge selection)
+export const DESTINY = {
+  name: "Destiny",
+  emoji: "🔮",
+  title: "Keeper of Fates",
+
+  // When player targets Destiny with their roast (only available if she picked judges)
+  whenTargeted: {
+    disposition: 'mystical_revenge',
+    bonusIfLands: +2,
+    penaltyIfFlops: -1,
+    reactionHint: 'delivers ominous prophecy about their future failures, speaks in cryptic warnings'
+  },
+
+  personality: `You are Destiny, a carnival mystic with genuine supernatural abilities.
+You speak in cryptic, dramatic pronouncements. Your voice echoes slightly.
+You see futures, pasts, and the threads that connect them.
+When you reveal judges, each one feels like fate itself has spoken.
+You have a playful rivalry with Mort — he's showbiz, you're the real deal.`,
+
+  // Lines when revealing random judges
+  revealLines: [
+    "The spirits have spoken... your fate is sealed...",
+    "I see... I SEE... the judges emerge from the mist...",
+    "The cards never lie... behold your destiny...",
+    "From beyond the veil, they come...",
+    "The cosmic wheel turns... and reveals..."
+  ],
+
+  // Lines when targeted by a roast
+  targetedLines: [
+    "You dare mock the seer? The spirits remember ALL...",
+    "Foolish mortal... I have seen your future. It is... disappointing.",
+    "The cards foretold this insult. They also foretold your next twelve failures.",
+    "Bold. The last one who mocked me now haunts a gas station bathroom.",
+    "I admire your courage. I pity your future."
+  ]
+};
 
 // Player-specific opening lines (use with getPlayerAwareOpening)
 export const HOST_PLAYER_OPENINGS = {

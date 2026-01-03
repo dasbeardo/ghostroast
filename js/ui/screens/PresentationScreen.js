@@ -22,6 +22,8 @@ export function PresentationScreen({
   playerScore = 0,
   opponentScore = 0,
   firstReactionsPromise = null, // Pre-fetched first reactions from ad break
+  playerTarget = null,
+  opponentTarget = null,
   onComplete,
   getJudgeReactions
 }) {
@@ -109,6 +111,8 @@ export function PresentationScreen({
     const secondRoasterData = secondRoaster === 'player' ? player : opponent;
     const firstRoast = firstRoaster === 'player' ? playerRoast : opponentRoast;
     const secondRoast = secondRoaster === 'player' ? playerRoast : opponentRoast;
+    const firstTarget = firstRoaster === 'player' ? playerTarget : opponentTarget;
+    const secondTarget = secondRoaster === 'player' ? playerTarget : opponentTarget;
 
     // === USE PRE-FETCHED PROMISE or start now ===
     // First reactions should already be fetching from the ad break
@@ -122,7 +126,7 @@ export function PresentationScreen({
       }));
     } else {
       reactionsPromise = fetchJudgeReactions(
-        firstRoast, firstRoasterData, firstRoaster, false, null
+        firstRoast, firstRoasterData, firstRoaster, false, null, firstTarget
       );
     }
 
@@ -147,13 +151,15 @@ export function PresentationScreen({
     // Build context for second roast NOW so we can prefetch
     firstRoastContext = {
       roasterName: firstRoasterData?.name || 'Roaster',
+      roasterEmoji: firstRoasterData?.emoji || '👤',
       roast: firstRoast,
-      scores: firstReactionsData.scores
+      scores: firstReactionsData.scores,
+      target: firstTarget
     };
 
     // === PREFETCH: Start fetching second reactions while user reads first ===
     const secondReactionsPromise = fetchJudgeReactions(
-      secondRoast, secondRoasterData, secondRoaster, true, firstRoastContext
+      secondRoast, secondRoasterData, secondRoaster, true, firstRoastContext, secondTarget
     );
 
     // Store first roast results
@@ -234,14 +240,14 @@ export function PresentationScreen({
   }
 
   // Fetch judge reactions (with banter)
-  async function fetchJudgeReactions(roastText, roasterData, who, isSecondRoast, context) {
+  async function fetchJudgeReactions(roastText, roasterData, who, isSecondRoast, context, target = null) {
     const roasterName = roasterData?.name || (who === 'player' ? 'Player' : 'AI');
     const roasterEmoji = roasterData?.emoji || (who === 'player' ? '👤' : '🤖');
 
     if (getJudgeReactions) {
       try {
         const data = await getJudgeReactions(
-          roastText, judges, roasterName, roasterEmoji, isSecondRoast, context
+          roastText, judges, roasterName, roasterEmoji, isSecondRoast, context, target
         );
         // API returns array of {name, emoji, reaction, score} plus banter
         return {
