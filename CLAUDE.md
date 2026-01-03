@@ -1,16 +1,16 @@
 # Roast Mortem - Project Doc
 
-**Version**: 0.6.5.1
+**Version**: 0.6.5.2
 
 ## What This Is
 A comedy game where players compete against an AI opponent to craft roasts of "ghosts" (deceased people with humorous bios). Player and AI each get a DIFFERENT random template and draft words to complete their roast. Three AI judges (player-selected or random) score the final jokes.
 
 ## Current State
-**Working prototype** - Two UI versions available:
-- `index.html` - Original UI (legacy)
-- `index-new.html` - **New modular UI** (recommended, actively developed)
+**Working prototype** - Modular UI is now the main version:
+- `index.html` - **Main modular UI** (actively developed)
+- `index-legacy.html` - Original UI (preserved for reference)
 
-Run with: `python3 -m http.server 3000` then open `http://localhost:3000/index-new.html`
+Run with: `python3 -m http.server 3000` then open `http://localhost:3000`
 
 ## Tech Stack
 - **Frontend**: Vanilla JS, no framework, no build step
@@ -24,8 +24,8 @@ Run with: `python3 -m http.server 3000` then open `http://localhost:3000/index-n
 ## File Structure
 ```
 ghostroast/
-├── index.html              # Legacy UI entry point
-├── index-new.html          # NEW modular UI entry point (recommended)
+├── index.html              # Main modular UI entry point
+├── index-legacy.html       # Original UI (preserved)
 ├── style.css               # Legacy styles
 ├── css/                    # NEW modular CSS architecture
 │   ├── styles.css          # Main CSS import file
@@ -405,25 +405,120 @@ This would make the middle section scroll when content is too tall while keeping
 
 ## Future Ideas
 
-### Directed Roasts / Judge Targeting
-Player can optionally tag their roast as "directed at" a specific judge.
+### Roast Targeting System (PLANNED)
+
+Player can optionally tag their roast as "directed at" a specific target. Adds strategic depth and creates dynamic judge reactions.
+
+**Target Options:**
+
+| Target | Icon | Available | Score Cap | Notes |
+|--------|------|-----------|-----------|-------|
+| Ghost | 👻 | Always (default) | 10 | Standard roast behavior |
+| Self | 🪞 | Always | 7-8 | Self-deprecation, safe but capped |
+| Judge 1/2/3 | (emoji) | Always | 10 | High risk/reward, judge reacts personally |
+| Opponent | 🤖 | Always | 8 | Meta trash-talk |
+| Mort | 🎩 | Always | 8 | Host reacts theatrically |
+| Destiny | 🔮 | Only if she picked judges | 8 | Cryptic revenge |
+
+**UI Location:** Target selector on Drafting Screen, below completed template, above "Lock In Roast" button. Ghost is pre-selected default.
+
+**Judge `whenTargeted` Property (add to judges.js):**
+```javascript
+whenTargeted: {
+  disposition: 'good_sport', // defensive | good_sport | loves_it | volatile | stoic
+  bonusIfLands: +1,          // Score bonus if joke is good
+  penaltyIfFlops: -1,        // Score penalty if joke is weak
+  reactionHint: 'laughs it off but scores fairly'
+}
+```
+
+**Disposition Types:**
+- `defensive` - Takes offense, scores harsh (Judge Judy, Kanye)
+- `good_sport` - Laughs it off, stays fair (Dr. Phil, Vince)
+- `loves_it` - Rewards boldness (Ric Flair, Iron Sheik)
+- `volatile` - Unpredictable, could go either way (Ultimate Warrior, Gordon)
+- `stoic` - Barely reacts, scores normally (Werner Herzog)
+
+**Mort/Destiny Personalities (add to host.js / new destiny.js):**
+```javascript
+// Mort
+whenTargeted: {
+  disposition: 'theatrical',
+  bonusIfLands: +1,
+  penaltyIfFlops: 0, // Pro, doesn't tank you
+  reactionHint: 'acts dramatically wounded, secretly loves attention'
+}
+
+// Destiny
+whenTargeted: {
+  disposition: 'mystical_revenge',
+  bonusIfLands: +2,
+  penaltyIfFlops: -1,
+  reactionHint: 'delivers ominous prophecy about your failures'
+}
+```
+
+**Tracking (add to state.js stats):**
+```javascript
+targetingHistory: {
+  ghost: 0,
+  self: 0,
+  judges: {}, // { judgeName: count }
+  opponent: 0,
+  mort: 0,
+  destiny: 0
+}
+```
+
+**API Changes:**
+- Pass target info with roast: `{ type: 'judge', name: 'Gordon Ramsay', whenTargeted: {...} }`
+- Include Mort/Destiny personality context when they're targeted
+- Prompt instructs judges how to react to being targeted
+
+**AI Opponent Targeting:**
+- Opponent also picks targets (weighted: 70% ghost, 15% judge, 10% player, 5% self)
+- Creates unpredictable matches and banter opportunities
+
+**Banter Awareness:**
+- When a judge is targeted, banter references it
+- "Did they just come at ME?"
+- Other judges react to the drama
+
+**Implementation Order:**
+1. Add `whenTargeted` to all 36 judges in judges.js
+2. Add Mort/Destiny targeting personalities
+3. Add targeting stats to state.js
+4. Build target selector UI in DraftingScreen.js
+5. Update API call to include target context
+6. Update prompt to handle targeting logic
+7. Add AI opponent targeting logic
+8. Test & balance
+
+---
+
+### CAH-Style Joke System (IDEA)
+
+Current problem: Generic templates + generic word pools = generic jokes that don't connect to specific ghosts.
+
+**Proposed Solution:** More directly copy the Cards Against Humanity formula:
+- **Black cards** = Templates with blanks (already have)
+- **White cards** = Fill-in words/phrases (already have)
+- **Ghost-specific cards** = Special cards that only appear for certain ghosts
+- **Judge-specific cards** = Special cards that only appear for certain judge panels
 
 **Mechanics:**
-- During drafting, optional "Dedicate this roast to..." selector
-- Judges have relationship data (allies, rivals, sensitive topics)
-- API prompt includes context: "This roast referenced you"
-- Dynamic reactions: judge being roasted gets defensive/flattered
-- Banter gets personal: "Did they just come at ME?"
+- Each ghost could have 2-3 "personal" white cards that reference their specific traits
+- Cards have appearance probability (e.g., 30% chance to appear in pool)
+- Creates ghost-specific jokes without overhauling entire system
+- Example: Edgar Sootlungs might add "16-hour shifts", "factory air", "child labor laws" to pools
 
-**Emergent Moments:**
-- Roast about Tommy → Kanye defends him → Ramsay mocks Kanye
-- Reference a judge's catchphrase → they love it or hate the mockery
-- Play judges against each other strategically
+**Benefits:**
+- Maintains randomness/replayability
+- Ghost-specific humor becomes possible
+- Easier to add than reworking all word pools
+- Could extend to judge-specific cards too
 
-**Expanded Targeting:**
-- Tag joke with target: ghost / opponent / specific judge / host / Destiny
-- Different reactions based on who's being targeted
-- Host and Destiny could have their own defensive/reactive dialogue
+---
 
 ### Dynamic Judge Traits & RNG Behaviors
 Add traits, topics, and relationships to judges that vary per round/match.
