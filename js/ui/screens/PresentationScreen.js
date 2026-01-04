@@ -131,7 +131,7 @@ export function PresentationScreen({
     }
 
     // === FIRST ROAST === (API already loading from ad break)
-    await presentRoast(firstRoasterData, firstRoast, firstRoaster);
+    await presentRoast(firstRoasterData, firstRoast, firstRoaster, firstTarget);
     await waitForTap();
 
     // Check if reactions are ready - show loading only if still waiting
@@ -191,7 +191,7 @@ export function PresentationScreen({
     updateTotals();
 
     // === SECOND ROAST === (reactions likely already loaded!)
-    await presentRoast(secondRoasterData, secondRoast, secondRoaster);
+    await presentRoast(secondRoasterData, secondRoast, secondRoaster, secondTarget);
     await waitForTap();
 
     // Check if second reactions are ready
@@ -268,16 +268,76 @@ export function PresentationScreen({
     };
   }
 
+  // Get target display info
+  function getTargetDisplay(target) {
+    const targetType = target?.type || 'ghost';
+
+    switch (targetType) {
+      case 'ghost':
+        return {
+          emoji: ghost?.emoji || '👻',
+          label: 'ROASTING',
+          name: ghost?.name || 'Ghost',
+          type: 'ghost'
+        };
+      case 'self':
+        return {
+          emoji: '🪞',
+          label: 'SELF-ROAST',
+          name: 'Themselves',
+          type: 'self'
+        };
+      case 'judge':
+        return {
+          emoji: target.emoji || '⚖️',
+          label: 'TARGETING',
+          name: target.name || 'Judge',
+          type: 'judge'
+        };
+      case 'opponent':
+        return {
+          emoji: opponent?.emoji || '🤖',
+          label: 'TRASH TALK',
+          name: opponent?.name || 'Opponent',
+          type: 'opponent'
+        };
+      case 'mort':
+        return {
+          emoji: '🎩',
+          label: 'TARGETING',
+          name: 'Mort the Host',
+          type: 'mort'
+        };
+      case 'destiny':
+        return {
+          emoji: '🔮',
+          label: 'TARGETING',
+          name: 'Destiny',
+          type: 'destiny'
+        };
+      default:
+        return {
+          emoji: ghost?.emoji || '👻',
+          label: 'ROASTING',
+          name: ghost?.name || 'Ghost',
+          type: 'ghost'
+        };
+    }
+  }
+
   // Present a roast with tap-to-complete support
-  async function presentRoast(roaster, roastText, who) {
+  async function presentRoast(roaster, roastText, who, target) {
     clearElement(stage);
 
-    // Layout: ghost at top, roaster portrait, then speech bubble below
+    // Get target display info
+    const targetInfo = getTargetDisplay(target);
+
+    // Layout: target at top, roaster portrait, then speech bubble below
     stage.appendChild(el('div', { class: 'presentation__target' }, [
-      Portrait({ emoji: ghost?.emoji || '👻', size: 'sm', type: 'ghost', bobbing: true }),
+      Portrait({ emoji: targetInfo.emoji, size: 'sm', type: targetInfo.type, bobbing: true }),
       el('div', {}, [
-        el('div', { class: 'presentation__target-label' }, ['ROASTING']),
-        el('div', { class: 'presentation__target-name' }, [ghost?.name || 'Ghost']),
+        el('div', { class: 'presentation__target-label' }, [targetInfo.label]),
+        el('div', { class: 'presentation__target-name' }, [targetInfo.name]),
       ]),
     ]));
 
