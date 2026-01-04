@@ -225,8 +225,9 @@ Return valid JSON only:
     {"name": "${judges[2].name}", "emoji": "${judges[2].emoji}", "score": N, "reaction": "3-5 sentences in character. Be specific about what worked/didn't."}
   ],
   "banter": [
-    "Judge Name: 1-2 lines reacting to another judge's take or the overall vibe",
-    "Another Judge: responds or adds something"
+    "${judges[0].name}: reacts to the roast or another judge",
+    "${judges[1].name}: responds or adds their take",
+    "${judges[2].name}: gets the last word"
   ]
 }`;
 

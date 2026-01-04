@@ -191,8 +191,23 @@ export function AdBreakScreen({ apiPromise, onComplete }) {
 
     typewriterActive = true;
 
+    // Safari fallback: if text is still empty after 150ms, show it all at once
+    const safariFallback = setTimeout(() => {
+      if (typewriterActive && textEl.textContent.length === 0) {
+        console.warn('Typewriter fallback triggered (Safari?)');
+        stopTypewriter();
+        textEl.textContent = text;
+        playedAds.add(currentAdIndex);
+        updateDots();
+        imageArea.classList.remove('ad-break__image-area--hidden');
+      }
+    }, 150);
+
     function typeStep(timestamp) {
-      if (!typewriterActive) return;
+      if (!typewriterActive) {
+        clearTimeout(safariFallback);
+        return;
+      }
 
       // Initialize lastTypeTime on first frame
       if (!lastTypeTime) lastTypeTime = timestamp;
@@ -207,6 +222,11 @@ export function AdBreakScreen({ apiPromise, onComplete }) {
           const currentText = text.substring(0, currentCharIndex);
           textEl.textContent = currentText;
 
+          // Clear fallback once we've started typing
+          if (currentCharIndex === 1) {
+            clearTimeout(safariFallback);
+          }
+
           // Check for reveal word
           if (revealWord && !revealed && currentText.toLowerCase().includes(revealWord)) {
             revealed = true;
@@ -215,6 +235,7 @@ export function AdBreakScreen({ apiPromise, onComplete }) {
           }
         } else {
           // Finished typing
+          clearTimeout(safariFallback);
           stopTypewriter();
           playedAds.add(currentAdIndex);
           updateDots();
@@ -264,9 +285,12 @@ export function AdBreakScreen({ apiPromise, onComplete }) {
     }
   });
 
-  // Initialize
-  showAd(0);
-  updateNavButtons();
+  // Initialize - defer to ensure DOM is mounted (Safari fix)
+  // Use setTimeout(0) as Safari handles this more reliably than rAF for initialization
+  setTimeout(() => {
+    showAd(0);
+    updateNavButtons();
+  }, 0);
 
   return screen;
 }
