@@ -190,7 +190,7 @@ ${roasterEmoji} ${roasterName} grabs the mic:
 
 ---
 
-React as each judge IN CHARACTER. Be specific about what worked or didn't. If the joke was nonsense, say so! If it brilliantly connected to the ghost, praise it!`;
+React as each judge IN CHARACTER. Be specific about what worked or didn't. If the joke was nonsense, say so! If it brilliantly connected to the target, praise that! But most importantly BE FUNNY AS YOUR CHARACTER!`;
   } else {
     // Non-ghost target - don't emphasize ghost connection
     userPrompt = `Tonight at ROAST MORTEM, we have an unusual situation...${comparisonNote}
@@ -212,7 +212,7 @@ ${roasterEmoji} ${roasterName} grabs the mic:
 
 ---
 
-React as each judge IN CHARACTER. Judge this on its intended target, not ghost connection. Be specific about what worked or didn't!`;
+React as each judge IN CHARACTER. Be specific about what worked or didn't. If the joke was nonsense, say so! If it brilliantly connected to the target, praise that! But most importantly BE FUNNY AS YOUR CHARACTER!`;
   }
 
   userPrompt += `
@@ -237,7 +237,7 @@ Return valid JSON only:
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt }
     ],
-    max_completion_tokens: 1000,
+    max_completion_tokens: 2000,
     temperature: 0.9
   };
 
