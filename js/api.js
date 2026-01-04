@@ -58,7 +58,7 @@ function buildScoringRules(target, judges) {
       break;
 
     case 'self':
-      rules += `4. SELF-DEPRECATION: This roast is the comedian making fun of THEMSELVES. Ghost connection is NOT required. Judge the self-deprecation on its wit and delivery. Max score around 7-8 unless exceptionally clever - going after yourself is safe but limited.`;
+      rules += `4. SELF-DEPRECATION: This roast is the comedian making fun of THEMSELVES. Judge the self-deprecation on its wit and delivery. Max score around 7-8 unless exceptionally clever - roasting themselves is safe but limited.`;
       break;
 
     case 'judge':
@@ -78,15 +78,15 @@ function buildScoringRules(target, judges) {
       break;
 
     case 'opponent':
-      rules += `4. OPPONENT TARGETING: This roast is trash-talk aimed at THE OTHER ROASTER, not the ghost. Ghost connection is NOT required. Judge based on wit and audacity. This is bold but risky - cap around 8 unless brilliant.`;
+      rules += `4. OPPONENT TARGETING: This roast is trash-talk aimed at THE OTHER ROASTER, not the ghost. Judge based on wit and audacity. This is bold but risky - cap around 8 unless brilliant.`;
       break;
 
     case 'mort':
-      rules += `4. HOST TARGETING: This roast goes after MORT THE HOST! Ghost connection is NOT required. Mort is a professional who secretly loves attention. Judge the audacity and cleverness. React to the boldness of going after the host.`;
+      rules += `4. HOST TARGETING: This roast goes after MORT THE HOST! Mort is a professional who secretly loves attention. Judge the audacity and cleverness. React to the boldness of going after the host.`;
       break;
 
     case 'destiny':
-      rules += `4. DESTINY TARGETING: This roast targets DESTINY THE MYSTIC who picked the judges! Ghost connection is NOT required. This is dangerous territory. React with amusement or concern about supernatural retaliation. She may prophesy their failures.`;
+      rules += `4. DESTINY TARGETING: This roast targets DESTINY THE MYSTIC who picked the judges! This is dangerous territory. React with amusement or concern about supernatural retaliation. She may prophesy their failures.`;
       break;
   }
 
@@ -168,14 +168,14 @@ NOW COMPARE: Is this second roast better, worse, or about the same? Your scores 
 
 ${scoringRules}
 
-Each judge exists in their own reality. Embody them fully — not parody, not impression. You ARE them.
+Each judge exists in their own reality. Embody them fully — a hilarious parody, an incredible impression. You ARE them dialed up to 11.
 
 ${judgeBlocks}`;
 
   // User prompt - only include ghost context if targeting ghost
   let userPrompt;
   if (isGhostTarget) {
-    userPrompt = `Tonight's ghost is being roasted. The ghost's details ARE IMPORTANT — good roasts reference them specifically.
+    userPrompt = `Tonight's ghost is being roasted. The ghost's details ARE IMPORTANT — the best roasts reference them specifically.
 
 ═══ GHOST CONTEXT ═══
 ${ghostContext}
